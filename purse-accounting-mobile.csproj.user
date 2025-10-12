@@ -3,8 +3,8 @@
   <PropertyGroup>
     <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
     <ActiveDebugFramework>net9.0-android</ActiveDebugFramework>
-    <ActiveDebugProfile>Android Emulator</ActiveDebugProfile>
-    <SelectedPlatformGroup>Emulator</SelectedPlatformGroup>
+    <ActiveDebugProfile>Xiaomi 23030RAC7Y (Android 15.0 — API 35)</ActiveDebugProfile>
+    <SelectedPlatformGroup>PhysicalDevice</SelectedPlatformGroup>
     <DefaultDevice>galaxy_nexus_-_api_35</DefaultDevice>
   </PropertyGroup>
   <ItemGroup>
@@ -15,12 +15,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Update="MainPage.xaml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Platforms\Windows\App.xaml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Platforms\Windows\Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
     <None Update="Resources\Styles\Colors.xaml">
