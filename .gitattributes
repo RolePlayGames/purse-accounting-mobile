@@ -1,0 +1,18 @@
+# Normalize strings end on commit
+* text=auto
+
+# Set line end on file types
+*.cs     text eol=lf
+*.csproj text eol=lf
+*.json   text eol=lf
+*.yaml   text eol=lf
+*.yml    text eol=lf
+*.xml    text eol=lf
+*.md     text eol=lf
+
+# Exclusions
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.dll    binary
+*.exe    binary
