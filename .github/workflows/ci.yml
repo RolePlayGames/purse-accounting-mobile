@@ -22,6 +22,10 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
+    - name: Install MAUI workloads
+      run: |
+        dotnet workload install maui --source https://api.nuget.org/v3/index.json --verbosity quiet
+
     - name: Build
       run: dotnet build --configuration Release
 
