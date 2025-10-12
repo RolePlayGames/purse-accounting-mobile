@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Infrastructure", "..\PurseAccounting.Mobile.Infrastructure\PurseAccounting.Mobile.Infrastructure.csproj", "{2DD92EB8-F92B-4B82-A131-5CDBF5DAFE1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Application.Test", "..\PurseAccounting.Mobile.Application.Test\PurseAccounting.Mobile.Application.Test.csproj", "{6298C915-E871-4A1A-8C61-84DA3C37A168}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{2DD92EB8-F92B-4B82-A131-5CDBF5DAFE1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DD92EB8-F92B-4B82-A131-5CDBF5DAFE1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DD92EB8-F92B-4B82-A131-5CDBF5DAFE1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6298C915-E871-4A1A-8C61-84DA3C37A168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6298C915-E871-4A1A-8C61-84DA3C37A168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6298C915-E871-4A1A-8C61-84DA3C37A168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6298C915-E871-4A1A-8C61-84DA3C37A168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{593606AD-0FA6-515C-DD55-1077250DA766} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{F937598B-C654-4DBF-8B4C-A53DBBE7D7D1} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
 		{2DD92EB8-F92B-4B82-A131-5CDBF5DAFE1C} = {D8E0AAC3-37E5-4913-BBB1-1E6072B1811C}
+		{6298C915-E871-4A1A-8C61-84DA3C37A168} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {42B0BCE4-9818-49E6-8240-EA42860C704D}
