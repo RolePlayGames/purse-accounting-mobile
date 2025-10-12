@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="purse_accounting_mobile.AppShell"
+    x:Class="PurseAccountinng.Mobile.Presentation.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:purse_accounting_mobile"
-    Title="purse_accounting_mobile">
+    xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation"
+    Title="PurseAccountinng.Mobile.Presentation">
 
     <ShellContent
         Title="Home"

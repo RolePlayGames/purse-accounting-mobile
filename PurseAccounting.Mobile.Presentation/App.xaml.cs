@@ -1,5 +1,8 @@
-﻿namespace purse_accounting_mobile
+﻿namespace PurseAccountinng.Mobile.Presentation
 {
+    /// <summary>
+    /// Main app class
+    /// </summary>
     public partial class App : Application
     {
         public App()

@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace purse_accounting_mobile
+namespace PurseAccountinng.Mobile.Presentation
 {
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -16,7 +17,7 @@ namespace purse_accounting_mobile
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

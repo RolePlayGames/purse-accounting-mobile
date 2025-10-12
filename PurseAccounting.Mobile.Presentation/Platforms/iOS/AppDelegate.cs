@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace purse_accounting_mobile
+namespace PurseAccountinng.Mobile.Presentation
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

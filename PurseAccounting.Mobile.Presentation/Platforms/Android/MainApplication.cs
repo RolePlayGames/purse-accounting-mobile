@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace purse_accounting_mobile
+namespace PurseAccountinng.Mobile.Presentation
 {
     [Application]
     public class MainApplication : MauiApplication
