@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Material.Components.Maui.Extensions;
+using MauiIcons.Material.Outlined;
+using Microsoft.Extensions.Logging;
 
 namespace PurseAccountinng.Mobile.Presentation
 {
@@ -10,11 +12,24 @@ namespace PurseAccountinng.Mobile.Presentation
 
             builder
                 .UseMauiApp<App>()
+                .UseMaterialComponents()
+                .UseMaterialOutlinedMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+
+            // Убираем подчёркивание у Entry
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null;
+#elif IOS
+                handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+#endif
+            });
 
 #if DEBUG
             builder.Logging.AddDebug();

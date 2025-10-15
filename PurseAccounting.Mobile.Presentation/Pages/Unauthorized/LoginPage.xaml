@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.LoginPage"
+             BackgroundColor="#F3F7FA"
+             Padding="0">
+
+    <!-- Две строки: верх — для картинки и надписи, низ — контейнер -->
+    <Grid RowDefinitions="*, 520">
+
+        <!-- Вся верхняя область: картинка по центру, надпись — прижата к низу этой области -->
+        <Grid>
+            <!-- Картинка по центру всей верхней области -->
+            <ContentView VerticalOptions="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*" />
+                        <ColumnDefinition Width="42*" />
+                        <ColumnDefinition Width="29*" />
+                    </Grid.ColumnDefinitions>
+                    <Image 
+                        Grid.Column="1"
+                        Source="wallet.png"
+                        Aspect="AspectFit" />
+                </Grid>
+            </ContentView>
+
+            <!-- Надпись прижата к НИЗУ верхней области (т.е. к верху контейнера) -->
+            <Label 
+                Text="Purse Accounting"
+                TextColor="#524364"
+                FontSize="20"
+                CharacterSpacing="3"
+                FontFamily="OpenSansRegular"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Margin="0,0,0,25" />
+        </Grid>
+
+        <!-- Белый контейнер -->
+        <Border 
+            Grid.Row="2"
+            BackgroundColor="White"
+            Stroke="Transparent">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,40,0,0" />
+            </Border.StrokeShape>
+
+            <!-- Вертикальный стек без боковых отступов -->
+            <VerticalStackLayout Spacing="20" Padding="0,25,0,24">
+
+                <!-- Заголовок "Войти" -->
+                <Label 
+                    Text="Войти"
+                    TextColor="#524364"
+                    FontSize="20"
+                    FontFamily="OpenSansSemibold"
+                    HorizontalOptions="Center" />
+
+                <!-- Поле ввода "Логин" -->
+                <ContentView>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5.5*" />
+                            <ColumnDefinition Width="89*" />
+                            <ColumnDefinition Width="5.5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Кастомное поле ввода -->
+                        <Border 
+                            Grid.Column="1"
+                            Stroke="#E0E0E0"
+                            StrokeThickness="1"
+                            BackgroundColor="White"
+                            HeightRequest="60">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="30" />
+                            </Border.StrokeShape>
+
+                            <Entry 
+                                Placeholder="Логин"
+                                TextColor="#333333"
+                                PlaceholderColor="#4F4F4F"
+                                FontSize="16"
+                                FontFamily="OpenSansRegular"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                                Margin="16,0"
+                                BackgroundColor="Transparent"
+                                ClearButtonVisibility="Never" />
+                        </Border>
+                    </Grid>
+                </ContentView>
+
+                <ContentView>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5.5*" />
+                            <ColumnDefinition Width="89*" />
+                            <ColumnDefinition Width="5.5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border 
+                            Grid.Column="1"
+                            Stroke="#E0E0E0"
+                            StrokeThickness="1"
+                            BackgroundColor="White"
+                            HeightRequest="60">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="30" />
+                            </Border.StrokeShape>
+
+                            <!-- Внутренний Grid для Entry + иконки -->
+                            <Grid Padding="0,0,12,0">
+                                <Entry 
+                                    x:Name="PasswordEntry"
+                                    Placeholder="Пароль"
+                                    IsPassword="True"
+                                    TextColor="#333333"
+                                    PlaceholderColor="#4F4F4F"
+                                    FontSize="16"
+                                    FontFamily="OpenSansRegular"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Fill"
+                                    Margin="16,0" />
+
+                                <!-- Иконка "глаз" -->
+                                <ImageButton 
+                                    x:Name="TogglePasswordButton"
+                                    Clicked="OnTogglePasswordClicked"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="6"
+                                    HeightRequest="6"
+                                    Padding="0"
+                                    Source="visibility_off_outlined.png"
+                                    />
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ContentView>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>
