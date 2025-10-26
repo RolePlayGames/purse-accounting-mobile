@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login.LoginPage"
+             BackgroundColor="{StaticResource LightBlue}"
+             Padding="0">
+
+    <Grid RowDefinitions="*, 500">
+        <Grid>
+            <ContentView VerticalOptions="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*" />
+                        <ColumnDefinition Width="42*" />
+                        <ColumnDefinition Width="29*" />
+                    </Grid.ColumnDefinitions>
+                    <Image 
+                        Grid.Column="1"
+                        Source="wallet.png"
+                        Aspect="AspectFit" />
+                </Grid>
+            </ContentView>
+
+            <Label 
+                Text="Purse Accounting"
+                TextColor="{StaticResource DarkPurple}"
+                FontSize="{StaticResource FontSizeLarge}"
+                CharacterSpacing="3"
+                FontFamily="OpenSansRegular"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Margin="0,0,0,25" />
+        </Grid>
+
+        <Border 
+            Grid.Row="2"
+            BackgroundColor="{StaticResource WorkBackground}"
+            Stroke="Transparent">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,40,0,0" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow 
+                    Brush="#40000000"
+                    Radius="30"
+                    Offset="0,2" />
+            </Border.Shadow>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5.5*" />
+                    <ColumnDefinition Width="89*" />
+                    <ColumnDefinition Width="5.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <VerticalStackLayout
+                    Spacing="{StaticResource SpacingLarge}"
+                    Padding="0,25,0,24"
+                    Grid.Column="1"
+                    Grid.Row="0">                    
+                    <components:AuthHeader Text="Войти" />
+                    <components:TextField Placeholder="Логин" Text="{Binding Login}" />
+                    <components:PasswordField Placeholder="Пароль" Text="{Binding Password}" />
+                        
+                    <Grid Margin="20,0,20,0">
+                        <components:LinkLabel
+                            HorizontalOptions="Start"
+                            Text="Забыли пароль?"
+                            Tapped="OnForgotPasswordTapped" />
+                        <components:LinkLabel
+                            HorizontalOptions="End"
+                            Text="Регистрация"
+                            Tapped="OnRegisterTapped" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Grid.Row="2">
+                    <components:PrimaryButton
+                        Margin="24,70,24,0"
+                        Text="Войти"
+                        Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding CanLogin}" />                    
+                    <components:GoogleSignInButton
+                        Margin="24,15,24,0"
+                        Command="{Binding GoogleLoginCommand}"
+                        IsEnabled="True" />
+                    <components:FooterLink
+                        Margin="0,12,0,12"
+                        Text="Политика конфиденциальности"
+                        Tapped="OnPrivacyPolicyTapped" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

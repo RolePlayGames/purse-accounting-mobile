@@ -5,14 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation"
     xmlns:authorized="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized"
-    xmlns:unAuthorized="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Unauthorized"
+    xmlns:login="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login"
     Title="PurseAccountinng.Mobile.Presentation"  
     FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
     <ShellContent ContentTemplate="{DataTemplate local:StartUpPage}" />
 
-    <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate unAuthorized:LoginPage}" />
+    <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate login:LoginPage}" />
     <ShellContent Route="AccountingPage" ContentTemplate="{DataTemplate authorized:AccountingPage}" />
 
 </Shell>

@@ -4,16 +4,17 @@
              xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation"
              x:Class="PurseAccountinng.Mobile.Presentation.App">
     <Application.Resources>
-        <ResourceDictionary>            
+        <ResourceDictionary>
             <!-- Colors -->
-            <Color x:Key="LightBlue">#F3F7FA</Color>
-            <Color x:Key="WorkBackground">White</Color>
+            <Color x:Key="Blue">#4C99CF</Color>
             <Color x:Key="DarkPurple">#524364</Color>
-            <Color x:Key="Purple">#5A5386</Color>
             <Color x:Key="Gray1">#333333</Color>
             <Color x:Key="Gray2">#4F4F4F</Color>
             <Color x:Key="InactiveElementFill">#E0E0E0</Color>
             <Color x:Key="InactiveElementText">#8D8D8D</Color>
+            <Color x:Key="LightBlue">#F3F7FA</Color>
+            <Color x:Key="Purple">#5A5386</Color>
+            <Color x:Key="WorkBackground">White</Color>
 
             <!-- Sizes -->
             <x:Double x:Key="InputFieldHeight">60</x:Double>
