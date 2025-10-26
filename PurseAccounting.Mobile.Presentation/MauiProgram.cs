@@ -1,6 +1,7 @@
 ﻿using Material.Components.Maui.Extensions;
 using MauiIcons.Material.Outlined;
 using Microsoft.Extensions.Logging;
+using PurseAccounting.Mobile.Application;
 
 namespace PurseAccountinng.Mobile.Presentation
 {
@@ -20,6 +21,8 @@ namespace PurseAccountinng.Mobile.Presentation
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services
+                .AddApplication();
 
             // Убираем подчёркивание у Entry
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
