@@ -1,0 +1,40 @@
+name: Build and test mobile
+
+on:
+  workflow_dispatch:
+    
+  push:
+   branches:
+     - '*'
+  pull_request:
+   branches:
+     - '*'
+
+jobs:
+ run_tests:
+   runs-on: windows-latest
+
+   steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Install MAUI workloads
+      run: |
+        dotnet workload install maui --source https://api.nuget.org/v3/index.json --verbosity quiet
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Test
+      run: dotnet test --no-build --configuration Release
+
+    - name: Install dotnet-format
+      run: dotnet tool install -g dotnet-format
+
+    - name: Format
+      run: dotnet format --verify-no-changes --severity warn
+

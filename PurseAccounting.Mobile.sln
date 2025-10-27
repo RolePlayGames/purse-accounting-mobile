@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Presentation", "PurseAccounting.Mobile.Presentation\PurseAccounting.Mobile.Presentation.csproj", "{593606AD-0FA6-515C-DD55-1077250DA766}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D8E0AAC3-37E5-4913-BBB1-1E6072B1811C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Application", "PurseAccounting.Mobile.Application\PurseAccounting.Mobile.Application.csproj", "{E358658E-69C5-F91E-3D15-64C3DCFAB781}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Application.Test", "PurseAccounting.Mobile.Application.Test\PurseAccounting.Mobile.Application.Test.csproj", "{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Infrastructure", "PurseAccounting.Mobile.Infrastructure\PurseAccounting.Mobile.Infrastructure.csproj", "{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{593606AD-0FA6-515C-DD55-1077250DA766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593606AD-0FA6-515C-DD55-1077250DA766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593606AD-0FA6-515C-DD55-1077250DA766}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{593606AD-0FA6-515C-DD55-1077250DA766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593606AD-0FA6-515C-DD55-1077250DA766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E358658E-69C5-F91E-3D15-64C3DCFAB781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E358658E-69C5-F91E-3D15-64C3DCFAB781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E358658E-69C5-F91E-3D15-64C3DCFAB781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E358658E-69C5-F91E-3D15-64C3DCFAB781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{593606AD-0FA6-515C-DD55-1077250DA766} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{E358658E-69C5-F91E-3D15-64C3DCFAB781} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
+		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
+		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC} = {D8E0AAC3-37E5-4913-BBB1-1E6072B1811C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42B0BCE4-9818-49E6-8240-EA42860C704D}
+	EndGlobalSection
+EndGlobal
