@@ -55,6 +55,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\google.png" />
+	  <None Remove="Resources\Images\visibility_off_outlined.svg" />
+	  <None Remove="Resources\Images\visibility_outlined.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\google.png" />
+	  <MauiImage Include="Resources\Images\visibility_off_outlined.svg" />
+	  <MauiImage Include="Resources\Images\visibility_outlined.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Material.Outlined" Version="5.0.0" />
 		<PackageReference Include="Material.Components.Maui" Version="0.2.2-preview" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
