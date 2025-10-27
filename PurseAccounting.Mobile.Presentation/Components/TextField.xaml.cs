@@ -36,10 +36,10 @@ public partial class TextField : ContentView
         get => (string)GetValue(PlaceholderProperty);
         set => SetValue(PlaceholderProperty, value);
     }
-    
+
     public TextField()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         FieldEntry.SetBinding(Entry.TextProperty, new Binding(nameof(Text), source: this));
         FieldEntry.SetBinding(Entry.PlaceholderProperty, new Binding(nameof(Placeholder), source: this));
