@@ -76,8 +76,22 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="40,40,0,0" />
             </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <PanGestureRecognizer PanUpdated="OnDragHandlePanUpdated" />
+            </Border.GestureRecognizers>
 
-            <VerticalStackLayout Spacing="0">
+            <VerticalStackLayout Spacing="0" Padding="0">
+                <!-- Ручка для свайпа -->
+                <Border x:Name="DragHandle"
+                HeightRequest="3"
+                WidthRequest="60"
+                StrokeShape="{RoundRectangle CornerRadius=2}"
+                BackgroundColor="{StaticResource Gray5}"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                Margin="0,10,0,16">
+                </Border>
+
                 <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
                     <Label Text="Настройки" VerticalTextAlignment="Center" FontSize="16" />
                     <Image Grid.Column="1" Source="settings.svg" WidthRequest="24" HeightRequest="24" />
