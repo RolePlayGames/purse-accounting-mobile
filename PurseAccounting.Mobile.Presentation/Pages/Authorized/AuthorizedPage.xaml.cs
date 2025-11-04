@@ -1,10 +1,11 @@
-﻿using Animation = Microsoft.Maui.Controls.Animation;
+﻿using System.Windows.Input;
+using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 
 public partial class AuthorizedPage : ContentPage
 {
-    private const double _sheetHeight = 230;
+    private const double _sheetHeight = 310;
     private const int _directionStabilityWindow = 3;
 
     private readonly Queue<bool> _directionHistory = new(_directionStabilityWindow);
@@ -16,7 +17,6 @@ public partial class AuthorizedPage : ContentPage
     private bool? _lastStableDirection = null; // true = вниз, false = вверх
 
     private double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
-
 
     public AuthorizedPage()
     {
@@ -174,5 +174,20 @@ public partial class AuthorizedPage : ContentPage
 
         AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, ScreenHeight, 1, _sheetHeight)); // to prevent blinking
         OpenSheetAnimated();
+    }
+
+    private void OnProfileClicked(object sender, EventArgs e)
+    {
+        CloseSheetAnimated();
+    }
+
+    private void OnCategoriesClicked(object sender, EventArgs e)
+    {
+        CloseSheetAnimated();
+    }
+
+    private void OnLogoutClicked(object sender, EventArgs e)
+    {
+        CloseSheetAnimated();
     }
 }

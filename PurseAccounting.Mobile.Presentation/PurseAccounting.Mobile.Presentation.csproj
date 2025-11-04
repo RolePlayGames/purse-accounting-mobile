@@ -58,6 +58,7 @@
 	  <None Remove="Resources\Images\account_active.svg" />
 	  <None Remove="Resources\Images\account_inactive.svg" />
 	  <None Remove="Resources\Images\account.svg" />
+	  <None Remove="Resources\Images\categories_inactive.svg" />
 	  <None Remove="Resources\Images\google.png" />
 	  <None Remove="Resources\Images\home_active.svg" />
 	  <None Remove="Resources\Images\home_inactive.svg" />
@@ -65,6 +66,8 @@
 	  <None Remove="Resources\Images\list_active.svg" />
 	  <None Remove="Resources\Images\list_inactive.svg" />
 	  <None Remove="Resources\Images\list.svg" />
+	  <None Remove="Resources\Images\logout_inactive.svg" />
+	  <None Remove="Resources\Images\profile_inactive.svg" />
 	  <None Remove="Resources\Images\settings_active.svg" />
 	  <None Remove="Resources\Images\settings_inactive.svg" />
 	  <None Remove="Resources\Images\settings.svg" />
@@ -77,6 +80,7 @@
 	  <MauiImage Include="Resources\Images\account_active.svg" />
 	  <MauiImage Include="Resources\Images\account_inactive.svg" />
 	  <MauiImage Include="Resources\Images\account.svg" />
+	  <MauiImage Include="Resources\Images\categories_inactive.svg" />
 	  <MauiImage Include="Resources\Images\google.png" />
 	  <MauiImage Include="Resources\Images\home_active.svg" />
 	  <MauiImage Include="Resources\Images\home_inactive.svg" />
@@ -84,6 +88,8 @@
 	  <MauiImage Include="Resources\Images\list_active.svg" />
 	  <MauiImage Include="Resources\Images\list_inactive.svg" />
 	  <MauiImage Include="Resources\Images\list.svg" />
+	  <MauiImage Include="Resources\Images\logout_inactive.svg" />
+	  <MauiImage Include="Resources\Images\profile_inactive.svg" />
 	  <MauiImage Include="Resources\Images\settings_active.svg" />
 	  <MauiImage Include="Resources\Images\settings_inactive.svg" />
 	  <MauiImage Include="Resources\Images\settings.svg" />
@@ -119,6 +125,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\LinkLabel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\MenuItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\PasswordField.xaml">
