@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.AuthorizedPage"
+             Title="AuthorizedPage"
+             BackgroundColor="{StaticResource LightBlue}">
+    <AbsoluteLayout>
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All">
+
+        <Grid RowDefinitions="82,1,*,60">
+        <Grid BackgroundColor="{StaticResource WorkBackground}">
+            <Label
+                x:Name="TabHeader"
+                Text="Добавить транзакцию"
+                FontFamily="OpenSans"
+                FontAttributes="Bold"
+                FontSize="24"
+                TextColor="{StaticResource DarkPurple}"
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center" />
+        </Grid>
+        
+        <BoxView Grid.Row="1"
+                 HeightRequest="1"
+                 Color="{StaticResource InactiveElementFill}" />
+
+        <ContentView Grid.Row="2" x:Name="MainContent" />
+
+        <Grid Grid.Row="3" BackgroundColor="{StaticResource WorkBackground}"
+              ColumnDefinitions="*,*,*,*">
+                    <ImageButton  x:Name="BtnHome" Grid.Column="0" 
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        MinimumWidthRequest="30"
+                        MinimumHeightRequest="30" Padding="0" Source="home_inactive.png" Clicked="OnAccountingTabClicked" />
+                    <ImageButton x:Name="BtnList" Grid.Column="1" 
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        MinimumWidthRequest="30"
+                        MinimumHeightRequest="30" Padding="0" Source="list_inactive.svg" Clicked="OnTransactionsTabClicked" />
+                    <ImageButton x:Name="BtnAccount" Grid.Column="2" 
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        MinimumWidthRequest="30"
+                        MinimumHeightRequest="30" Padding="0" Source="account_inactive.svg" Clicked="OnAccountTabClicked" />
+                    <ImageButton x:Name="BtnSettings" Grid.Column="3" 
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        MinimumWidthRequest="30"
+                        MinimumHeightRequest="30" Padding="0" Source="settings_inactive.svg" Clicked="OnShowSettingsSheet" />
+
+        </Grid>
+            </Grid>
+        </Grid>
+
+        <!-- Затемнение -->
+        <ContentView x:Name="Overlay"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 AbsoluteLayout.LayoutFlags="All"
+                 BackgroundColor="#80000000"
+                 IsVisible="False"
+                 Opacity="0">
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOverlayTapped" />
+            </ContentView.GestureRecognizers>
+        </ContentView>
+
+        <Border x:Name="BottomSheet"
+        AbsoluteLayout.LayoutBounds="0,2,1,200"
+            AbsoluteLayout.LayoutFlags="WidthProportional"
+            BackgroundColor="{StaticResource WorkBackground}"
+            IsVisible="False">
+            <!-- изначально СКРЫТА СНИЗУ -->
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,40,0,0" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout Spacing="0">
+                <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
+                    <Label Text="Настройки" VerticalTextAlignment="Center" FontSize="16" />
+                    <Image Grid.Column="1" Source="settings.svg" WidthRequest="24" HeightRequest="24" />
+                </Grid>
+                <BoxView Color="{StaticResource InactiveElementFill}" HeightRequest="1" />
+                <Grid ColumnDefinitions="*,Auto" HeightRequest="56" Padding="16,0">
+                    <Label Text="Помощь" VerticalTextAlignment="Center" FontSize="16" />
+                    <Image Grid.Column="1" Source="help.svg" WidthRequest="24" HeightRequest="24" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </AbsoluteLayout>
+</ContentPage>

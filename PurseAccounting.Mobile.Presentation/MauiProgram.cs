@@ -1,4 +1,5 @@
-﻿using Material.Components.Maui.Extensions;
+﻿using CommunityToolkit.Maui;
+using Material.Components.Maui.Extensions;
 using MauiIcons.Material.Outlined;
 using Microsoft.Extensions.Logging;
 using PurseAccounting.Mobile.Application;
@@ -13,6 +14,7 @@ namespace PurseAccountinng.Mobile.Presentation
 
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .UseMaterialComponents()
                 .UseMaterialOutlinedMauiIcons()
                 .ConfigureFonts(fonts =>

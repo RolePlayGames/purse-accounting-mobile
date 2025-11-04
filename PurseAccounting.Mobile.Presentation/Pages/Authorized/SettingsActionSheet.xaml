@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pop:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pop="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.SettingsActionSheet"
+    Background="{StaticResource WorkBackground}">
+
+    <!-- Основной контейнер с закруглёнными краями -->
+    <Frame BackgroundColor="{StaticResource WorkBackground}"
+           CornerRadius="20"
+           Padding="0"
+           Margin="16,0,16,40"
+           VerticalOptions="End">
+
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Пункт 1 -->
+            <Grid ColumnDefinitions="*,Auto"
+                  HeightRequest="56"
+                  Padding="16,0">
+                <Label Text="Настройки"
+                       VerticalTextAlignment="Center"
+                       FontSize="16"
+                       TextColor="{StaticResource DarkPurple}" />
+                <Image Grid.Column="1"
+                       Source="settings.svg"
+                       WidthRequest="24"
+                       HeightRequest="24"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" />
+            </Grid>
+
+            <!-- Разделитель -->
+            <BoxView Color="{StaticResource InactiveElementFill}"
+                     HeightRequest="1" />
+
+            <!-- Пункт 2 -->
+            <Grid ColumnDefinitions="*,Auto"
+                  HeightRequest="56"
+                  Padding="16,0">
+                <Label Text="Помощь"
+                       VerticalTextAlignment="Center"
+                       FontSize="16"
+                       TextColor="{StaticResource DarkPurple}" />
+                <Image Grid.Column="1"
+                       Source="help.svg"
+                       WidthRequest="24"
+                       HeightRequest="24"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" />
+            </Grid>
+
+        </VerticalStackLayout>
+
+    </Frame>
+</pop:Popup>
