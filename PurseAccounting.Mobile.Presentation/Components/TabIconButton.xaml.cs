@@ -61,7 +61,6 @@ public partial class TabIconButton : ContentView
     public TabIconButton()
     {
         InitializeComponent();
-        // Начальное обновление — на случай, если свойства уже заданы
         UpdateImageSource();
     }
 
@@ -76,7 +75,7 @@ public partial class TabIconButton : ContentView
     private void UpdateImageSource()
     {
         var source = IsActive ? ActiveSource : InactiveSource;
-        ImageButton.Source = source; // может быть null — это нормально
+        ImageButton.Source = source;
     }
 
     private void OnImageButtonClicked(object sender, EventArgs e)
