@@ -13,13 +13,17 @@
                 <Setter Property="WidthRequest" Value="315" />
                 <Setter Property="HorizontalOptions" Value="Center" />
             </Style>
+            <Style x:Key="Divider" TargetType="BoxView">
+                <Setter Property="Color" Value="{StaticResource InactiveElementFill}" />
+                <Setter Property="HeightRequest" Value="1" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <AbsoluteLayout>
-        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
-            <Grid RowDefinitions="82,1,*,60">
-                <Grid BackgroundColor="{StaticResource WorkBackground}">
+
+    <Grid Grid.Row="0" RowDefinitions="*,1,60">
+        <AbsoluteLayout>
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" RowDefinitions="82,1,*">
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource WorkBackground}">
                     <Label
                         x:Name="TabHeader"
                         Text="Добавить транзакцию"
@@ -30,65 +34,64 @@
                         VerticalTextAlignment="Center"
                         HorizontalTextAlignment="Center" />
                 </Grid>
-        
-                <BoxView
-                    Grid.Row="1"
-                    HeightRequest="1"
-                    Color="{StaticResource InactiveElementFill}" />
+
+                <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
 
                 <ContentView Grid.Row="2" x:Name="MainContent" />
-
-                <Grid Grid.Row="3" BackgroundColor="{StaticResource WorkBackground}" ColumnDefinitions="*,*,*,*">
-                    <components:TabIconButton x:Name="BtnHome" Grid.Column="0" InactiveSource="home_inactive.png" ActiveSource="home_active.png" Clicked="OnAccountingTabClicked" />
-                    <components:TabIconButton x:Name="BtnList" Grid.Column="1" InactiveSource="list_inactive.png" ActiveSource="list_active.png" Clicked="OnTransactionsTabClicked" />
-                    <components:TabIconButton x:Name="BtnAccount" Grid.Column="2" InactiveSource="account_inactive.png" ActiveSource="account_active.png" Clicked="OnAccountTabClicked" />
-                    <components:TabIconButton x:Name="BtnSettings" Grid.Column="3" InactiveSource="settings_inactive.png" ActiveSource="settings_active.png" Clicked="OnSettingsTabClicked" />
-                </Grid>
             </Grid>
+
+            <ContentView
+                x:Name="Overlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="#80000000"
+                IsVisible="False"
+                Opacity="0">
+                <ContentView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnOverlayTapped" />
+                </ContentView.GestureRecognizers>
+            </ContentView>
+
+            <Border
+                x:Name="BottomSheet"
+                AbsoluteLayout.LayoutBounds="0,2,1,200"
+                AbsoluteLayout.LayoutFlags="WidthProportional"
+                BackgroundColor="{StaticResource WorkBackground}"
+                IsVisible="False">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="40,40,0,0" />
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnDragHandlePanUpdated" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout Spacing="0" Padding="0">
+                    <Border
+                        x:Name="DragHandle"
+                        HeightRequest="3"
+                        WidthRequest="60"
+                        StrokeShape="{RoundRectangle CornerRadius=2}"
+                        BackgroundColor="{StaticResource InactiveElementFill}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Margin="0,10,0,16"/>
+                    <components:MenuItem Title="Профиль" IconSource="profile_inactive.png" Clicked="OnProfileClicked" />
+                    <BoxView Style="{StaticResource MenuDivider}" />
+                    <components:MenuItem Title="Категории" IconSource="categories_inactive.png" Clicked="OnCategoriesClicked" />
+                    <BoxView Style="{StaticResource MenuDivider}" />
+                    <components:MenuItem Title="Выйти" IconSource="logout_inactive.png" Clicked="OnLogoutClicked"/>
+                </VerticalStackLayout>
+            </Border>
+        </AbsoluteLayout>
+
+        <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
+        
+        <Grid x:Name="TabbarGrid" Grid.Row="2" BackgroundColor="{StaticResource WorkBackground}" ColumnDefinitions="*,*,*,*">
+            <components:TabIconButton x:Name="BtnHome" Grid.Column="0" InactiveSource="home_inactive.png" ActiveSource="home_active.png" Clicked="OnAccountingTabClicked" />
+            <components:TabIconButton x:Name="BtnList" Grid.Column="1" InactiveSource="list_inactive.png" ActiveSource="list_active.png" Clicked="OnTransactionsTabClicked" />
+            <components:TabIconButton x:Name="BtnAccount" Grid.Column="2" InactiveSource="account_inactive.png" ActiveSource="account_active.png" Clicked="OnAccountTabClicked" />
+            <components:TabIconButton x:Name="BtnSettings" Grid.Column="3" InactiveSource="settings_inactive.png" ActiveSource="settings_active.png" Clicked="OnSettingsTabClicked" />
         </Grid>
-
-        <ContentView
-            x:Name="Overlay"
-            AbsoluteLayout.LayoutBounds="0,0,1,1"
-            AbsoluteLayout.LayoutFlags="All"
-            BackgroundColor="#80000000"
-            IsVisible="False"
-            Opacity="0">
-            <ContentView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnOverlayTapped" />
-            </ContentView.GestureRecognizers>
-        </ContentView>
-
-        <Border
-            x:Name="BottomSheet"
-            AbsoluteLayout.LayoutBounds="0,2,1,200"
-            AbsoluteLayout.LayoutFlags="WidthProportional"
-            BackgroundColor="{StaticResource WorkBackground}"
-            IsVisible="False">
-            
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="40,40,0,0" />
-            </Border.StrokeShape>
-            <Border.GestureRecognizers>
-                <PanGestureRecognizer PanUpdated="OnDragHandlePanUpdated" />
-            </Border.GestureRecognizers>
-
-            <VerticalStackLayout Spacing="0" Padding="0">
-                <Border
-                    x:Name="DragHandle"
-                    HeightRequest="3"
-                    WidthRequest="60"
-                    StrokeShape="{RoundRectangle CornerRadius=2}"
-                    BackgroundColor="{StaticResource InactiveElementFill}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"
-                    Margin="0,10,0,16"/>
-                <components:MenuItem Title="Профиль" IconSource="profile_inactive.png" Clicked="OnProfileClicked" />
-                <BoxView Style="{StaticResource MenuDivider}" />
-                <components:MenuItem Title="Категории" IconSource="categories_inactive.png" Clicked="OnCategoriesClicked" />
-                <BoxView Style="{StaticResource MenuDivider}" />
-                <components:MenuItem Title="Выйти" IconSource="logout_inactive.png" Clicked="OnLogoutClicked"/>
-            </VerticalStackLayout>
-        </Border>
-    </AbsoluteLayout>
+    </Grid>
 </ContentPage>

@@ -3,12 +3,6 @@ using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 
-public enum SwipeDirection
-{
-    Up,
-    Down,
-}
-
 public partial class AuthorizedPage : ContentPage
 {
     private const double _sheetHeight = 320;
@@ -24,11 +18,11 @@ public partial class AuthorizedPage : ContentPage
 
     private TabIconButton? _lastActiveTabButton;
 
-    private TabIconButton LastActiveTabButton
+    private TabIconButton? LastActiveTabButton
     {
         get
         {
-            return _lastActiveTabButton ?? throw new NullReferenceException($"{nameof(_lastActiveTabButton)} is undefined");
+            return _lastActiveTabButton;
         }
 
         set
@@ -36,7 +30,8 @@ public partial class AuthorizedPage : ContentPage
             if (_lastActiveTabButton is not null)
                 _lastActiveTabButton.IsActive = false;
 
-            value.IsActive = true;
+            if (value is not null)
+                value.IsActive = true;
 
             _lastActiveTabButton = value;
         }
@@ -50,6 +45,10 @@ public partial class AuthorizedPage : ContentPage
 
     private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 
+    private double SheetHiddenPosition => ScreenHeight - TabbarGrid.Height;
+
+    private double SheetOpenPosition => SheetHiddenPosition - _sheetHeight;
+
     public AuthorizedPage()
     {
         InitializeComponent();
@@ -62,6 +61,11 @@ public partial class AuthorizedPage : ContentPage
     {
         TabHeader.Text = authorizedTab.Header;
         MainContent.Content = authorizedTab.Tab;
+
+        if (_isSheetOpen)
+        {
+            CloseSheetAnimated();
+        }
     }
 
     private void OnAccountingTabClicked(object sender, EventArgs e)
@@ -84,20 +88,28 @@ public partial class AuthorizedPage : ContentPage
 
     private void OnSettingsTabClicked(object sender, EventArgs e)
     {
-        if (_isSheetOpen || _isDragging)
+        if (_isDragging)
             return;
 
-        LastActiveTabButton.IsActive = false;
-        BtnSettings.IsActive = true;
+        if (_isSheetOpen)
+        {
+            CloseSheetAnimated();
+            LastActiveTabButtonActive(true);
+        }
+        else
+        {
+            LastActiveTabButtonActive(false);
+            BtnSettings.IsActive = true;
 
-        AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, ScreenHeight, 1, _sheetHeight)); // to prevent blinking
-        OpenSheetAnimated();
+            AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, SheetHiddenPosition, 1, _sheetHeight)); // to prevent blinking
+            OpenSheetAnimated();
+        }
     }
 
     private void OnOverlayTapped(object sender, EventArgs e)
     {
         CloseSheetAnimated();
-        LastActiveTabButton.IsActive = true;
+        LastActiveTabButtonActive(true);
     }
 
     private void OnDragHandlePanUpdated(object sender, PanUpdatedEventArgs e)
@@ -133,7 +145,7 @@ public partial class AuthorizedPage : ContentPage
 
                 if (_directionHistory.Count == _directionStabilityLimit)
                 {
-                    if (_directionHistory.All(d => d == currentDirection))
+                    if (_directionHistory.All(x => x == currentDirection))
                     {
                         _lastStableDirection = currentDirection;
                     }
@@ -148,11 +160,7 @@ public partial class AuthorizedPage : ContentPage
                 }
 
                 _currentY += deltaY;
-
-                var minY = ScreenHeight - _sheetHeight;
-                var maxY = ScreenHeight;
-
-                _currentY = Math.Max(minY, Math.Min(maxY, _currentY));
+                _currentY = Math.Max(SheetOpenPosition, Math.Min(SheetHiddenPosition, _currentY));
 
                 AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, _currentY, 1, _sheetHeight));
                 break;
@@ -171,7 +179,7 @@ public partial class AuthorizedPage : ContentPage
                 else
                 {
                     CloseSheetAnimated();
-                    LastActiveTabButton.IsActive = true;
+                    LastActiveTabButtonActive(true);
                 }
 
                 break;
@@ -184,12 +192,11 @@ public partial class AuthorizedPage : ContentPage
 
         BottomSheet.IsVisible = true;
         Overlay.IsVisible = true;
+
         await Overlay.FadeTo(1, 100);
 
         var startY = AbsoluteLayout.GetLayoutBounds(BottomSheet).Y;
-        var endY = ScreenHeight - _sheetHeight;
-
-        var animation = new Animation(x => AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, x, 1, _sheetHeight)), startY, endY);
+        var animation = new Animation(x => AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, x, 1, _sheetHeight)), startY, SheetOpenPosition);
 
         animation.Commit(BottomSheet, "Open", 16, 300, Easing.SinOut);
     }
@@ -197,9 +204,7 @@ public partial class AuthorizedPage : ContentPage
     private async void CloseSheetAnimated()
     {
         var startY = AbsoluteLayout.GetLayoutBounds(BottomSheet).Y;
-        var endY = ScreenHeight;
-
-        var animation = new Animation(x => AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, x, 1, _sheetHeight)), startY, endY);
+        var animation = new Animation(x => AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, x, 1, _sheetHeight)), startY, SheetHiddenPosition);
 
         animation.Commit(BottomSheet, "Close", 16, 200, Easing.SinIn, finished: (_, _) =>
         {
@@ -220,16 +225,24 @@ public partial class AuthorizedPage : ContentPage
     {
         CloseSheetAnimated();
         SetActiveTab(_userProfileTabTab);
+        LastActiveTabButton = null;
     }
 
     private void OnCategoriesClicked(object sender, EventArgs e)
     {
         CloseSheetAnimated();
         SetActiveTab(_categoriesTab);
+        LastActiveTabButton = null;
     }
 
     private void OnLogoutClicked(object sender, EventArgs e)
     {
         CloseSheetAnimated();
+    }
+
+    private void LastActiveTabButtonActive(bool isActive)
+    {
+        if (LastActiveTabButton is not null)
+            LastActiveTabButton.IsActive = isActive;
     }
 }
