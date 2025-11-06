@@ -1,60 +1,103 @@
-﻿using System.Windows.Input;
+﻿using PurseAccountinng.Mobile.Presentation.Components;
 using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 
+public enum SwipeDirection
+{
+    Up,
+    Down,
+}
+
 public partial class AuthorizedPage : ContentPage
 {
-    private const double _sheetHeight = 310;
-    private const int _directionStabilityWindow = 3;
+    private const double _sheetHeight = 320;
+    private const int _directionStabilityLimit = 3;
 
-    private readonly Queue<bool> _directionHistory = new(_directionStabilityWindow);
+    private readonly Queue<SwipeDirection> _directionHistory = new(_directionStabilityLimit);
+
+    private readonly AuthorizedTabBase _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab() };
+    private readonly AuthorizedTabBase _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
+    private readonly AuthorizedTabBase _accountTab = new() { Header = "Настройка счета", Tab = new AccountTab() };
+    private readonly AuthorizedTabBase _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
+    private readonly AuthorizedTabBase _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
+
+    private TabIconButton? _lastActiveTabButton;
+
+    private TabIconButton LastActiveTabButton
+    {
+        get
+        {
+            return _lastActiveTabButton ?? throw new NullReferenceException($"{nameof(_lastActiveTabButton)} is undefined");
+        }
+
+        set
+        {
+            if (_lastActiveTabButton is not null)
+                _lastActiveTabButton.IsActive = false;
+
+            value.IsActive = true;
+
+            _lastActiveTabButton = value;
+        }
+    }
 
     private bool _isSheetOpen = false;
     private bool _isDragging = false;
     private double _currentY = 0;
     private double _lastTotalY = 0;
-    private bool? _lastStableDirection = null; // true = вниз, false = вверх
+    private SwipeDirection? _lastStableDirection = null;
 
-    private double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+    private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 
     public AuthorizedPage()
     {
         InitializeComponent();
+
+        SetActiveTab(_accountingTab);
+        LastActiveTabButton = BtnHome;
+    }
+
+    private void SetActiveTab(AuthorizedTabBase authorizedTab)
+    {
+        TabHeader.Text = authorizedTab.Header;
+        MainContent.Content = authorizedTab.Tab;
     }
 
     private void OnAccountingTabClicked(object sender, EventArgs e)
     {
-        MainContent.Content = new AccountingTab();
-        TabHeader.Text = "Добавить транзакцию";
-        UpdateTabSelection(BtnHome);
+        SetActiveTab(_accountingTab);
+        LastActiveTabButton = BtnHome;
     }
 
     private void OnTransactionsTabClicked(object sender, EventArgs e)
     {
-        MainContent.Content = new TransactionsTab();
-        TabHeader.Text = "История транзакций";
-        UpdateTabSelection(BtnList);
+        SetActiveTab(_transactionsTab);
+        LastActiveTabButton = BtnList;
     }
 
     private void OnAccountTabClicked(object sender, EventArgs e)
     {
-        MainContent.Content = new AccountTab();
-        TabHeader.Text = "Настройка счета";
-        UpdateTabSelection(BtnAccount);
+        SetActiveTab(_accountTab);
+        LastActiveTabButton = BtnAccount;
     }
 
-    private void UpdateTabSelection(ImageButton activeButton)
+    private void OnSettingsTabClicked(object sender, EventArgs e)
     {
-        BtnHome.Source = BtnHome == activeButton ? "home_active.svg" : "home_inactive.svg";
-        BtnList.Source = BtnList == activeButton ? "list_active.svg" : "list_inactive.svg";
-        BtnAccount.Source = BtnAccount == activeButton ? "account_active.svg" : "account_inactive.svg";
-        BtnSettings.Source = BtnSettings == activeButton ? "settings_active.svg" : "settings_inactive.svg";
+        if (_isSheetOpen || _isDragging)
+            return;
+
+        LastActiveTabButton.IsActive = false;
+        BtnSettings.IsActive = true;
+
+        AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, ScreenHeight, 1, _sheetHeight)); // to prevent blinking
+        OpenSheetAnimated();
     }
 
     private void OnOverlayTapped(object sender, EventArgs e)
     {
         CloseSheetAnimated();
+        LastActiveTabButton.IsActive = true;
     }
 
     private void OnDragHandlePanUpdated(object sender, PanUpdatedEventArgs e)
@@ -79,13 +122,16 @@ public partial class AuthorizedPage : ContentPage
                 if (Math.Abs(deltaY) < 1.0)
                     return;
 
-                var currentDirection = deltaY > 0;
+                var currentDirection = deltaY > 0 ? SwipeDirection.Down : SwipeDirection.Up;
 
                 _directionHistory.Enqueue(currentDirection);
-                if (_directionHistory.Count > _directionStabilityWindow)
-                    _directionHistory.Dequeue();
 
-                if (_directionHistory.Count == _directionStabilityWindow)
+                if (_directionHistory.Count > _directionStabilityLimit)
+                {
+                    _directionHistory.Dequeue();
+                }
+
+                if (_directionHistory.Count == _directionStabilityLimit)
                 {
                     if (_directionHistory.All(d => d == currentDirection))
                     {
@@ -118,13 +164,14 @@ public partial class AuthorizedPage : ContentPage
                 _isDragging = false;
                 _directionHistory.Clear();
 
-                if (_lastStableDirection.HasValue && _lastStableDirection.Value)
+                if (_lastStableDirection.HasValue && _lastStableDirection.Value == SwipeDirection.Up)
                 {
-                    CloseSheetAnimated();
+                    OpenSheetAnimated();
                 }
                 else
                 {
-                    OpenSheetAnimated();
+                    CloseSheetAnimated();
+                    LastActiveTabButton.IsActive = true;
                 }
 
                 break;
@@ -165,25 +212,20 @@ public partial class AuthorizedPage : ContentPage
         });
 
         await Overlay.FadeTo(100, 1);
-    }
 
-    private void OnShowSettingsSheet(object sender, EventArgs e)
-    {
-        if (_isSheetOpen || _isDragging)
-            return;
-
-        AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, ScreenHeight, 1, _sheetHeight)); // to prevent blinking
-        OpenSheetAnimated();
+        BtnSettings.IsActive = false;
     }
 
     private void OnProfileClicked(object sender, EventArgs e)
     {
         CloseSheetAnimated();
+        SetActiveTab(_userProfileTabTab);
     }
 
     private void OnCategoriesClicked(object sender, EventArgs e)
     {
         CloseSheetAnimated();
+        SetActiveTab(_categoriesTab);
     }
 
     private void OnLogoutClicked(object sender, EventArgs e)

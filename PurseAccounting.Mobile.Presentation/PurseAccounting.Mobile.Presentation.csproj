@@ -57,20 +57,16 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\account_active.svg" />
 	  <None Remove="Resources\Images\account_inactive.svg" />
-	  <None Remove="Resources\Images\account.svg" />
 	  <None Remove="Resources\Images\categories_inactive.svg" />
 	  <None Remove="Resources\Images\google.png" />
 	  <None Remove="Resources\Images\home_active.svg" />
 	  <None Remove="Resources\Images\home_inactive.svg" />
-	  <None Remove="Resources\Images\home.svg" />
 	  <None Remove="Resources\Images\list_active.svg" />
 	  <None Remove="Resources\Images\list_inactive.svg" />
-	  <None Remove="Resources\Images\list.svg" />
 	  <None Remove="Resources\Images\logout_inactive.svg" />
 	  <None Remove="Resources\Images\profile_inactive.svg" />
 	  <None Remove="Resources\Images\settings_active.svg" />
 	  <None Remove="Resources\Images\settings_inactive.svg" />
-	  <None Remove="Resources\Images\settings.svg" />
 	  <None Remove="Resources\Images\visibility_off_outlined.svg" />
 	  <None Remove="Resources\Images\visibility_outlined.svg" />
 	  <None Remove="Resources\Images\wallet.svg" />
@@ -79,20 +75,16 @@
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\account_active.svg" />
 	  <MauiImage Include="Resources\Images\account_inactive.svg" />
-	  <MauiImage Include="Resources\Images\account.svg" />
 	  <MauiImage Include="Resources\Images\categories_inactive.svg" />
 	  <MauiImage Include="Resources\Images\google.png" />
 	  <MauiImage Include="Resources\Images\home_active.svg" />
 	  <MauiImage Include="Resources\Images\home_inactive.svg" />
-	  <MauiImage Include="Resources\Images\home.svg" />
 	  <MauiImage Include="Resources\Images\list_active.svg" />
 	  <MauiImage Include="Resources\Images\list_inactive.svg" />
-	  <MauiImage Include="Resources\Images\list.svg" />
 	  <MauiImage Include="Resources\Images\logout_inactive.svg" />
 	  <MauiImage Include="Resources\Images\profile_inactive.svg" />
 	  <MauiImage Include="Resources\Images\settings_active.svg" />
 	  <MauiImage Include="Resources\Images\settings_inactive.svg" />
-	  <MauiImage Include="Resources\Images\settings.svg" />
 	  <MauiImage Include="Resources\Images\visibility_off_outlined.svg" />
 	  <MauiImage Include="Resources\Images\visibility_outlined.svg" />
 	</ItemGroup>
@@ -136,6 +128,9 @@
 	  <MauiXaml Update="Components\PrimaryButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\TabIconButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\TextField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -151,10 +146,16 @@
 	  <MauiXaml Update="Pages\Authorized\AuthorizedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\CategoriesTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\SettingsActionSheet.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\TransactionsTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\UserProfileTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Unauthorized\Login\LoginPage.xaml">

@@ -31,16 +31,17 @@ public partial class MenuItem : ContentView
     {
         InitializeComponent();
 
-        // Привязки
         TitleLabel.SetBinding(Label.TextProperty, new Binding(nameof(Title), source: this));
         IconImage.SetBinding(Image.SourceProperty, new Binding(nameof(IconSource), source: this));
 
-        // Обработка нажатия
         var tap = new TapGestureRecognizer();
-        tap.Tapped += (s, e) =>
-        {
-            Clicked?.Invoke(this, EventArgs.Empty);
-        };
+        tap.Tapped += MenuItem_Tapped;
+
         RootGrid.GestureRecognizers.Add(tap);
+    }
+
+    private void MenuItem_Tapped(object? sender, TappedEventArgs e)
+    {
+        Clicked?.Invoke(this, EventArgs.Empty);
     }
 }

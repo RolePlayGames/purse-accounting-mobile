@@ -19,8 +19,10 @@
         <Image 
             x:Name="IconImage"
             Grid.Column="1"
-            WidthRequest="30"
-            HeightRequest="30"
+            WidthRequest="{StaticResource IconSize}"
+            HeightRequest="{StaticResource IconSize}"
+            MinimumWidthRequest="{StaticResource IconSize}"
+            MinimumHeightRequest="{StaticResource IconSize}"
             VerticalOptions="Center"
             HorizontalOptions="End" />
     </Grid>
