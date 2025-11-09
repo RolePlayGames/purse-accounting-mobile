@@ -7,6 +7,7 @@ public partial class StartUpPage : ContentPage
 {
     private const string _loginPagePath = "//LoginPage";
     private const string _accountingPagePath = "//AccountingPage";
+    private const string _authorizedPagePath = "//Authorized";
 
     private readonly CancellationTokenSource _timeoutCancellationTokenSource = new(TimeSpan.FromSeconds(3));
 
@@ -24,6 +25,8 @@ public partial class StartUpPage : ContentPage
 
     private async Task CheckAuthenticationAndRedirect()
     {
+        await Shell.Current.GoToAsync(_authorizedPagePath);
+        /*
         try
         {
             using var httpClient = new HttpClient();
@@ -40,5 +43,6 @@ public partial class StartUpPage : ContentPage
             System.Diagnostics.Debug.WriteLine($"Auth check failed: {ex}");
             await Shell.Current.GoToAsync(_loginPagePath);
         }
+        */
     }
 }

@@ -19,6 +19,7 @@
             <!-- Sizes -->
             <x:Double x:Key="InputFieldHeight">60</x:Double>
             <x:Double x:Key="ButtonHeight">60</x:Double>
+            <x:Double x:Key="IconSize">30</x:Double>
             <x:Double x:Key="CornerRadiusLarge">30</x:Double>
             <x:Double x:Key="CornerRadiusTop">40</x:Double>
 

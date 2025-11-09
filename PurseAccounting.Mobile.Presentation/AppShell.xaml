@@ -14,5 +14,6 @@
 
     <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate login:LoginPage}" />
     <ShellContent Route="AccountingPage" ContentTemplate="{DataTemplate authorized:AccountingPage}" />
+    <ShellContent Route="Authorized" ContentTemplate="{DataTemplate authorized:AuthorizedPage}" />
 
 </Shell>
