@@ -18,3 +18,12 @@ CI pipeline - [GitHub](https://github.com/RolePlayGames/purse-accounting-mobile/
 - MAUI - application framework
 - xUnit - testing library
 - Appium - mobile testing library
+
+## Development
+
+### API solution linting
+
+To lint API solution you need to open command line in /WebAPI folder and run:
+```sh
+dotnet format --severity warn --verify-no-changes
+```

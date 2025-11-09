@@ -707,6 +707,9 @@ dotnet_diagnostic.SA1648.severity = warning
 # SA1649: File name should match first type name
 dotnet_diagnostic.SA1649.severity = warning
 
+# SA1601: A C# partial element is missing a documentation header
+dotnet_diagnostic.SA1601.severity = none
+
 # SA1651: Do not use placeholder elements
 dotnet_diagnostic.SA1651.severity = warning
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
