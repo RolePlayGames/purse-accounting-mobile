@@ -5,7 +5,8 @@
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login.LoginPage"
              BackgroundColor="{StaticResource LightBlue}"
-             Padding="0">
+             Padding="0"
+             NavigationPage.HasNavigationBar="False">
 
     <Grid RowDefinitions="*, 500">
         <Grid>
