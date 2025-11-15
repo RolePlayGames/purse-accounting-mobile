@@ -158,10 +158,10 @@
 	  <MauiXaml Update="Pages\Authorized\UserProfileTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Unauthorized\Login\LoginPage.xaml">
+	  <MauiXaml Update="Pages\LogoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="StartUpPage.xaml">
+	  <MauiXaml Update="Pages\Unauthorized\Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

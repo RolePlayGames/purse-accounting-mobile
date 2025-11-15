@@ -3,6 +3,7 @@ using Material.Components.Maui.Extensions;
 using MauiIcons.Material.Outlined;
 using Microsoft.Extensions.Logging;
 using PurseAccounting.Mobile.Application;
+using PurseAccounting.Mobile.Presentation;
 
 namespace PurseAccountinng.Mobile.Presentation
 {
@@ -24,7 +25,9 @@ namespace PurseAccountinng.Mobile.Presentation
                 });
 
             builder.Services
-                .AddApplication();
+                .AddApplication()
+                .AddPages()
+                ;
 
             // Убираем подчёркивание у Entry
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
