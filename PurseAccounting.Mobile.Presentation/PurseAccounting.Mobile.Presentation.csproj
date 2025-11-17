@@ -107,6 +107,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\AccountWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\AuthHeader.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
