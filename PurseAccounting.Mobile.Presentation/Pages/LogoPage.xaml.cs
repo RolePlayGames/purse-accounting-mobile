@@ -32,24 +32,15 @@ public partial class LogoPage : ContentPage
 
         var attemptCount = 0;
 
-        while (attemptCount <= _maxAttempts)
+        while (attemptCount++ < _maxAttempts)
         {
-            attemptCount++;
-
             try
             {
                 var isSucceed = await _accountingService.LoadAccount();
 
-                if (isSucceed)
-                {
-                    await NavigateToMainPageAsync(true).ConfigureAwait(false);
-                    return;
-                }
-                else
-                {
-                    await NavigateToMainPageAsync(false).ConfigureAwait(false);
-                    return;
-                }
+                await NavigateToMainPageAsync(isSucceed).ConfigureAwait(false);
+
+                return;
             }
             catch (TaskCanceledException)
             {
