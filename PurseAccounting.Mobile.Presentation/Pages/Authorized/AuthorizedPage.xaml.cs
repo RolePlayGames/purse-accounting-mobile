@@ -143,27 +143,17 @@ public partial class AuthorizedPage : ContentPage
                     _directionHistory.Dequeue();
                 }
 
-                if (_directionHistory.Count == _directionStabilityLimit)
+                if (_directionHistory.Count == _directionStabilityLimit && _directionHistory.All(x => x == currentDirection))
                 {
-                    if (_directionHistory.All(x => x == currentDirection))
-                    {
-                        _lastStableDirection = currentDirection;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    return;
+                    _lastStableDirection = currentDirection;
+
+                    _currentY += deltaY;
+                    _currentY = Math.Max(SheetOpenPosition, Math.Min(SheetHiddenPosition, _currentY));
+
+                    AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, _currentY, 1, _sheetHeight));
                 }
 
-                _currentY += deltaY;
-                _currentY = Math.Max(SheetOpenPosition, Math.Min(SheetHiddenPosition, _currentY));
-
-                AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, _currentY, 1, _sheetHeight));
-                break;
+                return;
             case GestureStatus.Completed:
             case GestureStatus.Canceled:
                 if (!_isDragging)
