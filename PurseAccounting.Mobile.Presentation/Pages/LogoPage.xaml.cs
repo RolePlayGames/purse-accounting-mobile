@@ -44,11 +44,11 @@ public partial class LogoPage : ContentPage
             }
             catch (TaskCanceledException)
             {
-                await HandleError("Сервер долго не отвечает", attemptCount);
+                await HandleError("РЎРµСЂРІРµСЂ РґРѕР»РіРѕ РЅРµ РѕС‚РІРµС‡Р°РµС‚", attemptCount);
             }
             catch
             {
-                await HandleError("Ошибка подключения", attemptCount);
+                await HandleError("РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ", attemptCount);
             }
 
             await Task.Delay(100);
@@ -62,7 +62,7 @@ public partial class LogoPage : ContentPage
         if (attemptCount <= 1)
             return;
 
-        var displayMessage = $"{message}. Пробуем ещё раз...";
+        var displayMessage = $"{message}. РџСЂРѕР±СѓРµРј РµС‰С‘ СЂР°Р·...";
 
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
@@ -77,7 +77,7 @@ public partial class LogoPage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
-            ErrorMessageLabel.Text = "Не удаётся подключиться к серверу. Проверьте интернет и перезапустите приложение.";
+            ErrorMessageLabel.Text = "РќРµ СѓРґР°С‘С‚СЃСЏ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЃРµСЂРІРµСЂСѓ. РџСЂРѕРІРµСЂСЊС‚Рµ РёРЅС‚РµСЂРЅРµС‚ Рё РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚Рµ РїСЂРёР»РѕР¶РµРЅРёРµ.";
             ErrorMessageLabel.IsVisible = true;
         }).ConfigureAwait(false);
     }
