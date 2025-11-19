@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.MenuItem">
+    <Grid Padding="30,20" x:Name="RootGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label
+            x:Name="TitleLabel"
+            FontFamily="OpenSansSemibold"
+            FontSize="{StaticResource FontSizeLarge}"
+            TextColor="{StaticResource DarkPurple}"
+            VerticalTextAlignment="Center"
+            HorizontalTextAlignment="Start" />
+
+        <Image 
+            x:Name="IconImage"
+            Grid.Column="1"
+            WidthRequest="{StaticResource IconSize}"
+            HeightRequest="{StaticResource IconSize}"
+            MinimumWidthRequest="{StaticResource IconSize}"
+            MinimumHeightRequest="{StaticResource IconSize}"
+            VerticalOptions="Center"
+            HorizontalOptions="End" />
+    </Grid>
+</ContentView>
