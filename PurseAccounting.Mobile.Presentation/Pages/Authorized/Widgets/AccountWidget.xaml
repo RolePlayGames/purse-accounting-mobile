@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PurseAccountinng.Mobile.Presentation.Components.AccountWidget"
+             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets.AccountWidget"
              x:Name="Root">
-
     <Border
         StrokeThickness="0"
         StrokeShape="RoundRectangle 20"
@@ -19,15 +19,11 @@
 
             <HorizontalStackLayout Grid.Row="0" Grid.Column="0" VerticalOptions="Start" Spacing="10">
 
-                <Image
-                    Source="{Binding IconSource, Source={x:Reference Root}}"
-                    WidthRequest="30"
-                    HeightRequest="30"
-                    VerticalOptions="Start" />
+                <icons:RubleIcon VerticalOptions="Start"/>
 
                 <VerticalStackLayout Spacing="2" VerticalOptions="Start">
                     <Label
-                        Text="{Binding MainAmountText, Source={x:Reference Root}}"
+                        Text="{Binding DayAmountText, Source={x:Reference Root}}"
                         FontFamily="OpenSansRegular"
                         FontSize="{StaticResource FontSizeLarge}"
                         TextColor="{StaticResource Gray1}"
@@ -35,7 +31,7 @@
                         HorizontalTextAlignment="Start">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding MainAmountFormatted, Source={x:Reference Root}}" />
+                                <Span Text="{Binding DayAmountFormatted, Source={x:Reference Root}}" />
                                 <Span Text=" ₽" />
                             </FormattedString>
                         </Label.FormattedText>
@@ -78,7 +74,7 @@
                     HorizontalTextAlignment="End" />
 
                 <Label
-                    Text="{Binding DayText, Source={x:Reference Root}}"
+                    Text="{Binding DaysCountText, Source={x:Reference Root}}"
                     FontFamily="OpenSansRegular"
                     FontSize="{StaticResource FontSizeRegular}"
                     TextColor="{StaticResource Gray1}"

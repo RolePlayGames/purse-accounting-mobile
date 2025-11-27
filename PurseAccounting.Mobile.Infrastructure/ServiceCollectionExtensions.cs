@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PurseAccounting.Mobile.Infrastructure.Accounting;
+using PurseAccounting.Mobile.Infrastructure.AuthCookieStorages;
 using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
+using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 
 namespace PurseAccounting.Mobile.Infrastructure
 {
@@ -13,6 +15,8 @@ namespace PurseAccounting.Mobile.Infrastructure
             return services
                 .AddSingleton(httpClient)
                 .AddScoped<IAccountClient, AccountClient>()
+                .AddTransient<IAuthCookieStorage, AuthCookieStorage>()
+                .AddTransient<IHttpClientInitializer, HttpClientInitializer>()
                 .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>()
                 ;
         }

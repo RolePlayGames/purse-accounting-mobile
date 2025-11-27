@@ -100,6 +100,7 @@
 		<PackageReference Include="ReactiveUI.SourceGenerators" Version="2.4.1">
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="RolePlayGames.StaticClassesProxies.DI.Microsoft" Version="0.1.0-alpha" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -107,7 +108,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Components\AccountWidget.xaml">
+	  <MauiXaml Update="Pages\Authorized\Widgets\AccountWidget.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\AuthHeader.xaml">
@@ -131,16 +132,16 @@
 	  <MauiXaml Update="Components\PrimaryButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Icons\RubleIcon.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\TabIconButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\TextField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Authorized\AccountingPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Authorized\AccountingTab.xaml">
+	  <MauiXaml Update="Pages\Authorized\Accounting\AccountingTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\AccountTab.xaml">
