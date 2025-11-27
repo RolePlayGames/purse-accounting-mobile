@@ -4,7 +4,8 @@
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.AuthorizedPage"
              Title="AuthorizedPage"
-             BackgroundColor="{StaticResource LightBlue}">
+             BackgroundColor="{StaticResource LightBlue}"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="MenuDivider" TargetType="BoxView">

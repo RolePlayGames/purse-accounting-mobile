@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.LogoPage"
+             Title="LogoPage"
+             BackgroundColor="#F3F7FA">
+    <Grid RowDefinitions="*,Auto,*">
+        <Image
+            Grid.Row="1"
+            Source="wallet.png"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            WidthRequest="190"
+            HeightRequest="190" />
+
+        <Grid Grid.Row="2" RowDefinitions="Auto,Auto,*">
+
+            <Label
+                Grid.Row="0"
+                Text="Purse Accounting"
+                TextColor="{StaticResource DarkPurple}"
+                FontSize="{StaticResource FontSizeLarge}"
+                CharacterSpacing="3"
+                FontFamily="OpenSansRegular"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Margin="0,24,0,0" />
+
+            <Label
+                x:Name="ErrorMessageLabel"
+                Grid.Row="1"
+                TextColor="{StaticResource InactiveElementText}"
+                FontSize="{StaticResource FontSizeSmall}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Margin="0,16,0,0"
+                IsVisible="False" />
+        </Grid>        
+    </Grid>
+</ContentPage>

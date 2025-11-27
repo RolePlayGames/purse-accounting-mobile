@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PurseAccounting.Mobile.Infrastructure.Accounting;
 using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 
 namespace PurseAccounting.Mobile.Infrastructure
@@ -9,11 +10,11 @@ namespace PurseAccounting.Mobile.Infrastructure
         {
             var httpClient = new HttpClient { BaseAddress = new Uri("https://purse-accounting.ru") };
 
-            services
+            return services
                 .AddSingleton(httpClient)
-                .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>();
-
-            return services;
+                .AddScoped<IAccountClient, AccountClient>()
+                .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>()
+                ;
         }
     }
 }
