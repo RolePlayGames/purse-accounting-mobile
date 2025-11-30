@@ -1,5 +1,6 @@
 ﻿using PurseAccounting.Mobile.Application.Accounting;
 using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Application.Models;
 using ReactiveUI;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;

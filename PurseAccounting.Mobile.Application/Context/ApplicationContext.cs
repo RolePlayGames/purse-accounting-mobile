@@ -1,4 +1,6 @@
-﻿namespace PurseAccounting.Mobile.Application.Context;
+﻿using PurseAccounting.Mobile.Application.Models;
+
+namespace PurseAccounting.Mobile.Application.Context;
 
 internal class ApplicationContext : IApplicationContext
 {

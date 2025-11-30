@@ -17,7 +17,7 @@ internal class AccountingService : IAccountingService
         _applicationContext = applicationContext;
     }
 
-    public async Task<Context.Account?> LoadAccount(CancellationToken cancellationToken)
+    public async Task<Models.Account?> LoadAccount(CancellationToken cancellationToken)
     {
         var response = await _accountClient.GetAccount(cancellationToken);
         var account = response is not null ? _accountFactory.GetAccount(response) : null;

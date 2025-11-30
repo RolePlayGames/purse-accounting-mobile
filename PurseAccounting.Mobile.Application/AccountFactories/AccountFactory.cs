@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Application.Context;
+﻿using PurseAccounting.Mobile.Application.Models;
 
 namespace PurseAccounting.Mobile.Application.AccountFactories;
 
@@ -13,11 +13,11 @@ internal class AccountFactory : IAccountFactory
 
     public Account GetAccount(Infrastructure.Accounting.Account account)
     {
-        return new()
+        return new(_dateTimeService)
         {
-            DayAmount = account.DayAmount,
-            AvaliableAmount = account.DayAmount + account.RestAmount,
-            DaysCount = Math.Max((account.PlannedDate.Date - _dateTimeService.UtcNow.Date).Days + 1, 1),
+            DailyDistributedAmount = new() { DayAmount = account.DayAmount, RestAmount = account.RestAmount },
+            PlannedDate = new() { Value = account.PlannedDate },
+            TimeZone = account.TimeZone,
         };
     }
 }

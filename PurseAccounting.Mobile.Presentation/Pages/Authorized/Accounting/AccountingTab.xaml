@@ -4,12 +4,18 @@
              xmlns:widgets="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting.AccountingTab"
              Margin="15,18,15,0">
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,Auto,*">
         <widgets:AccountWidget
-            x:Name="Widget"
+            x:Name="AccountWidget"
             Grid.Row="0"
             DayAmount="{Binding DayAmount}"
             AvailableAmount="{Binding AvaliableAmount}"
             DaysCount="{Binding DaysCount}"/>
+        <widgets:TomorrowAmountWidget
+            x:Name="TomorrowAmountWidget"
+            Grid.Row="1"
+            Text="{Binding TomorrowAmountText}"
+            IsVisible="{Binding IsTomorrowAmountVisible}"
+            Margin="0,12,0,0"/>
     </Grid>
 </ContentView>

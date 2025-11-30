@@ -69,8 +69,6 @@ public partial class LogoPage : ContentPage
             return;
 
         await DisplayError($"{message}. Пробуем ещё раз...");
-
-        await Task.Delay(500);
     }
 
     private Task DisplayFinalError()
