@@ -1,0 +1,53 @@
+﻿using PurseAccounting.Mobile.Application.AccountFactories;
+using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Application.Models;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
+using PurseAccounting.Mobile.Infrastructure.Transactions.Daily;
+using PurseAccounting.Mobile.Infrastructure.Transactions.Total;
+
+namespace PurseAccounting.Mobile.Application.Transactions;
+
+internal class TransactionService : ITransactionService
+{
+    private readonly IDailyTransactionClient _dailyTransactionClient;
+    private readonly ITotalTransactionClient _totalTransactionClient;
+    private readonly IApplicationContext _applicationContext;
+    private readonly IAccountFactory _accountFactory;
+
+    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory)
+    {
+        _dailyTransactionClient = dailyTransactionClient;
+        _totalTransactionClient = totalTransactionClient;
+        _applicationContext = applicationContext;
+        _accountFactory = accountFactory;
+    }
+
+    public async Task<bool> MakeTransaction(Transaction transaction, CancellationToken cancellationToken)
+    {
+        var request = new AddTransactionRequest { Amount = transaction.Amount, TransactionCategoryID = transaction.TransactionCategoryID };
+
+        var addTrasactionTask = transaction.ChangeAmountType switch
+        {
+            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Income => _dailyTransactionClient.AddDailyIncomeTransaction(request, cancellationToken),
+            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Withdrawal => _dailyTransactionClient.AddDailyWithdrawalTransaction(request, cancellationToken),
+            TransactionChangeAmountType.Total when transaction.ChangeType == TransactionChangeType.Income => _totalTransactionClient.AddTotalIncomeTransaction(request, cancellationToken),
+            TransactionChangeAmountType.Total when transaction.ChangeType == TransactionChangeType.Withdrawal => _totalTransactionClient.AddTotalWithdrawalTransaction(request, cancellationToken),
+            _ => throw new NotImplementedException(),
+        };
+
+        var apiResult = await addTrasactionTask;
+
+        return apiResult.Match(
+            result =>
+            {
+                if (_applicationContext.Account is not null)
+                    _applicationContext.Account = _accountFactory.GetAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+
+                return true;
+            },
+            _ =>
+            {
+                return false;
+            });
+    }
+}

@@ -3,6 +3,7 @@ using PurseAccountinng.Mobile.Presentation.Pages;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
 using PurseAccountinng.Mobile.Presentation.Services.Navigation;
+using PurseAccountinng.Mobile.Presentation.Services.Notifications;
 
 namespace PurseAccounting.Mobile.Presentation;
 
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddSingleton<INavigator, Navigator>()
+            .AddSingleton<INotificationService, NotificationService>()
             ;
     }
 }

@@ -4,8 +4,6 @@ namespace PurseAccounting.Mobile.Infrastructure.Accounting;
 
 internal class AccountClient : IAccountClient
 {
-    private static readonly string _getAccountUrl = "/api/accounting/account";
-
     private readonly HttpClient _httpClient;
 
     public AccountClient(HttpClient httpClient)
@@ -13,12 +11,12 @@ internal class AccountClient : IAccountClient
         _httpClient = httpClient;
     }
 
-    public async Task<Account?> GetAccount(CancellationToken ct)
+    public async Task<AccountDto?> GetAccount(CancellationToken ct)
     {
-        var response = await _httpClient.GetAsync(_getAccountUrl, ct);
+        var response = await _httpClient.GetAsync("/api/accounting/account", ct);
 
         if (response.IsSuccessStatusCode)
-            return await response.Content.ReadFromJsonAsync<Account>(ct);
+            return await response.Content.ReadFromJsonAsync<AccountDto>(ct);
 
         return null;
     }

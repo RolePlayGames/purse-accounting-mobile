@@ -33,7 +33,7 @@ public class AccountFactoryTest
 
         _dateTimeServiceMock.Setup(s => s.UtcNow).Returns(now);
 
-        var infrastructureAccount = new Infrastructure.Accounting.Account
+        var infrastructureAccount = new Infrastructure.Accounting.AccountDto
         {
             DayAmount = dayAmount,
             RestAmount = restAmount,

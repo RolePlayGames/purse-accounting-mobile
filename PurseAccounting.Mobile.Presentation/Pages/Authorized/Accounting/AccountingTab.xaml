@@ -2,9 +2,10 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets"
+             xmlns:controls="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting.AccountingTab"
              Margin="15,18,15,0">
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
         <widgets:AccountWidget
             x:Name="AccountWidget"
             Grid.Row="0"
@@ -16,6 +17,16 @@
             Grid.Row="1"
             Text="{Binding TomorrowAmountText}"
             IsVisible="{Binding IsTomorrowAmountVisible}"
+            Margin="0,12,0,0"/>
+        <widgets:TransactionAttributesWidget
+            x:Name="TransactionAttributesWidget"
+            Grid.Row="2"
+            Margin="0,12,0,0"/>
+        <controls:TransactionAmountInput
+            x:Name="TransactionAmountInput"
+            Grid.Row="3"
+            Amount="{Binding TransactionAmount, Mode=TwoWay}"
+            SubmitCommand="{Binding OnAmountSubmit}"
             Margin="0,12,0,0"/>
     </Grid>
 </ContentView>

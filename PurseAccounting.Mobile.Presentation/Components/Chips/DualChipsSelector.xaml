@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Chips.DualChipsSelector"
+             x:Name="Root">
+
+    <VerticalStackLayout Spacing="15">
+        <Label Text="{Binding Source={x:Reference Root}, Path=Title}"
+               FontFamily="OpenSansSemibold"
+               TextColor="{AppThemeBinding Light={StaticResource DarkPurple}, Dark={StaticResource DarkPurple}}"
+               FontSize="{StaticResource FontSizeRegular}"
+               HorizontalOptions="Center" />
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
+            <local:ChipsItem
+                x:Name="LeftChip"
+                Text="{Binding Source={x:Reference Root}, Path=LeftText}"
+                Value="{Binding Source={x:Reference Root}, Path=LeftValue}" />
+
+            <local:ChipsItem
+                x:Name="RightChip"
+                Text="{Binding Source={x:Reference Root}, Path=RightText}"
+                Value="{Binding Source={x:Reference Root}, Path=RightValue}" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentView>

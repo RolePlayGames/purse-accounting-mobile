@@ -6,6 +6,8 @@ using PurseAccounting.Mobile.Application.Calculators.AmountsDistributionCalculat
 using PurseAccounting.Mobile.Application.Calculators.TomorrowAmountCalculators;
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.Login;
+using PurseAccounting.Mobile.Application.TransactionCategories;
+using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure;
 
 namespace PurseAccounting.Mobile.Application
@@ -22,6 +24,8 @@ namespace PurseAccounting.Mobile.Application
                 .AddScoped<IAmountsDistributionCalculator, AmountsDistributionCalculator>()
                 .AddScoped<ILoginService, LoginService>()
                 .AddScoped<ITomorrowAmountCalculator, TomorrowAmountCalculator>()
+                .AddScoped<ITransactionCategoriesService, TransactionCategoriesService>()
+                .AddScoped<ITransactionService, TransactionService>()
                 .AddSingleton<IApplicationContext, ApplicationContext>()
                 ;
         }
