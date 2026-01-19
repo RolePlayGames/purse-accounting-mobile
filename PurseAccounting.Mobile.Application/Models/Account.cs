@@ -14,12 +14,7 @@ public record Account
 
     public long AvaliableAmount => DailyDistributedAmount.RestAmount + DailyDistributedAmount.DayAmount;
 
-    public int DaysCount { get {
-        var t = _dateTimeService.UtcNow.AddHours(TimeZone).Date;
-        var t2 = (PlannedDate - _dateTimeService.UtcNow.AddHours(TimeZone).Date).Days;
-        var t3 = Math.Max(t2 + 1, 0);
-            return t3;
-        } }
+    public int DaysCount => Math.Max((PlannedDate - _dateTimeService.UtcNow.AddHours(TimeZone).Date).Days + 1, 0);
 
     public Account(IDateTimeService dateTimeService)
     {
