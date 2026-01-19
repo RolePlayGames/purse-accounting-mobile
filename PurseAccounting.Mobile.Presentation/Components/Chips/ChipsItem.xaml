@@ -9,8 +9,8 @@
         HeightRequest="40"
         WidthRequest="130"
         StrokeThickness="0"
-        BackgroundColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToBackgroundColorConverter}}"
-        Stroke="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToBackgroundColorConverter}}"
+        BackgroundColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsBackgroundColorConverter}}"
+        Stroke="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsBackgroundColorConverter}}"
         Padding="0"
         HorizontalOptions="Center"
         VerticalOptions="Center">
@@ -24,7 +24,7 @@
             FontFamily="OpenSansSemibold"
             HorizontalTextAlignment="Center"
             VerticalTextAlignment="Center"
-            TextColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToTextColorConverter}}" />
+            TextColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsTextColorConverter}}" />
     </Border>
     
 </ContentView>

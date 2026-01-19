@@ -8,7 +8,7 @@
 
     <Border
         StrokeThickness="0"
-        Background="{Binding IsSelected, Source={x:Reference RootView}, Converter={StaticResource BoolToColorConverter}}"
+        Background="{Binding IsSelected, Source={x:Reference RootView}, Converter={StaticResource BoolToCategoryBackgroundConverter}}"
         StrokeShape="RoundRectangle 10,10,10,10">
 
         <StackLayout

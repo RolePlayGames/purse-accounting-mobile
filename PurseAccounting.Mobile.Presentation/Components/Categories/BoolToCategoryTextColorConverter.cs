@@ -1,7 +1,7 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Extensions;
 using System.Globalization;
 
-namespace PurseAccountinng.Mobile.Presentation.Converters;
+namespace PurseAccountinng.Mobile.Presentation.Components.Categories;
 
 public class BoolToCategoryTextColorConverter : IValueConverter
 {

@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 
-namespace PurseAccountinng.Mobile.Presentation.Converters;
+namespace PurseAccountinng.Mobile.Presentation.Components.Chips;
 
-public class BoolToBackgroundColorConverter : IValueConverter
+public class BoolToChipsBackgroundColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

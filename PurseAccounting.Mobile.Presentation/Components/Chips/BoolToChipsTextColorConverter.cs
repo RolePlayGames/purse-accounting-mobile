@@ -1,9 +1,9 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Extensions;
 using System.Globalization;
 
-namespace PurseAccountinng.Mobile.Presentation.Converters;
+namespace PurseAccountinng.Mobile.Presentation.Components.Chips;
 
-public class BoolToTextColorConverter : IValueConverter
+public class BoolToChipsTextColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

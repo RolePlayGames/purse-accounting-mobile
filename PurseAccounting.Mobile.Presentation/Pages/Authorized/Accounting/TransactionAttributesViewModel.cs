@@ -92,15 +92,14 @@ public class TransactionAttributesViewModel : ReactiveObject
         if (_selectedCategoryId is null || _transactionAmount is null)
             return;
 
-        var isSuccseed = true; /*
-        await _transactionService.MakeTransaction(new()
+        var isSuccseed = await _transactionService.MakeTransaction(new()
         {
             Amount = _transactionAmount.Value,
             ChangeType = _transactionChangeType,
             ChangeAmountType = _transactionChangeAmountType,
             TransactionCategoryID = _selectedCategoryId.Value,
             TransactionDate = new(),
-        }, CancellationToken.None);*/
+        }, CancellationToken.None);
 
         if (isSuccseed)
         {
