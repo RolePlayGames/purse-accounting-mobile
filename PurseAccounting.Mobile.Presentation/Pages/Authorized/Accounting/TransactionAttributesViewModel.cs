@@ -92,7 +92,7 @@ public class TransactionAttributesViewModel : ReactiveObject
         if (_selectedCategoryId is null || _transactionAmount is null)
             return;
 
-        var isSuccseed = await _transactionService.MakeTransaction(new()
+        var result = await _transactionService.MakeTransaction(new()
         {
             Amount = _transactionAmount.Value,
             ChangeType = _transactionChangeType,
@@ -101,14 +101,21 @@ public class TransactionAttributesViewModel : ReactiveObject
             TransactionDate = new(),
         }, CancellationToken.None);
 
-        if (isSuccseed)
+        if (result == MakeTransactionResult.Success)
         {
             _notificationService.ShowSuccess("Транзакция прошла успешно");
             TransactionAmount = null;
         }
         else
         {
-            _notificationService.ShowError("Непредвиденная ошибка");
+            var message = result switch
+            {
+                MakeTransactionResult.NegativeRestAmount => "Доступная сумма должна быть положительной",
+                MakeTransactionResult.PlannedDateHasPassed => "Количество дней до даты планирования должно быть больше одного",
+                _ => "Непредвиденная ошибка",
+            };
+
+            _notificationService.ShowError(message);
         }
     }
 }

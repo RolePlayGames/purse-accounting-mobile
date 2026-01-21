@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PurseAccounting.Mobile.Infrastructure.ApiResults;
+﻿namespace PurseAccounting.Mobile.Infrastructure.ApiResults;
 
 public record FailureResult<T> : ApiResult<T>
 {

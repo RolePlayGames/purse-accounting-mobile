@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
+﻿using PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
 
 namespace PurseAccounting.Mobile.Application.Test.Calculators.AmountsCalculators;
 

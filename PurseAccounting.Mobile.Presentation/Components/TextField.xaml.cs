@@ -1,5 +1,3 @@
-using static System.Net.Mime.MediaTypeNames;
-
 namespace PurseAccountinng.Mobile.Presentation.Components;
 
 public partial class TextField : ContentView

@@ -1,6 +1,6 @@
 ﻿using PurseAccounting.Mobile.Application.AccountFactories;
 using PurseAccounting.Mobile.Application.Context;
-using PurseAccounting.Mobile.Application.Models;
+using PurseAccounting.Mobile.Infrastructure.ServerResults;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Daily;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Total;
@@ -22,8 +22,17 @@ internal class TransactionService : ITransactionService
         _accountFactory = accountFactory;
     }
 
-    public async Task<bool> MakeTransaction(Transaction transaction, CancellationToken cancellationToken)
+    public async Task<MakeTransactionResult> MakeTransaction(Transaction transaction, CancellationToken cancellationToken)
     {
+        if (transaction.ChangeAmountType == TransactionChangeAmountType.Total)
+        {
+            if (_applicationContext.Account?.DaysCount <= 1)
+                return MakeTransactionResult.PlannedDateHasPassed;
+
+            if (_applicationContext.Account?.AvaliableAmount <= 0)
+                return MakeTransactionResult.NegativeRestAmount;
+        }
+
         var request = new AddTransactionRequest { Amount = transaction.Amount, TransactionCategoryID = transaction.TransactionCategoryID };
 
         var addTrasactionTask = transaction.ChangeAmountType switch
@@ -43,11 +52,16 @@ internal class TransactionService : ITransactionService
                 if (_applicationContext.Account is not null)
                     _applicationContext.Account = _accountFactory.GetAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
 
-                return true;
+                return MakeTransactionResult.Success;
             },
-            _ =>
+            exception =>
             {
-                return false;
+                return exception switch
+                {
+                    ServerException<AddTotalTransactoinsExceptionCode> ex when ex.NoticeType == AddTotalTransactoinsExceptionCode.PlannedDateHasPassed => MakeTransactionResult.PlannedDateHasPassed,
+                    ServerException<AddTotalTransactoinsExceptionCode> ex when ex.NoticeType == AddTotalTransactoinsExceptionCode.NegativeRestAmount => MakeTransactionResult.NegativeRestAmount,
+                    _ => MakeTransactionResult.Unknown,
+                };
             });
     }
 }

@@ -4,5 +4,5 @@ namespace PurseAccounting.Mobile.Application.Transactions;
 
 public interface ITransactionService
 {
-    Task<bool> MakeTransaction(Transaction transaction, CancellationToken cancellationToken);
+    Task<MakeTransactionResult> MakeTransaction(Transaction transaction, CancellationToken cancellationToken);
 }
