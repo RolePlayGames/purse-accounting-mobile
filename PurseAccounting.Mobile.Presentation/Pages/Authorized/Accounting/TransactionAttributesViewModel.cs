@@ -88,6 +88,8 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
     {
         if (!_isDisposed)
         {
+            _isDisposed = true;
+
             _disposables?.Dispose();
             GC.SuppressFinalize(this);
         }
@@ -121,15 +123,15 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
             return;
 
         var result = MakeTransactionResult.Success;
-        //var result = await _transactionService.MakeTransaction(new()
-        //{
+
+        // var result = await _transactionService.MakeTransaction(new()
+        // {
         //    Amount = _transactionAmount.Value,
         //    ChangeType = _transactionChangeType,
         //    ChangeAmountType = _transactionChangeAmountType,
         //    TransactionCategoryID = _selectedCategoryId.Value,
         //    TransactionDate = new(),
-        //}, CancellationToken.None);
-
+        // }, CancellationToken.None);
         if (result == MakeTransactionResult.Success)
         {
             _notificationService.ShowSuccess("Транзакция прошла успешно");

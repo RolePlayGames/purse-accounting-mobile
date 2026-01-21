@@ -35,7 +35,7 @@ public partial class ChipsItem : ContentView
 
         ChipBorder.GestureRecognizers.Add(new TapGestureRecognizer
         {
-            Command = new Command(() => ChipTapped?.Invoke(this, EventArgs.Empty))
+            Command = new Command(() => ChipTapped?.Invoke(this, EventArgs.Empty)),
         });
     }
 
