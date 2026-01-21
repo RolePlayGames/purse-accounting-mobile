@@ -6,6 +6,8 @@ namespace PurseAccounting.Mobile.Infrastructure.Base;
 
 internal abstract class ClientBase
 {
+    private const int _errorBodyPrerenderMaxSize = 100;
+
     protected delegate Task<HttpResponseMessage> ExternalCall(string url, object request, CancellationToken cancellationToken);
 
     protected delegate Task<ApiResult<T>> ParseError<T>(HttpResponseMessage message, CancellationToken cancellationToken);
@@ -24,10 +26,9 @@ internal abstract class ClientBase
     {
         var value = await message.Content.ReadFromJsonAsync<ServerErrorResponse<TErrorCode>>(cancellationToken).ConfigureAwait(false);
 
-        if (value is null)
-            return ApiResult<T>.Failure(new InvalidOperationException($"Http error response of type {nameof(T)} deserialized to null."));
-
-        return ApiResult<T>.Failure(new ServerException<TErrorCode>() { NoticeType = value.NoticeType });
+        return value is null
+            ? ApiResult<T>.Failure(new InvalidOperationException($"Http error response of type {nameof(TErrorCode)} deserialized to null."))
+            : ApiResult<T>.Failure(new ServerException<TErrorCode>() { NoticeType = value.NoticeType });
     }
 
     private static async Task<ApiResult<T>> SafeCall<T>(ExternalCall call, string url, object request, ParseError<T>? errorResponseFactory, CancellationToken cancellationToken)
@@ -54,7 +55,7 @@ internal abstract class ClientBase
             var message = $"Ошибка сервера: {(int)response.StatusCode}";
 
             if (!string.IsNullOrWhiteSpace(errorBody))
-                message += $" — {errorBody[..Math.Min(100, errorBody.Length)]}...";
+                message += $" — {errorBody[..Math.Min(_errorBodyPrerenderMaxSize, errorBody.Length)]}...";
 
             return ApiResult<T>.Failure(new HttpRequestException(message));
         }

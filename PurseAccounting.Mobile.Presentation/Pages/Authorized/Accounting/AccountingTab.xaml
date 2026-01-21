@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets"
              xmlns:controls="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
+             xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting.AccountingTab"
              Margin="15,18,15,0">
     <Grid RowDefinitions="Auto,Auto,Auto,*">
@@ -22,11 +23,12 @@
             x:Name="TransactionAttributesWidget"
             Grid.Row="2"
             Margin="0,12,0,0"/>
-        <controls:TransactionAmountInput
+        <local:TransactionAmountInput
             x:Name="TransactionAmountInput"
             Grid.Row="3"
             Amount="{Binding TransactionAmount, Mode=TwoWay}"
             SubmitCommand="{Binding OnAmountSubmit}"
+            IsSubmitEnabled="{Binding IsMakeTransactionEnabled}"
             Margin="0,12,0,0"/>
     </Grid>
 </ContentView>

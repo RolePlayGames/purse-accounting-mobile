@@ -13,6 +13,7 @@
             <Color x:Key="Gray1">#333333</Color>
             <Color x:Key="Gray2">#4F4F4F</Color>
             <Color x:Key="Gray3">#828282</Color>
+            <Color x:Key="Gray4">#BDBDBD</Color>
             <Color x:Key="InactiveElementFill">#E0E0E0</Color>
             <Color x:Key="InactiveElementText">#8D8D8D</Color>
             <Color x:Key="LightBlue">#F3F7FA</Color>

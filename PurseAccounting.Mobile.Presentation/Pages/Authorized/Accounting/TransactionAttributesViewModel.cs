@@ -6,13 +6,15 @@ using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Services.Notifications;
 using ReactiveUI;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Disposables.Fluent;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 
-public class TransactionAttributesViewModel : ReactiveObject
+public class TransactionAttributesViewModel : ReactiveObject, IDisposable
 {
-    private readonly ITransactionService _transactionService;
     private readonly INotificationService _notificationService;
+    private readonly CompositeDisposable _disposables = new();
 
     private TransactionChangeType _transactionChangeType;
     private TransactionChangeAmountType _transactionChangeAmountType;
@@ -21,6 +23,9 @@ public class TransactionAttributesViewModel : ReactiveObject
     private IList<TransactionCategoryDto> _categories = [];
 
     private int? _transactionAmount = null;
+    private bool _isMakeTransactionEnabled = false;
+
+    private bool _isDisposed = false;
 
     public TransactionChangeType TransactionChangeType
     {
@@ -52,11 +57,16 @@ public class TransactionAttributesViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _transactionAmount, value, nameof(TransactionAmount));
     }
 
+    public bool IsMakeTransactionEnabled
+    {
+        get => _isMakeTransactionEnabled;
+        set => this.RaiseAndSetIfChanged(ref _isMakeTransactionEnabled, value, nameof(IsMakeTransactionEnabled));
+    }
+
     public ReactiveCommand<Unit, Unit> OnAmountSubmit { get; }
 
-    public TransactionAttributesViewModel(ITransactionCategoriesService transactionCategoriesService, IApplicationContext applicationContext, ITransactionService transactionService, INotificationService notificationService)
+    public TransactionAttributesViewModel(ITransactionCategoriesService transactionCategoriesService, IApplicationContext applicationContext, INotificationService notificationService)
     {
-        _transactionService = transactionService;
         _notificationService = notificationService;
 
         TransactionChangeType = TransactionChangeType.Withdrawal;
@@ -68,6 +78,19 @@ public class TransactionAttributesViewModel : ReactiveObject
         Task.Run(() => transactionCategoriesService.LoadCategories(CancellationToken.None));
 
         OnAmountSubmit = ReactiveCommand.CreateFromTask(SubmitTransaction);
+
+        this.WhenAnyValue(x => x.TransactionAmount, x => x.SelectedCategoryId)
+            .Subscribe(_ => UpdateMakeTransactionEnabled())
+            .DisposeWith(_disposables);
+    }
+
+    public void Dispose()
+    {
+        if (!_isDisposed)
+        {
+            _disposables?.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 
     private void OnTransactionCategoriesChanged(IReadOnlyCollection<TransactionCategoryDto>? oldValue, IReadOnlyCollection<TransactionCategoryDto>? newValue)
@@ -87,19 +110,25 @@ public class TransactionAttributesViewModel : ReactiveObject
             SelectedCategoryId = (Categories.FirstOrDefault(x => x.IsDefault) ?? Categories.First()).ID;
     }
 
+    private void UpdateMakeTransactionEnabled()
+    {
+        IsMakeTransactionEnabled = TransactionAmount.HasValue && TransactionAmount.Value > 0 && SelectedCategoryId.HasValue;
+    }
+
     private async Task SubmitTransaction()
     {
         if (_selectedCategoryId is null || _transactionAmount is null)
             return;
 
-        var result = await _transactionService.MakeTransaction(new()
-        {
-            Amount = _transactionAmount.Value,
-            ChangeType = _transactionChangeType,
-            ChangeAmountType = _transactionChangeAmountType,
-            TransactionCategoryID = _selectedCategoryId.Value,
-            TransactionDate = new(),
-        }, CancellationToken.None);
+        var result = MakeTransactionResult.Success;
+        //var result = await _transactionService.MakeTransaction(new()
+        //{
+        //    Amount = _transactionAmount.Value,
+        //    ChangeType = _transactionChangeType,
+        //    ChangeAmountType = _transactionChangeAmountType,
+        //    TransactionCategoryID = _selectedCategoryId.Value,
+        //    TransactionDate = new(),
+        //}, CancellationToken.None);
 
         if (result == MakeTransactionResult.Success)
         {
