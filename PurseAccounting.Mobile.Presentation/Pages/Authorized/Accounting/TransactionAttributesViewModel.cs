@@ -13,6 +13,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 
 public class TransactionAttributesViewModel : ReactiveObject, IDisposable
 {
+    private readonly ITransactionService _transactionService;
     private readonly INotificationService _notificationService;
     private readonly CompositeDisposable _disposables = new();
 
@@ -65,7 +66,11 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
 
     public ReactiveCommand<Unit, Unit> OnAmountSubmit { get; }
 
-    public TransactionAttributesViewModel(ITransactionCategoriesService transactionCategoriesService, IApplicationContext applicationContext, INotificationService notificationService)
+    public TransactionAttributesViewModel(
+        ITransactionCategoriesService transactionCategoriesService,
+        IApplicationContext applicationContext,
+        INotificationService notificationService,
+        ITransactionService transactionService)
     {
         _notificationService = notificationService;
 
@@ -82,6 +87,7 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
         this.WhenAnyValue(x => x.TransactionAmount, x => x.SelectedCategoryId)
             .Subscribe(_ => UpdateMakeTransactionEnabled())
             .DisposeWith(_disposables);
+        _transactionService = transactionService;
     }
 
     public void Dispose()
@@ -122,16 +128,15 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
         if (_selectedCategoryId is null || _transactionAmount is null)
             return;
 
-        var result = MakeTransactionResult.Success;
+        var result = await _transactionService.MakeTransaction(new()
+        {
+            Amount = _transactionAmount.Value,
+            ChangeType = _transactionChangeType,
+            ChangeAmountType = _transactionChangeAmountType,
+            TransactionCategoryID = _selectedCategoryId.Value,
+            TransactionDate = new(),
+        }, CancellationToken.None);
 
-        // var result = await _transactionService.MakeTransaction(new()
-        // {
-        //    Amount = _transactionAmount.Value,
-        //    ChangeType = _transactionChangeType,
-        //    ChangeAmountType = _transactionChangeAmountType,
-        //    TransactionCategoryID = _selectedCategoryId.Value,
-        //    TransactionDate = new(),
-        // }, CancellationToken.None);
         if (result == MakeTransactionResult.Success)
         {
             _notificationService.ShowSuccess("Транзакция прошла успешно");
