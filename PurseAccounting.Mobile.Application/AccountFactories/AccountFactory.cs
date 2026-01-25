@@ -11,7 +11,7 @@ internal class AccountFactory : IAccountFactory
         _dateTimeService = dateTimeService;
     }
 
-    public Account GetAccount(Infrastructure.Accounting.Account account)
+    public Account CreateAccount(Infrastructure.Accounting.Account account)
     {
         return new()
         {

@@ -4,7 +4,13 @@ public delegate void AccountChangedEventHandler(Account? oldValue, Account? newV
 
 public interface IApplicationContext
 {
+    /// <summary>
+    /// Active account
+    /// </summary>
     Account? Account { get; set; }
 
+    /// <summary>
+    /// On account changing
+    /// </summary>
     event AccountChangedEventHandler AccountChanged;
 }

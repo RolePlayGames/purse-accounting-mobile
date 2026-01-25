@@ -17,10 +17,10 @@ internal class HttpClientInitializer : IHttpClientInitializer
     {
         var cookie = await _cookieStorage.GetCookies();
 
-        if (!string.IsNullOrEmpty(cookie))
-        {
-            _httpClient.DefaultRequestHeaders.Remove("Cookie");
-            _httpClient.DefaultRequestHeaders.Add("Cookie", cookie);
-        }
+        if (string.IsNullOrEmpty(cookie))
+            return;
+
+        _httpClient.DefaultRequestHeaders.Remove("Cookie");
+        _httpClient.DefaultRequestHeaders.Add("Cookie", cookie);
     }
 }

@@ -20,7 +20,7 @@ internal class AccountingService : IAccountingService
     public async Task<Context.Account?> LoadAccount(CancellationToken cancellationToken)
     {
         var response = await _accountClient.GetAccount(cancellationToken);
-        var account = response is not null ? _accountFactory.GetAccount(response) : null;
+        var account = response is not null ? _accountFactory.CreateAccount(response) : null;
         return _applicationContext.Account = account;
     }
 }
