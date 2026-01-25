@@ -10,7 +10,7 @@ public interface IAccountFactory
     /// </summary>
     /// <param name="account">Account dto</param>
     /// <returns>Account</returns>
-    Account GetAccount(AccountDto account);
+    Account CreateAccount(AccountDto account);
 
     /// <summary>
     /// Creates new account with updated amount
@@ -18,5 +18,5 @@ public interface IAccountFactory
     /// <param name="account">Account</param>
     /// <param name="amount">Distributed amound</param>
     /// <returns>Updated account</returns>
-    Account GetAccount(Account account, DailyDistributedAmount amount);
+    Account CreateAccount(Account account, DailyDistributedAmount amount);
 }

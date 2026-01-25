@@ -12,7 +12,7 @@ internal class AccountFactory : IAccountFactory
         _dateTimeService = dateTimeService;
     }
 
-    public Account GetAccount(AccountDto account)
+    public Account CreateAccount(AccountDto account)
     {
         return new(_dateTimeService)
         {
@@ -22,7 +22,7 @@ internal class AccountFactory : IAccountFactory
         };
     }
 
-    public Account GetAccount(Account account, DailyDistributedAmount amount)
+    public Account CreateAccount(Account account, DailyDistributedAmount amount)
     {
         return account with
         {

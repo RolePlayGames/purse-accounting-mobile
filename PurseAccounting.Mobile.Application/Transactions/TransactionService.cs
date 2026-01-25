@@ -50,7 +50,7 @@ internal class TransactionService : ITransactionService
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.GetAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
 
                 return MakeTransactionResult.Success;
             },

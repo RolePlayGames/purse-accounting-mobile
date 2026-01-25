@@ -42,7 +42,7 @@ public class AccountFactoryTest
         };
 
         // Act
-        var result = _accountFactory.GetAccount(infrastructureAccount);
+        var result = _accountFactory.CreateAccount(infrastructureAccount);
 
         // Assert
         Assert.That(result.DayAmount).IsEqualTo(dayAmount);
