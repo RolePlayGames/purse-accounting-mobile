@@ -19,6 +19,15 @@
     </PackageReference>
   </ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="RolePlayGames.StaticClassesProxies" Version="0.1.0-alpha" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\PurseAccounting.Mobile.Application\PurseAccounting.Mobile.Application.csproj" />
+	  <ProjectReference Include="..\PurseAccounting.Mobile.Infrastructure\PurseAccounting.Mobile.Infrastructure.csproj" />
+	</ItemGroup>
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Components;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
@@ -10,11 +11,11 @@ public partial class AuthorizedPage : ContentPage
 
     private readonly Queue<SwipeDirection> _directionHistory = new(_directionStabilityLimit);
 
-    private readonly AuthorizedTabBase _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab() };
-    private readonly AuthorizedTabBase _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
-    private readonly AuthorizedTabBase _accountTab = new() { Header = "Настройка счета", Tab = new AccountTab() };
-    private readonly AuthorizedTabBase _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
-    private readonly AuthorizedTabBase _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
+    private readonly AuthorizedTabBase _accountingTab;
+    private readonly AuthorizedTabBase _transactionsTab;
+    private readonly AuthorizedTabBase _accountTab;
+    private readonly AuthorizedTabBase _userProfileTabTab;
+    private readonly AuthorizedTabBase _categoriesTab;
 
     private TabIconButton? _lastActiveTabButton;
 
@@ -49,9 +50,15 @@ public partial class AuthorizedPage : ContentPage
 
     private double SheetOpenPosition => SheetHiddenPosition - _sheetHeight;
 
-    public AuthorizedPage()
+    public AuthorizedPage(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+
+        _accountingTab = new() { Header = "Добавить транзакцию", Tab = ActivatorUtilities.CreateInstance<AccountingTab>(serviceProvider) };
+        _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
+        _accountTab = new() { Header = "Настройка счета", Tab = new AccountTab() };
+        _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
+        _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
 
         SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;

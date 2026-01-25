@@ -1,20 +1,25 @@
-using PurseAccounting.Mobile.Application.Accounting;
+﻿using PurseAccounting.Mobile.Application.Accounting;
+using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
+using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages;
 
 public partial class LogoPage : ContentPage
 {
     private const int _maxAttempts = 20;
+    private static readonly TimeSpan _requestTimeout = TimeSpan.FromSeconds(2);
 
-    private readonly IServiceProvider _serviceProvider;
     private readonly IAccountingService _accountingService;
+    private readonly INavigator _navigator;
+    private readonly IHttpClientInitializer _httpClientInitializer;
 
-    public LogoPage(IServiceProvider serviceProvider, IAccountingService accountingService)
+    public LogoPage(IAccountingService accountingService, INavigator navigator, IHttpClientInitializer httpClientInitializer)
     {
-        _serviceProvider = serviceProvider;
         _accountingService = accountingService;
+        _navigator = navigator;
+        _httpClientInitializer = httpClientInitializer;
 
         InitializeComponent();
     }
@@ -28,7 +33,7 @@ public partial class LogoPage : ContentPage
 
     private async Task CheckAuthorize()
     {
-        await Task.Delay(100);
+        await _httpClientInitializer.Initialize();
 
         var attemptCount = 0;
 
@@ -36,9 +41,10 @@ public partial class LogoPage : ContentPage
         {
             try
             {
-                var isSucceed = await _accountingService.LoadAccount();
+                using var timeoutTokenSource = new CancellationTokenSource(_requestTimeout);
+                var account = await _accountingService.LoadAccount(timeoutTokenSource.Token);
 
-                await NavigateToMainPageAsync(isSucceed).ConfigureAwait(false);
+                await NavigateToMainPageAsync(account is not null).ConfigureAwait(false);
 
                 return;
             }
@@ -62,40 +68,31 @@ public partial class LogoPage : ContentPage
         if (attemptCount <= 1)
             return;
 
-        var displayMessage = $"{message}. Пробуем ещё раз...";
-
-        await MainThread.InvokeOnMainThreadAsync(() =>
-        {
-            ErrorMessageLabel.Text = displayMessage;
-            ErrorMessageLabel.IsVisible = true;
-        }).ConfigureAwait(false);
+        await DisplayError($"{message}. Пробуем ещё раз...");
 
         await Task.Delay(500);
     }
 
-    private async Task DisplayFinalError()
+    private Task DisplayFinalError()
+    {
+        return DisplayError("Не удаётся подключиться к серверу. Проверьте интернет и перезапустите приложение.");
+    }
+
+    private async Task DisplayError(string message)
     {
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
-            ErrorMessageLabel.Text = "Не удаётся подключиться к серверу. Проверьте интернет и перезапустите приложение.";
+            ErrorMessageLabel.Text = message;
             ErrorMessageLabel.IsVisible = true;
         }).ConfigureAwait(false);
     }
 
-    private async Task NavigateToMainPageAsync(bool isAuthorized)
+    private Task NavigateToMainPageAsync(bool isAuthorized)
     {
-        await MainThread.InvokeOnMainThreadAsync(() =>
-        {
-            ErrorMessageLabel.IsVisible = false;
+        ErrorMessageLabel.IsVisible = false;
 
-            if (Application.Current?.Windows[0].Page is not null)
-            {
-                ContentPage page = isAuthorized
-                    ? _serviceProvider.GetRequiredService<AuthorizedPage>()
-                    : _serviceProvider.GetRequiredService<LoginPage>();
-
-                Application.Current.Windows[0].Page = new NavigationPage(page);
-            }
-        }).ConfigureAwait(false);
+        return isAuthorized
+            ? _navigator.ChangePageTo<AuthorizedPage>(CancellationToken.None)
+            : _navigator.ChangePageTo<LoginPage>(CancellationToken.None);
     }
 }

@@ -1,6 +1,6 @@
-namespace PurseAccountinng.Mobile.Presentation.Extensions;
+﻿namespace PurseAccountinng.Mobile.Presentation.Extensions;
 
-public static class ReasourceDictionaryExtensions
+public static class ResourceDictionaryExtensions
 {
     private static readonly Color _defaultColor = Color.FromArgb("FFFFFF");
 

@@ -1,64 +1,74 @@
 ﻿using PurseAccounting.Mobile.Application.Login;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
+using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;
 using System.Reactive;
 
-namespace PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login
+namespace PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
+
+public class LoginViewModel : ReactiveObject
 {
-    public class LoginViewModel : ReactiveObject
+    private readonly ILoginService _loginService;
+    private readonly INavigator _navigator;
+
+    private string? _login;
+    private string? _password;
+    private bool _canLogin = true;
+
+    public string? Login
     {
-        private readonly ILoginService _loginService;
+        get => _login;
+        set => this.RaiseAndSetIfChanged(ref _login, value, nameof(Login));
+    }
 
-        private string? _login;
-        private string? _password;
-        private bool _canLogin = true;
+    public string? Password
+    {
+        get => _password;
+        set => this.RaiseAndSetIfChanged(ref _password, value, nameof(Password));
+    }
 
-        public string? Login
-        {
-            get => _login;
-            set => this.RaiseAndSetIfChanged(ref _login, value, nameof(Login));
-        }
+    public bool CanLogin
+    {
+        get => _canLogin;
+        set => this.RaiseAndSetIfChanged(ref _canLogin, value, nameof(CanLogin));
+    }
 
-        public string? Password
-        {
-            get => _password;
-            set => this.RaiseAndSetIfChanged(ref _password, value, nameof(Password));
-        }
+    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
-        public bool CanLogin
-        {
-            get => _canLogin;
-            set => this.RaiseAndSetIfChanged(ref _canLogin, value, nameof(CanLogin));
-        }
+    public ReactiveCommand<Unit, Unit> GoogleLoginCommand { get; }
 
-        public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+    public LoginViewModel(ILoginService loginService, INavigator navigator)
+    {
+        _loginService = loginService;
+        _navigator = navigator;
 
-        public ReactiveCommand<Unit, Unit> GoogleLoginCommand { get; }
+        this.WhenAnyValue(x => x.Login).Subscribe(login => UpdateCanLogin(login, Password));
+        this.WhenAnyValue(x => x.Password).Subscribe(password => UpdateCanLogin(Login, password));
 
-        public LoginViewModel(ILoginService loginService)
-        {
-            _loginService = loginService;
+        LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
+        GoogleLoginCommand = ReactiveCommand.CreateFromTask(GoogleLoginAsync);
+    }
 
-            this.WhenAnyValue(x => x.Login).Subscribe(login => UpdateCanLogin(login, Password));
-            this.WhenAnyValue(x => x.Password).Subscribe(password => UpdateCanLogin(Login, password));
+    public async Task LoginAsync()
+    {
+        if (Login == null || Password == null)
+            return;
 
-            LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
-            GoogleLoginCommand = ReactiveCommand.CreateFromTask(GoogleLoginAsync);
-        }
+        var loginResult = await _loginService.Login(Login, Password, CancellationToken.None);
 
-        public async Task LoginAsync()
-        {
-            if (Login != null && Password != null)
-                await _loginService.Login(Login, Password, CancellationToken.None);
-        }
+        if (loginResult != PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization.MailboxAuthorizationEnum.Success)
+            return;
 
-        public Task GoogleLoginAsync()
-        {
-            return Task.CompletedTask;
-        }
+        await _navigator.ChangePageTo<AuthorizedPage>(CancellationToken.None);
+    }
 
-        private void UpdateCanLogin(string? login, string? password)
-        {
-            CanLogin = !string.IsNullOrWhiteSpace(login) && !string.IsNullOrWhiteSpace(password);
-        }
+    public Task GoogleLoginAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    private void UpdateCanLogin(string? login, string? password)
+    {
+        CanLogin = !string.IsNullOrWhiteSpace(login) && !string.IsNullOrWhiteSpace(password);
     }
 }

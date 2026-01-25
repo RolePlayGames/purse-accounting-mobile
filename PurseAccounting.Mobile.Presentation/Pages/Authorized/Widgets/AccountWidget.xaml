@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets.AccountWidget"
+             x:Name="Root">
+    <Border
+        StrokeThickness="0"
+        StrokeShape="RoundRectangle 20"
+        BackgroundColor="{StaticResource WorkBackground}"
+        HeightRequest="100"
+        HorizontalOptions="Fill">
+        
+        <Border.Shadow>
+            <Shadow Brush="#40000000" Offset="0,2" Radius="30" />
+        </Border.Shadow>
+
+        <Grid Margin="14" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+
+            <HorizontalStackLayout Grid.Row="0" Grid.Column="0" VerticalOptions="Start" Spacing="10">
+
+                <icons:RubleIcon VerticalOptions="Start"/>
+
+                <VerticalStackLayout Spacing="2" VerticalOptions="Start">
+                    <Label
+                        Text="{Binding DayAmountText, Source={x:Reference Root}}"
+                        FontFamily="OpenSansRegular"
+                        FontSize="{StaticResource FontSizeLarge}"
+                        TextColor="{StaticResource Gray1}"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding DayAmountFormatted, Source={x:Reference Root}}" />
+                                <Span Text=" ₽" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label
+                        Text="Сумма на день"
+                        FontFamily="OpenSansRegular"
+                        FontSize="{StaticResource FontSizeRegular}"
+                        TextColor="{StaticResource Gray3}"
+                        HorizontalTextAlignment="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Spacing="2">
+
+                <Label
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeMedium}"
+                    TextColor="{StaticResource Gray1}"
+                    HorizontalTextAlignment="End">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding AvailableAmountFormatted, Source={x:Reference Root}}" />
+                            <Span Text=" ₽" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label
+                    Text="Доступная сумма"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeRegular}"
+                    TextColor="{StaticResource Gray3}"
+                    HorizontalTextAlignment="End" />
+
+                <Label
+                    Text="{Binding DaysCountText, Source={x:Reference Root}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeRegular}"
+                    TextColor="{StaticResource Gray1}"
+                    HorizontalTextAlignment="End" />
+            </VerticalStackLayout>
+
+        </Grid>
+    </Border>
+</ContentView>

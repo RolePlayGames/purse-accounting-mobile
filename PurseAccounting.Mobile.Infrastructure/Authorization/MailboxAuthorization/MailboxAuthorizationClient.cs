@@ -1,40 +1,61 @@
-﻿using System.Net.Http.Json;
+﻿using PurseAccounting.Mobile.Infrastructure.AuthCookieStorages;
+using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization
-{
-    internal class MailboxAuthorizationClient : IMailboxAuthorizationClient
-    {
-        private readonly HttpClient _httpClient;
+namespace PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 
-        public MailboxAuthorizationClient(HttpClient httpClient)
+internal class MailboxAuthorizationClient : IMailboxAuthorizationClient
+{
+    private static readonly JsonSerializerOptions _serializerOptions = new() { PropertyNameCaseInsensitive = true };
+
+    private readonly HttpClient _httpClient;
+    private readonly IAuthCookieStorage _authCookieStorage;
+
+    public MailboxAuthorizationClient(HttpClient httpClient, IAuthCookieStorage authCookieStorage)
+    {
+        _httpClient = httpClient;
+        _authCookieStorage = authCookieStorage;
+    }
+
+    public async Task<MailboxAuthorizationEnum> Login(string login, string password, CancellationToken cancellationToken)
+    {
+        var request = new LoginRequest { Login = login, Password = password };
+
+        HttpResponseMessage response;
+
+        try
         {
-            _httpClient = httpClient;
+            response = await _httpClient.PostAsJsonAsync("/api/authorization/mailbox/login", request, cancellationToken);
+        }
+        catch (Exception)
+        {
+            // TODO: add logs here
+            return MailboxAuthorizationEnum.UserNotMatched;
         }
 
-        public async Task<MailboxAuthorizationEnum> Login(string login, string password, CancellationToken cancellationToken)
+        if (response.IsSuccessStatusCode)
         {
-            var request = new LoginRequest { Login = login, Password = password };
-
-            var response = await _httpClient.PostAsJsonAsync("/api/authorization/mailbox/login", request, cancellationToken);
-
-            if (response.IsSuccessStatusCode)
-                return MailboxAuthorizationEnum.Success;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
+            if (response.Headers.TryGetValues("Set-Cookie", out var cookies))
             {
-                var content = await response.Content.ReadAsStringAsync(cancellationToken);
-                var error = JsonSerializer.Deserialize<BaseNotice>(content, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
-                return error.NoticeType switch
-                {
-                    "CannotMatchAnyUser" => MailboxAuthorizationEnum.UserNotMatched,
-                    "UserIsNotConfirmed" => MailboxAuthorizationEnum.UserNotConfirmed,
-                    _ => throw new InvalidOperationException($"Unhandled error response: {error}"),
-                };
+                var cookieHeader = string.Join("; ", cookies.Select(static x => x.Split(';')[0]));
+                await _authCookieStorage.SetCookies(cookieHeader);
             }
 
-            throw new HttpRequestException($"Server error: {response.StatusCode}");
+            return MailboxAuthorizationEnum.Success;
         }
+
+        if (response.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
+        {
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            var error = JsonSerializer.Deserialize<BaseNotice>(content, _serializerOptions);
+
+            return error?.NoticeType switch
+            {
+                "UserIsNotConfirmed" => MailboxAuthorizationEnum.UserNotConfirmed,
+                _ => MailboxAuthorizationEnum.UserNotMatched,
+            };
+        }
+
+        return MailboxAuthorizationEnum.UserNotMatched;
     }
 }

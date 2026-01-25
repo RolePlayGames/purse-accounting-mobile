@@ -5,45 +5,46 @@ using Microsoft.Extensions.Logging;
 using PurseAccounting.Mobile.Application;
 using PurseAccounting.Mobile.Presentation;
 
-namespace PurseAccountinng.Mobile.Presentation
+namespace PurseAccountinng.Mobile.Presentation;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
+        var builder = MauiApp.CreateBuilder();
 
-            builder
-                .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
-                .UseMaterialComponents()
-                .UseMaterialOutlinedMauiIcons()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
-
-            builder.Services
-                .AddApplication()
-                .AddPages()
-                ;
-
-            // Убираем подчёркивание у Entry
-            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
+        builder
+            .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
+            .UseMaterialComponents()
+            .UseMaterialOutlinedMauiIcons()
+            .ConfigureFonts(fonts =>
             {
-#if ANDROID
-                handler.PlatformView.Background = null;
-#elif IOS
-                handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
-#endif
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        builder.Services
+            .AddStaticClassesProxies()
+            .AddApplication()
+            .AddPages()
+            .AddPresentationServices()
+            ;
+
+        // Убираем подчёркивание у Entry
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
+        {
+#if ANDROID
+            handler.PlatformView.Background = null;
+#elif IOS
+            handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+#endif
+        });
+
 #if DEBUG
-            builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }
