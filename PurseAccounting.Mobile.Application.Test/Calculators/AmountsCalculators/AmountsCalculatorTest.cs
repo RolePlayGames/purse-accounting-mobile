@@ -1,9 +1,11 @@
-﻿using PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
+﻿using AutoFixture;
+using PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
 
 namespace PurseAccounting.Mobile.Application.Test.Calculators.AmountsCalculators;
 
 public class AmountsCalculatorTest
 {
+    private static readonly Fixture _fixture = new();
     private readonly AmountsCalculator _amountsCalculator;
 
     public AmountsCalculatorTest()
@@ -23,8 +25,14 @@ public class AmountsCalculatorTest
     [InlineData(-1)]
     public void CalculateAmounts_NonPositiveDaysCount_ThrowsArgumentOutOfRangeException(int daysCount)
     {
-        // Arrange & Act & Assert
-        Assert.ThatCode(() => _amountsCalculator.CalculateAmounts(1, daysCount)).Throws<ArgumentOutOfRangeException>();
+        // Arrange
+        var totalAmount = _fixture.Create<long>();
+
+        // Act
+        var result = _amountsCalculator.CalculateAmounts(totalAmount, daysCount);
+
+        // Assert
+        Assert.That(result).IsEqualTo(new() { DayAmount = totalAmount, RestAmount = 0 });
     }
 
     [Theory]
