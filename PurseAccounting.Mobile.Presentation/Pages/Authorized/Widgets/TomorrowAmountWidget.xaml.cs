@@ -17,13 +17,8 @@ public partial class TomorrowAmountWidget : ContentView
 
     private static void OnTextChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is TomorrowAmountWidget widget && widget.Content is Border border)
-        {
-            if (border.Content is Label label)
-            {
-                label.Text = (string)newValue;
-            }
-        }
+        if (bindable is TomorrowAmountWidget widget && widget.Content is Border border && border.Content is Label label)
+            label.Text = (string)newValue;
     }
 
     public TomorrowAmountWidget()

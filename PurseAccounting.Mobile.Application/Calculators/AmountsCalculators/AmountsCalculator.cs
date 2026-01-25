@@ -4,7 +4,6 @@ namespace PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
 
 internal class AmountsCalculator : IAmountsCalculator
 {
-    /// <inheritdoc/>
     public DailyDistributedAmount CalculateAmounts(long totalAmount, int daysCount)
     {
         if (totalAmount < 0)
