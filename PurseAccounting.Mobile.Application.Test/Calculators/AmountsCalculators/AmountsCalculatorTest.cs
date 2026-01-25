@@ -23,7 +23,7 @@ public class AmountsCalculatorTest
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void CalculateAmounts_NonPositiveDaysCount_ThrowsArgumentOutOfRangeException(int daysCount)
+    public void CalculateAmounts_NonPositiveDaysCount_ReturnsDayAmountEqualsToTotalAmountAndRestAmountEqualsToZero(int daysCount)
     {
         // Arrange
         var totalAmount = _fixture.Create<long>();
