@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using Moq;
 using PurseAccounting.Mobile.Application.AccountFactories;
+using System.Globalization;
 
 namespace PurseAccounting.Mobile.Application.Test.AccountFactories;
 
@@ -17,16 +18,17 @@ public class AccountFactoryTest
     }
 
     [Theory]
-    [InlineData("2025-11-27T10:00:00Z", "2025-11-28", 100L, 50L, 150L, 2)]
-    [InlineData("2025-11-27T10:00:00Z", "2025-11-27", 100L, 0L, 100L, 1)]
-    [InlineData("2025-11-27T10:00:00Z", "2025-11-26", 50L, -20L, 30L, 1)]
-    [InlineData("2025-11-27T00:00:00Z", "2025-12-01", 0L, 100L, 100L, 5)]
-    [InlineData("2025-11-27T12:00:00Z", "2025-11-20", 10L, -15L, -5L, 1)]
-    [InlineData("2025-11-30T23:59:59Z", "2025-11-25", 0L, -100L, -100L, 1)]
-    public void GetAccount_ValidAccount_ReturnsCorrectAccount(string nowString, string plannedDateString, long dayAmount, long restAmount, long expectedAvailableAmount, int expectedDaysCount)
+    [InlineData("2025-11-27T10:00:00Z", "2025-11-28", 100L, 50L, 0, 150L, 2)]
+    [InlineData("2025-11-26T23:59:59Z", "2025-11-28", 100L, 50L, 1, 150L, 2)]
+    [InlineData("2025-11-27T10:00:00Z", "2025-11-27", 100L, 0L, 0, 100L, 1)]
+    [InlineData("2025-11-27T10:00:00Z", "2025-11-26", 50L, -20L, 0, 30L, 0)]
+    [InlineData("2025-11-27T00:00:00Z", "2025-12-01", 0L, 100L, 0, 100L, 5)]
+    [InlineData("2025-11-27T12:00:00Z", "2025-11-20", 10L, -15L, 0, -5L, 0)]
+    [InlineData("2025-11-30T23:59:59Z", "2025-11-25", 0L, -100L, 0, -100L, 0)]
+    public void GetAccount_ValidAccount_ReturnsCorrectAccount(string nowString, string plannedDateString, long dayAmount, long restAmount, short timeZone, long expectedAvailableAmount, int expectedDaysCount)
     {
         // Arrange
-        var now = DateTime.Parse(nowString);
+        var now = DateTime.Parse(nowString, null, DateTimeStyles.AdjustToUniversal);
         var plannedDate = DateTime.Parse(plannedDateString);
 
         _dateTimeServiceMock.Setup(s => s.UtcNow).Returns(now);
@@ -36,7 +38,7 @@ public class AccountFactoryTest
             DayAmount = dayAmount,
             RestAmount = restAmount,
             PlannedDate = plannedDate,
-            TimeZone = _fixture.Create<short>(),
+            TimeZone = timeZone,
         };
 
         // Act

@@ -162,6 +162,9 @@
 	  <MauiXaml Update="Pages\Authorized\UserProfileTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\Widgets\TomorrowAmountWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\LogoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -6,6 +6,7 @@ public partial class AccountingTab : ContentView
     {
         InitializeComponent();
 
-        Widget.BindingContext = ActivatorUtilities.CreateInstance<AccountWidgetViewModel>(serviceProvider);
+        AccountWidget.BindingContext = ActivatorUtilities.CreateInstance<AccountWidgetViewModel>(serviceProvider);
+        TomorrowAmountWidget.BindingContext = ActivatorUtilities.CreateInstance<TomorrowAmountWidgetViewModel>(serviceProvider);
     }
 }

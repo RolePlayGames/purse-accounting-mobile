@@ -11,7 +11,7 @@ internal static class AmountFormatter
     /// </summary>
     /// <param name="amount">Not formatted amount</param>
     /// <returns>Formatted amount string</returns>
-    public static string FormatAmount(int amount)
+    public static string FormatAmount(long amount)
     {
         if (amount % 100 == 0)
         {
