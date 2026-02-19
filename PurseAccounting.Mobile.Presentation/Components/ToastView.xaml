@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.ToastView"
+             x:Name="root"
+             Opacity="0"
+             IsVisible="False">
+
+    <Border
+        Background="{Binding BackgroundColor, Source={x:Reference root}}"
+        StrokeThickness="0"
+        StrokeShape="RoundRectangle 10"
+        Padding="0,6">
+        <!-- вертикальные отступы: 6 сверху и снизу -->
+
+        <Label
+            Text="{Binding Text, Source={x:Reference root}}"
+            TextColor="White"
+            FontSize="16"
+            FontFamily="OpenSansRegular"
+            HorizontalTextAlignment="Start"
+            Margin="19,0,0,0" />
+        <!-- отступ слева 19 -->
+    </Border>
+</ContentView>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chips="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
+             xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
+             xmlns:transactions="clr-namespace:PurseAccounting.Mobile.Infrastructure.Transactions;assembly=PurseAccounting.Mobile.Infrastructure"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets.TransactionAttributesWidget"
+             x:Name="Root">
+    <Border
+        StrokeThickness="0"
+        StrokeShape="RoundRectangle 20"
+        BackgroundColor="{StaticResource WorkBackground}"
+        Padding="10,24,10,24"
+        HorizontalOptions="Fill">
+        
+        <Border.Shadow>
+            <Shadow Brush="#40000000" Offset="0,2" Radius="30" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="20">
+            <chips:DualChipsSelector
+                x:Name="ChangeTypeSelector"
+                Title="Тип изменения"
+                LeftText="Списание"
+                LeftValue="{x:Static transactions:TransactionChangeType.Withdrawal}"
+                RightText="Начисление"
+                RightValue="{x:Static transactions:TransactionChangeType.Income}"
+                SelectedValue="{Binding TransactionChangeType, Mode=TwoWay}" />
+            <chips:DualChipsSelector
+                x:Name="TransactionTypeSelector"
+                Title="Тип транзакции"
+                LeftText="Ежедневная"
+                LeftValue="{x:Static transactions:TransactionChangeAmountType.Daily}"
+                RightText="Общая"
+                RightValue="{x:Static transactions:TransactionChangeAmountType.Total}"
+                SelectedValue="{Binding TransactionChangeAmountType, Mode=TwoWay}" />
+            <categories:CategorySelector
+                x:Name="CategorySelector"
+                HeaderText="Категория"
+                ItemsSource="{Binding Categories}"
+                SelectedItemId="{Binding SelectedCategoryId}"/>
+        </VerticalStackLayout>
+        
+    </Border>
+</ContentView>

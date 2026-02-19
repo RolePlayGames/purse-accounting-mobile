@@ -1,6 +1,6 @@
 ﻿namespace PurseAccounting.Mobile.Infrastructure.Accounting;
 
-public record Account
+public record AccountDto
 {
     public required long RestAmount { get; init; }
 

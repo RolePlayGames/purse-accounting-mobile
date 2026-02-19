@@ -8,5 +8,9 @@ public partial class AccountingTab : ContentView
 
         AccountWidget.BindingContext = ActivatorUtilities.CreateInstance<AccountWidgetViewModel>(serviceProvider);
         TomorrowAmountWidget.BindingContext = ActivatorUtilities.CreateInstance<TomorrowAmountWidgetViewModel>(serviceProvider);
+
+        var transactionAttributesViewModel = ActivatorUtilities.CreateInstance<TransactionAttributesViewModel>(serviceProvider);
+        TransactionAttributesWidget.BindingContext = transactionAttributesViewModel;
+        TransactionAmountInput.BindingContext = transactionAttributesViewModel;
     }
 }

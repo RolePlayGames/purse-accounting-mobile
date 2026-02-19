@@ -48,11 +48,11 @@ public partial class LogoPage : ContentPage
 
                 return;
             }
-            catch (TaskCanceledException)
+            catch (TaskCanceledException ex)
             {
                 await HandleError("Сервер долго не отвечает", attemptCount);
             }
-            catch
+            catch (Exception ex)
             {
                 await HandleError("Ошибка подключения", attemptCount);
             }

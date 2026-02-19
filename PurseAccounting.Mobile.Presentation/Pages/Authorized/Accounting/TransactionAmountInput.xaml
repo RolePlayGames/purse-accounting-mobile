@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting.TransactionAmountInput">
+
+    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10" VerticalOptions="Center">
+
+        <Border
+            Grid.Column="0"
+            StrokeThickness="0"
+            Background="{StaticResource WorkBackground}"
+            StrokeShape="RoundRectangle 30"
+            HeightRequest="60">
+            
+            <Border.Shadow>
+                <Shadow Radius="30" Opacity="0.25" Offset="0,2" />
+            </Border.Shadow>
+
+            <Entry
+                x:Name="AmountEntry"
+                Placeholder="Введите сумму"
+                TextColor="{StaticResource Gray1}"
+                PlaceholderColor="{StaticResource Gray2}"
+                FontFamily="OpenSansRegular"
+                FontSize="{StaticResource FontSizeRegular}"
+                VerticalOptions="Center"
+                Margin="20,0,0,0"
+                HorizontalTextAlignment="Start"
+                TextChanged="OnAmountTextChanged" />
+        </Border>
+
+        <Border
+            x:Name="SubmitButton"
+            Grid.Column="1"
+            WidthRequest="60"
+            HeightRequest="60"
+            StrokeThickness="0"
+            Background="{StaticResource Purple}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow Radius="30" Opacity="0.25" Offset="0,2" />
+            </Border.Shadow>
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnSubmitTapped" />
+            </Border.GestureRecognizers>
+
+            <Path
+                x:Name="SubmitIcon"
+                Data="M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7z"
+                Fill="{StaticResource WorkBackground}"
+                StrokeThickness="0"
+                Scale="1.2"
+                TranslationX="-1"
+                TranslationY="-3.5"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+        </Border>
+
+    </Grid>
+</ContentView>

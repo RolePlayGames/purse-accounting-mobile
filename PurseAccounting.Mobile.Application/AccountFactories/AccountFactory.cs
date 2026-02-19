@@ -1,4 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.Models;
+using PurseAccounting.Mobile.Infrastructure.Accounting;
 
 namespace PurseAccounting.Mobile.Application.AccountFactories;
 
@@ -11,13 +12,21 @@ internal class AccountFactory : IAccountFactory
         _dateTimeService = dateTimeService;
     }
 
-    public Account CreateAccount(Infrastructure.Accounting.Account account)
+    public Account CreateAccount(AccountDto account)
     {
         return new(_dateTimeService)
         {
             DailyDistributedAmount = new() { DayAmount = account.DayAmount, RestAmount = account.RestAmount },
             PlannedDate = new() { Value = account.PlannedDate },
             TimeZone = account.TimeZone,
+        };
+    }
+
+    public Account CreateAccount(Account account, DailyDistributedAmount amount)
+    {
+        return account with
+        {
+            DailyDistributedAmount = amount,
         };
     }
 }

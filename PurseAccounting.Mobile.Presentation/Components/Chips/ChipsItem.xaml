@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Chips.ChipsItem"
+             x:Name="Root">
+
+    <Border
+        x:Name="ChipBorder"
+        HeightRequest="40"
+        WidthRequest="130"
+        StrokeThickness="0"
+        BackgroundColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsBackgroundColorConverter}}"
+        Stroke="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsBackgroundColorConverter}}"
+        Padding="0"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="30" />
+        </Border.StrokeShape>
+
+        <Label
+            Text="{Binding Source={x:Reference Root}, Path=Text}"
+            FontFamily="OpenSansSemibold"
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"
+            TextColor="{Binding Source={x:Reference Root}, Path=IsActive, Converter={StaticResource BoolToChipsTextColorConverter}}" />
+    </Border>
+    
+</ContentView>

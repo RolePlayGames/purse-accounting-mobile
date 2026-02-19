@@ -1,10 +1,12 @@
 ﻿using PurseAccounting.Mobile.Application.Models;
+using PurseAccounting.Mobile.Infrastructure.Accounting.TransactionCategories;
 
 namespace PurseAccounting.Mobile.Application.Context;
 
 internal class ApplicationContext : IApplicationContext
 {
     private Account? _account;
+    private IReadOnlyCollection<TransactionCategoryDto> _transactionCategories = [];
 
     public Account? Account
     {
@@ -25,5 +27,26 @@ internal class ApplicationContext : IApplicationContext
         }
     }
 
-    public event AccountChangedEventHandler? AccountChanged;
+    public IReadOnlyCollection<TransactionCategoryDto> TransactionCategories
+    {
+        get
+        {
+            return _transactionCategories;
+        }
+
+        set
+        {
+            var oldValue = _transactionCategories;
+
+            if (oldValue.Count == value.Count && oldValue.Except(value).Any())
+                return;
+
+            _transactionCategories = value;
+            TransactionCategoriesChanged?.Invoke(oldValue, value);
+        }
+    }
+
+    public event ValueChangedEventHandler<Account>? AccountChanged;
+
+    public event ValueChangedEventHandler<IReadOnlyCollection<TransactionCategoryDto>>? TransactionCategoriesChanged;
 }
