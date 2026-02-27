@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F3F7FA</color>
-    <color name="colorPrimaryDark">#F3F7FA</color>
-    <color name="colorAccent">#F3F7FA</color>
-	<style name="SplashTheme" parent="@style/Maui.SplashTheme">
-		<item name="android:statusBarColor">#F3F7FA</item>
-		<item name="android:navigationBarColor">#F3F7FA</item>
-		<item name="android:windowLightStatusBar">true</item>
-	</style>
+    <color name="colorPrimary">#5A5386</color>
+    <color name="colorPrimaryDark">#5A5386</color>
+    <color name="colorAccent">#5A5386</color>
+
+    <style name="SplashTheme" parent="@style/Maui.SplashTheme">
+        <item name="android:statusBarColor">#F3F7FA</item>
+        <item name="android:navigationBarColor">#F3F7FA</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="MainTheme" parent="@style/Maui.MainTheme">
+        <item name="colorPrimary">#5A5386</item>
+        <item name="colorPrimaryDark">#5A5386</item>
+        <item name="colorAccent">#5A5386</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+    </style>
 </resources>

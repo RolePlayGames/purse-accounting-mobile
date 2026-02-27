@@ -1,6 +1,6 @@
 ﻿namespace PurseAccounting.Mobile.Infrastructure.ApiResults;
 
-public record FailureResult<T> : ApiResult<T>
+public record FailureResult : ApiResult
 {
     public Exception Exception { get; }
 
@@ -9,8 +9,7 @@ public record FailureResult<T> : ApiResult<T>
         Exception = exception;
     }
 
-    public override TResult Match<TResult>(
-        Func<T, TResult> onSuccess,
-        Func<Exception, TResult> onFailure) =>
-        onFailure(Exception);
+    public override TResult Match<TResult>(Func<TResult> onSuccess, Func<Exception, TResult> onFailure) => onFailure(Exception);
+
+    public override Task<TResult> Await<TResult>(Func<Task<TResult>> onSuccess, Func<Exception, Task<TResult>> onFailure) => onFailure(Exception);
 }

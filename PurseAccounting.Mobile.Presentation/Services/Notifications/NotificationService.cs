@@ -7,11 +7,11 @@ internal class NotificationService : INotificationService
     private static readonly Color SuccessColor = Color.FromArgb("#4CAF50");
     private static readonly Color ErrorColor = Color.FromArgb("#F44336");
 
-    public void ShowSuccess(string message) => Show(message, SuccessColor);
+    public void ShowSuccess(string message, double bottomMargin = 0) => Show(message, bottomMargin, SuccessColor);
 
-    public void ShowError(string message) => Show(message, ErrorColor);
+    public void ShowError(string message, double bottomMargin = 0) => Show(message, bottomMargin, ErrorColor);
 
-    private static void Show(string message, Color color)
+    private static void Show(string message, double bottomMargin, Color color)
     {
         MainThread.InvokeOnMainThreadAsync(async () =>
         {
@@ -20,7 +20,7 @@ internal class NotificationService : INotificationService
                 Text = message,
                 BackgroundColor = color,
             };
-            await toast.ShowAsync();
+            await toast.ShowAsync(bottomMargin);
         });
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PurseAccounting.Mobile.Infrastructure.Accounting.TransactionCategories;
+﻿namespace PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 
 public record TransactionCategoryDto
 {

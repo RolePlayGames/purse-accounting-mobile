@@ -11,15 +11,13 @@
         StrokeThickness="0"
         StrokeShape="RoundRectangle 10"
         Padding="0,6">
-        <!-- вертикальные отступы: 6 сверху и снизу -->
 
         <Label
             Text="{Binding Text, Source={x:Reference root}}"
             TextColor="White"
-            FontSize="16"
+            FontSize="{StaticResource FontSizeRegular}"
             FontFamily="OpenSansRegular"
             HorizontalTextAlignment="Start"
             Margin="19,0,0,0" />
-        <!-- отступ слева 19 -->
     </Border>
 </ContentView>

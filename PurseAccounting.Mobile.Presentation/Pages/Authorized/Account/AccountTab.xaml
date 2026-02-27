@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:widgets="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets"
+             xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab"
+             Margin="15,18,15,0">
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+        <widgets:AccountWidget
+            x:Name="AccountWidget"
+            Grid.Row="0"
+            DayAmount="{Binding DayAmount}"
+            AvailableAmount="{Binding AvaliableAmount}"
+            DaysCount="{Binding DaysCount}"/>
+        <local:AccountAttributesWidget
+            x:Name="AccountAttributesWidget"
+            Grid.Row="1"
+            Margin="0,12,0,0"
+            TotalAmount="{Binding TotalAmount}"
+            PlannedDate="{Binding PlannedDate}"
+            TimeZoneOffset="{Binding TimeZoneOffset}"
+            SaveCommand="{Binding SaveCommand}"
+            IsSaveEnabled="{Binding IsSaveEnabled}"/>
+    </Grid>
+</ContentView>

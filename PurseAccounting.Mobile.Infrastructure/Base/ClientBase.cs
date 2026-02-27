@@ -1,4 +1,5 @@
 ﻿using PurseAccounting.Mobile.Infrastructure.ApiResults;
+using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.ServerResults;
 using System.Net.Http.Json;
 
@@ -11,6 +12,32 @@ internal abstract class ClientBase
     protected delegate Task<HttpResponseMessage> ExternalCall(string url, object request, CancellationToken cancellationToken);
 
     protected delegate Task<ApiResult<T>> ParseError<T>(HttpResponseMessage message, CancellationToken cancellationToken);
+
+    protected static async Task<ApiResult> SafeCall(ExternalCall call, string url, object request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await call(url, request, cancellationToken).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return ApiResult.Success();
+            }
+
+            var errorBody = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            var message = $"Ошибка сервера: {(int)response.StatusCode}";
+
+            if (!string.IsNullOrWhiteSpace(errorBody))
+                message += $" — {errorBody[..Math.Min(_errorBodyPrerenderMaxSize, errorBody.Length)]}...";
+
+            return ApiResult.Failure(new HttpRequestException(message));
+        }
+        catch (Exception ex)
+        {
+            return ApiResult.Failure(ex);
+        }
+    }
 
     protected static Task<ApiResult<T>> SafeCall<T>(ExternalCall call, string url, object request, CancellationToken cancellationToken)
     {

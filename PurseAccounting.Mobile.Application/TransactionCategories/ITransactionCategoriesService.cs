@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Infrastructure.Accounting.TransactionCategories;
+﻿using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 
 namespace PurseAccounting.Mobile.Application.TransactionCategories;
 

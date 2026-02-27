@@ -1,12 +1,12 @@
 ﻿namespace PurseAccounting.Mobile.Infrastructure.ApiResults;
 
-public abstract record ApiResult<T>
+public abstract record ApiResult
 {
-    public static ApiResult<T> Success(T value) => new SuccessResult<T>(value);
+    public static ApiResult Success() => new SuccessResult();
 
-    public static ApiResult<T> Failure(Exception exception) => new FailureResult<T>(exception);
+    public static ApiResult Failure(Exception exception) => new FailureResult(exception);
 
-    public abstract TResult Match<TResult>(
-        Func<T, TResult> onSuccess,
-        Func<Exception, TResult> onFailure);
+    public abstract TResult Match<TResult>(Func<TResult> onSuccess, Func<Exception, TResult> onFailure);
+
+    public abstract Task<TResult> Await<TResult>(Func<Task<TResult>> onSuccess, Func<Exception, Task<TResult>> onFailure);
 }

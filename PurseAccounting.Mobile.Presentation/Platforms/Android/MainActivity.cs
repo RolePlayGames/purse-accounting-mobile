@@ -4,7 +4,7 @@ using Android.Content.PM;
 namespace PurseAccountinng.Mobile.Presentation
 {
     [Activity(
-        Theme = "@style/SplashTheme",
+        Theme = "@style/MainTheme",
         MainLauncher = true,
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density,

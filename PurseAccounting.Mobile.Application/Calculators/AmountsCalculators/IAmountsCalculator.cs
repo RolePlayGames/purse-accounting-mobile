@@ -5,7 +5,7 @@ namespace PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
 /// <summary>
 /// Manages amounts calculation logic
 /// </summary>
-internal interface IAmountsCalculator
+public interface IAmountsCalculator
 {
     /// <summary>
     /// Calculates day amount and rest amount for date interval

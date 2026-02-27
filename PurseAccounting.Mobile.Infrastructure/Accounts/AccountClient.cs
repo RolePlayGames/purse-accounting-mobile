@@ -1,8 +1,10 @@
-﻿using System.Net.Http.Json;
+﻿using PurseAccounting.Mobile.Infrastructure.ApiResults;
+using PurseAccounting.Mobile.Infrastructure.Base;
+using System.Net.Http.Json;
 
-namespace PurseAccounting.Mobile.Infrastructure.Accounting;
+namespace PurseAccounting.Mobile.Infrastructure.Accounts;
 
-internal class AccountClient : IAccountClient
+internal class AccountClient : ClientBase, IAccountClient
 {
     private readonly HttpClient _httpClient;
 
@@ -19,5 +21,10 @@ internal class AccountClient : IAccountClient
             return await response.Content.ReadFromJsonAsync<AccountDto>(ct);
 
         return null;
+    }
+
+    public Task<ApiResult> UpdateAccount(UpdateAccountRequest request, CancellationToken ct)
+    {
+        return SafeCall(_httpClient.PutAsJsonAsync, "api/accounting/account", request, ct);
     }
 }

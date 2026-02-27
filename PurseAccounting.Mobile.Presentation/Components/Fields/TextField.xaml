@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:FloatingFieldBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Fields"
+                         x:Class="PurseAccountinng.Mobile.Presentation.Components.Fields.TextField">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="-8">
+
+        <Label x:Name="TitleLabel"
+               Grid.Row="0"
+               FontSize="{StaticResource FontSizeXSmall}"
+               TextColor="{StaticResource Gray3}"
+               BackgroundColor="{StaticResource WorkBackground}"
+               VerticalOptions="Start"
+               Margin="20,-10,0,0"
+               Padding="4,0"
+               HorizontalOptions="Start"
+               ZIndex="1"
+               IsVisible="True"
+               Opacity="0"
+               TranslationY="8" />
+
+        <Border x:Name="FieldBorder"
+                Grid.Row="1"
+                Stroke="{StaticResource InactiveElementFill}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource WorkBackground}"
+                HeightRequest="{StaticResource InputFieldHeight}">
+            
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30" />
+            </Border.StrokeShape>
+            
+            <Entry x:Name="FieldEntry"
+                   TextColor="{StaticResource Gray1}"
+                   PlaceholderColor="{StaticResource Gray2}"
+                   FontSize="{StaticResource FontSizeRegular}"
+                   FontFamily="OpenSansRegular"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Fill"
+                   Margin="16,0"
+                   BackgroundColor="Transparent"
+                   ClearButtonVisibility="Never" />
+        </Border>
+
+    </Grid>
+</local:FloatingFieldBase>
