@@ -2,6 +2,6 @@
 {
     public interface IMailboxAuthorizationClient
     {
-        Task<MailboxAuthorizationEnum> Login(string login, string password, CancellationToken cancellationToken);
+        Task<MailboxAuthorizationEnum> Login(string email, string password, CancellationToken cancellationToken);
     }
 }

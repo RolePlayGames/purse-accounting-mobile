@@ -81,7 +81,7 @@
                     <BoxView Style="{StaticResource MenuDivider}" />
                     <components:MenuItem Title="Категории" IconSource="categories_inactive.png" Clicked="OnCategoriesClicked" />
                     <BoxView Style="{StaticResource MenuDivider}" />
-                    <components:MenuItem Title="Выйти" IconSource="logout_inactive.png" Clicked="OnLogoutClicked"/>
+                    <components:MenuItem Title="Выйти" IconSource="logout_inactive.png" Command="{Binding LogoutCommand}"/>
                 </VerticalStackLayout>
             </Border>
         </AbsoluteLayout>

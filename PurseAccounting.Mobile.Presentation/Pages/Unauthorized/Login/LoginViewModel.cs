@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Application.Login;
+﻿using PurseAccounting.Mobile.Application.Authorization;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;
@@ -8,7 +8,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
 
 public class LoginViewModel : ReactiveObject
 {
-    private readonly ILoginService _loginService;
+    private readonly IAuthorizationService _authorizationService;
     private readonly INavigator _navigator;
 
     private string? _login;
@@ -37,9 +37,9 @@ public class LoginViewModel : ReactiveObject
 
     public ReactiveCommand<Unit, Unit> GoogleLoginCommand { get; }
 
-    public LoginViewModel(ILoginService loginService, INavigator navigator)
+    public LoginViewModel(IAuthorizationService authorizationService, INavigator navigator)
     {
-        _loginService = loginService;
+        _authorizationService = authorizationService;
         _navigator = navigator;
 
         this.WhenAnyValue(x => x.Login).Subscribe(login => UpdateCanLogin(login, Password));
@@ -54,7 +54,7 @@ public class LoginViewModel : ReactiveObject
         if (Login == null || Password == null)
             return;
 
-        var loginResult = await _loginService.Login(Login, Password, CancellationToken.None);
+        var loginResult = await _authorizationService.LoginByEmail(Login, Password, CancellationToken.None);
 
         if (loginResult != PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization.MailboxAuthorizationEnum.Success)
             return;

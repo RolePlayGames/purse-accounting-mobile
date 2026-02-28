@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PurseAccounting.Mobile.Application.AccountFactories;
 using PurseAccounting.Mobile.Application.Accounts;
+using PurseAccounting.Mobile.Application.Authorization;
 using PurseAccounting.Mobile.Application.Calculators.AmountsCalculators;
 using PurseAccounting.Mobile.Application.Calculators.AmountsDistributionCalculators;
 using PurseAccounting.Mobile.Application.Calculators.DaysCountCalculators;
 using PurseAccounting.Mobile.Application.Calculators.TomorrowAmountCalculators;
 using PurseAccounting.Mobile.Application.Context;
-using PurseAccounting.Mobile.Application.Login;
 using PurseAccounting.Mobile.Application.TransactionCategories;
 using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure;
@@ -23,8 +23,8 @@ namespace PurseAccounting.Mobile.Application
                 .AddScoped<IAccountFactory, AccountFactory>()
                 .AddScoped<IAmountsCalculator, AmountsCalculator>()
                 .AddScoped<IAmountsDistributionCalculator, AmountsDistributionCalculator>()
+                .AddScoped<IAuthorizationService, AuthorizationService>()
                 .AddScoped<IDaysCountCalculators, DaysCountCalculators>()
-                .AddScoped<ILoginService, LoginService>()
                 .AddScoped<ITomorrowAmountCalculator, TomorrowAmountCalculator>()
                 .AddScoped<ITransactionCategoriesService, TransactionCategoriesService>()
                 .AddScoped<ITransactionService, TransactionService>()

@@ -17,9 +17,9 @@ internal class MailboxAuthorizationClient : IMailboxAuthorizationClient
         _authCookieStorage = authCookieStorage;
     }
 
-    public async Task<MailboxAuthorizationEnum> Login(string login, string password, CancellationToken cancellationToken)
+    public async Task<MailboxAuthorizationEnum> Login(string email, string password, CancellationToken cancellationToken)
     {
-        var request = new LoginRequest { Login = login, Password = password };
+        var request = new LoginRequest { Login = email, Password = password };
 
         HttpResponseMessage response;
 

@@ -54,11 +54,13 @@ public partial class AuthorizedPage : ContentPage
     {
         InitializeComponent();
 
-        _accountingTab = new() { Header = "Добавить транзакцию", Tab = ActivatorUtilities.CreateInstance<AccountingTab>(serviceProvider) };
+        _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab(serviceProvider) };
         _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
-        _accountTab = new() { Header = "Настройка счета", Tab = new PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab(serviceProvider) };
+        _accountTab = new() { Header = "Настройка счета", Tab = new Account.AccountTab(serviceProvider) };
         _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
         _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
+
+        BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
         SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
@@ -149,8 +151,7 @@ public partial class AuthorizedPage : ContentPage
                 {
                     _directionHistory.Dequeue();
                 }
-
-                if (_directionHistory.Count == _directionStabilityLimit && _directionHistory.All(x => x == currentDirection))
+                else if (_directionHistory.Count == _directionStabilityLimit && _directionHistory.All(x => x == currentDirection))
                 {
                     _lastStableDirection = currentDirection;
 
@@ -230,11 +231,6 @@ public partial class AuthorizedPage : ContentPage
         CloseSheetAnimated();
         SetActiveTab(_categoriesTab);
         LastActiveTabButton = null;
-    }
-
-    private void OnLogoutClicked(object sender, EventArgs e)
-    {
-        CloseSheetAnimated();
     }
 
     private void LastActiveTabButtonActive(bool isActive)
