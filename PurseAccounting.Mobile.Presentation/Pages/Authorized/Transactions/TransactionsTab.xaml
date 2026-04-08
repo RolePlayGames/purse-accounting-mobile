@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
+             xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions.TransactionsTab">
     <VerticalStackLayout>
         <Border
@@ -21,9 +22,16 @@
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
         </Border>
         
-        <Label 
-            Text="Transactions tab!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <CollectionView 
+            ItemsSource="{Binding GroupedTransactions}"
+            VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <transactions:TransactionGroup 
+                        Group="{Binding .}"
+                        Categories="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=BindingContext.Categories}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentView>
