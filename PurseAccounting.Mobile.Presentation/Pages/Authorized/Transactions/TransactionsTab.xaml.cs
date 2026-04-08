@@ -1,4 +1,4 @@
-namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
+namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
 public partial class TransactionsTab : ContentView
 {

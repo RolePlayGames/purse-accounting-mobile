@@ -5,6 +5,7 @@ using PurseAccounting.Mobile.Infrastructure.Authorization;
 using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Daily;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Total;
 
@@ -24,6 +25,7 @@ namespace PurseAccounting.Mobile.Infrastructure
                 .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>()
                 .AddScoped<ITotalTransactionClient, TotalTransactionClient>()
                 .AddScoped<ITransactionCategoryClient, TransactionCategoryClient>()
+                .AddScoped<ITransactionsClient, TransactionsClient>()
                 .AddTransient<IAuthCookieStorage, AuthCookieStorage>()
                 .AddTransient<IHttpClientInitializer, HttpClientInitializer>()
                 ;

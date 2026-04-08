@@ -1,5 +1,6 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Components;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
