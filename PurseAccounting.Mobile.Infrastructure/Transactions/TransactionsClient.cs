@@ -4,38 +4,28 @@ namespace PurseAccounting.Mobile.Infrastructure.Transactions;
 
 internal class TransactionsClient : ITransactionsClient
 {
+    private static readonly Uri _baseUri = new("api/accounting/transactions", UriKind.Relative);
     private readonly HttpClient _httpClient;
-    private static readonly Uri BaseUri = new("api/accounting/transactions", UriKind.Relative);
 
     public TransactionsClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<IReadOnlyCollection<TransactionInfo>> GetTransactions(
-        IReadOnlyCollection<long>? categoryIDs = null,
-        CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<TransactionInfo>> GetTransactions(IReadOnlyCollection<long>? categoryIds = null, CancellationToken cancellationToken = default)
     {
         try
         {
-            Uri uri = BuildUri(categoryIDs);
+            var uri = BuildUriWithCategories(categoryIds);
 
             var response = await _httpClient.GetAsync(uri, cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
                 var transactions = await response.Content.ReadFromJsonAsync<IReadOnlyCollection<TransactionInfo>>(cancellationToken);
-                
+
                 if (transactions is not null)
-                {
-                    return transactions.Select(t => new TransactionInfo(
-                        t.ID,
-                        t.Amount,
-                        t.Date,
-                        Enum.Parse<TransactionChangeAmountType>(t.ChangeAmountType).ToString(),
-                        t.TransactionCategoryID
-                    )).ToList();
-                }
+                    return transactions;
             }
         }
         catch (Exception)
@@ -46,14 +36,12 @@ internal class TransactionsClient : ITransactionsClient
         return [];
     }
 
-    private static Uri BuildUri(IReadOnlyCollection<long>? categoryIDs)
+    private static Uri BuildUriWithCategories(IReadOnlyCollection<long>? categoryIds)
     {
-        if (categoryIDs is null || categoryIDs.Count == 0)
-        {
-            return BaseUri;
-        }
+        if (categoryIds is null || categoryIds.Count == 0)
+            return _baseUri;
 
-        var queryString = string.Join("&", categoryIDs.Select(id => $"categoryIDs={id}"));
-        return new Uri($"{BaseUri}?{queryString}", UriKind.Relative);
+        var queryString = string.Join("&", categoryIds.Select(id => $"categoryIDs={id}"));
+        return new Uri($"{_baseUri}?{queryString}", UriKind.Relative);
     }
 }
