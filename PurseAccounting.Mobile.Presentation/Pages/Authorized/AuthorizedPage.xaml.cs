@@ -55,7 +55,7 @@ public partial class AuthorizedPage : ContentPage
         InitializeComponent();
 
         _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab(serviceProvider) };
-        _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
+        _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab(serviceProvider) };
         _accountTab = new() { Header = "Настройка счета", Tab = new Account.AccountTab(serviceProvider) };
         _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
         _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };

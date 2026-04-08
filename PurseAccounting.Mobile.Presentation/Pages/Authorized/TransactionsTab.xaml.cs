@@ -2,8 +2,11 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 
 public partial class TransactionsTab : ContentView
 {
-    public TransactionsTab()
+    public TransactionsTab(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+
+        var transactionsTabViewModel = ActivatorUtilities.CreateInstance<TransactionsTabViewModel>(serviceProvider);
+        BindingContext = transactionsTabViewModel;
     }
 }
