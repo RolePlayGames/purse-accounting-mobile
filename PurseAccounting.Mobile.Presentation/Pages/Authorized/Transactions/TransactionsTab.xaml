@@ -23,8 +23,10 @@
         </Border>
         
         <CollectionView 
-            ItemsSource="{Binding GroupedTransactions}"
-            VerticalOptions="FillAndExpand">
+            ItemsSource="{Binding DisplayedGroups}"
+            VerticalOptions="FillAndExpand"
+            RemainingItemsThreshold="5"
+            RemainingItemsThresholdReached="OnLoadMoreRequested">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <transactions:TransactionGroup 

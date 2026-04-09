@@ -4,6 +4,7 @@ using PurseAccounting.Mobile.Application.TransactionCategories;
 using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using ReactiveUI;
+using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
@@ -13,9 +14,14 @@ public class TransactionsTabViewModel : ReactiveObject
     private IList<TransactionCategoryDto> _categories = [];
     private IList<long> _selectedCategoryIds = [];
     private IReadOnlyCollection<IGrouping<DateTime, DateWithTimeZone>>? _groupedTransactions;
+    private readonly ObservableCollection<IGrouping<DateTime, DateWithTimeZone>> _displayedGroups = [];
     private CancellationTokenSource? _cancellationTokenSource;
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
+    private int _currentGroupsCount;
+    private bool _isUpdating;
+    private const int InitialGroupsCount = 5;
+    private const int LoadMoreStep = 5;
 
     public IList<TransactionCategoryDto> Categories
     {
@@ -39,6 +45,11 @@ public class TransactionsTabViewModel : ReactiveObject
     {
         get => _groupedTransactions;
         set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
+    }
+
+    public ObservableCollection<IGrouping<DateTime, DateWithTimeZone>> DisplayedGroups
+    {
+        get => _displayedGroups;
     }
 
     public TransactionsTabViewModel(
@@ -96,6 +107,7 @@ public class TransactionsTabViewModel : ReactiveObject
                 if (!cancellationToken.IsCancellationRequested)
                 {
                     GroupedTransactions = transactions;
+                    ResetDisplayedGroups();
                 }
             }
             catch (OperationCanceledException)
@@ -103,5 +115,62 @@ public class TransactionsTabViewModel : ReactiveObject
                 // Запрос был отменён, игнорируем
             }
         }, cancellationToken);
+    }
+
+    private void ResetDisplayedGroups()
+    {
+        if (_isUpdating)
+            return;
+
+        _isUpdating = true;
+        try
+        {
+            _displayedGroups.Clear();
+            _currentGroupsCount = 0;
+
+            if (_groupedTransactions == null || _groupedTransactions.Count == 0)
+            {
+                return;
+            }
+
+            var groupsToLoad = Math.Min(InitialGroupsCount, _groupedTransactions.Count);
+
+            foreach (var group in _groupedTransactions.Take(groupsToLoad))
+            {
+                _displayedGroups.Add(group);
+            }
+
+            _currentGroupsCount = groupsToLoad;
+        }
+        finally
+        {
+            _isUpdating = false;
+        }
+    }
+
+    public void LoadMoreGroups()
+    {
+        if (_isUpdating || _groupedTransactions == null)
+            return;
+
+        if (_currentGroupsCount >= _groupedTransactions.Count)
+            return;
+
+        _isUpdating = true;
+        try
+        {
+            var groupsToLoad = Math.Min(LoadMoreStep, _groupedTransactions.Count - _currentGroupsCount);
+
+            for (int i = 0; i < groupsToLoad; i++)
+            {
+                _displayedGroups.Add(_groupedTransactions.ElementAt(_currentGroupsCount + i));
+            }
+
+            _currentGroupsCount += groupsToLoad;
+        }
+        finally
+        {
+            _isUpdating = false;
+        }
     }
 }
