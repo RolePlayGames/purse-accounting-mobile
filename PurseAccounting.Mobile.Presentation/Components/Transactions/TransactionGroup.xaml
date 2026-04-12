@@ -30,18 +30,15 @@
             <!-- Список транзакций -->
             <VerticalStackLayout 
                 Spacing="15"
-                Margin="0,15,0,0">
-                
-                <BindableLayout 
-                    ItemsSource="{Binding Transactions, Source={x:Reference RootView}}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <transactions:TransactionRow 
-                                Transaction="{Binding .}"
-                                Categories="{Binding Source={x:Reference RootView}, Path=Categories}" />
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </BindableLayout>
+                Margin="0,15,0,0"
+                BindableLayout.ItemsSource="{Binding Transactions, Source={x:Reference RootView}}">                
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <transactions:TransactionRow 
+                            Transaction="{Binding .}"
+                            Categories="{Binding Source={x:Reference RootView}, Path=Categories}" />
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

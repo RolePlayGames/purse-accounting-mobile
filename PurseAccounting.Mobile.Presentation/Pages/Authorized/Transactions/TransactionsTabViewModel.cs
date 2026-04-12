@@ -7,38 +7,33 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 
-namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
+namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
 public class TransactionsTabViewModel : ReactiveObject
 {
-    private IList<TransactionCategoryDto> _categories = [];
-    private IList<long> _selectedCategoryIds = [];
-    private IReadOnlyCollection<IGrouping<DateTime, DateWithTimeZone>>? _groupedTransactions;
-    private readonly ObservableCollection<IGrouping<DateTime, DateWithTimeZone>> _displayedGroups = [];
-    private CancellationTokenSource? _cancellationTokenSource;
-    private readonly IApplicationContext _applicationContext;
-    private readonly ITransactionService _transactionService;
-    private int _currentGroupsCount;
-    private bool _isUpdating;
     private const int InitialGroupsCount = 5;
     private const int LoadMoreStep = 5;
 
-    public IList<TransactionCategoryDto> Categories
+    private readonly IApplicationContext _applicationContext;
+    private readonly ITransactionService _transactionService;
+    private readonly ObservableCollection<IGrouping<DateTime, DateWithTimeZone>> _displayedGroups = [];
+    private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
+    private IReadOnlyCollection<long> _selectedCategoryIds = [];
+    private IReadOnlyCollection<IGrouping<DateTime, DateWithTimeZone>>? _groupedTransactions;
+    private int _currentGroupsCount;
+    private bool _isUpdating;
+    private CancellationTokenSource? _cancellationTokenSource;
+
+    public IReadOnlyCollection<TransactionCategoryDto> Categories
     {
         get => _categories;
         set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
     }
 
-    public IList<long> SelectedCategoryIds
+    public IReadOnlyCollection<long> SelectedCategoryIds
     {
         get => _selectedCategoryIds;
-        set
-        {
-            if (this.RaiseAndSetIfChanged(ref _selectedCategoryIds, value, nameof(SelectedCategoryIds)))
-            {
-                LoadTransactions();
-            }
-        }
+        set => this.RaiseAndSetIfChanged(ref _selectedCategoryIds, value, nameof(SelectedCategoryIds));
     }
 
     public IReadOnlyCollection<IGrouping<DateTime, DateWithTimeZone>>? GroupedTransactions
@@ -60,10 +55,14 @@ public class TransactionsTabViewModel : ReactiveObject
         _transactionService = transactionService;
         _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
         _applicationContext.AccountChanged += OnAccountChanged;
+
         OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
+
+        this.WhenAnyValue(x => x.SelectedCategoryIds)
+            .Subscribe(_ => LoadTransactions());
     }
 
-    private void OnAccountChanged(Account? oldValue, Account? newValue)
+    private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
     {
         LoadTransactions();
     }
