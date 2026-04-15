@@ -33,11 +33,11 @@
                 Grid.Row="1"
                 ItemsSource="{Binding DisplayedGroups}"
                 VerticalOptions="FillAndExpand"
-                RemainingItemsThreshold="5"
+                RemainingItemsThreshold="3"
                 RemainingItemsThresholdReached="OnLoadMoreRequested">
                 <CollectionView.Resources>
                     <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
-                        <Setter Property="HeightRequest" Value="20" />
+                        <Setter Property="HeightRequest" Value="12.5" />
                         <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
                     </Style>
                 </CollectionView.Resources>
@@ -50,7 +50,7 @@
                             <transactions:TransactionGroup 
                                 Group="{Binding .}"
                                 Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
-                                Margin="0,0,0,15"/>
+                                Margin="0,7.5,0,7.5"/>
                         </ContentView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
