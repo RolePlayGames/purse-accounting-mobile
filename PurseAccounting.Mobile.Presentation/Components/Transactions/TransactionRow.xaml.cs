@@ -7,7 +7,7 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 public partial class TransactionRow : ContentView
 {
     public static readonly BindableProperty TransactionProperty =
-        BindableProperty.Create(nameof(Transaction), typeof(TransactionInfo), typeof(TransactionRow), default(TransactionInfo), propertyChanged: OnTransactionOrCategoriesChanged);
+        BindableProperty.Create(nameof(Transaction), typeof(TransactionInfo?), typeof(TransactionRow), default(TransactionInfo?), propertyChanged: OnTransactionOrCategoriesChanged);
 
     public static readonly BindableProperty CategoriesProperty =
         BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionRow), default(IReadOnlyCollection<TransactionCategoryDto>), propertyChanged: OnTransactionOrCategoriesChanged);
@@ -24,9 +24,9 @@ public partial class TransactionRow : ContentView
     public static readonly BindableProperty TransactionTypeTextProperty =
         BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
 
-    public TransactionInfo Transaction
+    public TransactionInfo? Transaction
     {
-        get => (TransactionInfo)GetValue(TransactionProperty);
+        get => (TransactionInfo?)GetValue(TransactionProperty);
         set => SetValue(TransactionProperty, value);
     }
 
@@ -86,17 +86,18 @@ public partial class TransactionRow : ContentView
 
     private void UpdateProperties()
     {
-        if (Categories is null || Categories.Count == 0)
+        if (!Transaction.HasValue || Categories is null || Categories.Count == 0)
             return;
 
-        var category = Categories.FirstOrDefault(c => c.ID == Transaction.TransactionCategoryID);
+        var transaction = Transaction.Value;
+        var category = Categories.FirstOrDefault(c => c.ID == transaction.TransactionCategoryID);
 
         if (category is not null && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
         else
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
 
-        var amount = Transaction.Amount;
+        var amount = transaction.Amount;
         var amountInRubles = amount / 100.0;
         var amountAbs = Math.Abs(amountInRubles);
 
@@ -105,6 +106,6 @@ public partial class TransactionRow : ContentView
         else
             AmountText = $"+ {FormatAmount(amountAbs)}";
 
-        TransactionTypeText = Transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
+        TransactionTypeText = transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
     }
 }
