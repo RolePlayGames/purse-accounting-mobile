@@ -4,11 +4,17 @@
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions.TransactionsTab">
-    <VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
         <Border
             BackgroundColor="White"
             HorizontalOptions="Fill"
-            VerticalOptions="Start">
+            VerticalOptions="Start"
+            Grid.Row="0">
             <Border.Shadow>
                 <Shadow
                     Brush="#40000000"
@@ -22,19 +28,38 @@
                 ItemsSource="{Binding Categories}"
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
         </Border>
-        
-        <CollectionView 
-            ItemsSource="{Binding DisplayedGroups}"
-            VerticalOptions="FillAndExpand"
-            RemainingItemsThreshold="5"
-            RemainingItemsThresholdReached="OnLoadMoreRequested">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <transactions:TransactionGroup 
-                        Group="{Binding .}"
-                        Categories="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=BindingContext.Categories}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+
+            <CollectionView 
+                Grid.Row="1"
+                ItemsSource="{Binding DisplayedGroups}"
+                VerticalOptions="FillAndExpand"
+                RemainingItemsThreshold="5"
+                RemainingItemsThresholdReached="OnLoadMoreRequested">
+                <CollectionView.Resources>
+                    <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
+                        <Setter Property="HeightRequest" Value="20" />
+                        <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
+                    </Style>
+                </CollectionView.Resources>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView >
+                            <transactions:TransactionGroup 
+                                Group="{Binding .}"
+                                Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
+                                Margin="0,0,0,15"/>
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Header>
+                    <BoxView Style="{StaticResource SpacerBoxStyle}" />
+                </CollectionView.Header>
+                <CollectionView.Footer>
+                    <BoxView Style="{StaticResource SpacerBoxStyle}" />
+                </CollectionView.Footer>
+            </CollectionView>
+    </Grid>
 </ContentView>

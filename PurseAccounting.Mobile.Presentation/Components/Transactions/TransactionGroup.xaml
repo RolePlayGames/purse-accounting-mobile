@@ -4,13 +4,15 @@
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionGroup"
              x:Name="RootView">
-
     <Border 
         StrokeThickness="0"
         BackgroundColor="White"
         StrokeShape="RoundRectangle 20"
         Padding="16,11,16,11"
         Margin="15,0,15,0">
+        <Border.Shadow>
+            <Shadow Brush="#40000000" Offset="0,2" Radius="30"/>
+        </Border.Shadow>
         
         <VerticalStackLayout>
             <!-- Заголовок с датой -->
