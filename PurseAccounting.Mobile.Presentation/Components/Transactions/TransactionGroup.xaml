@@ -4,7 +4,6 @@
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionGroup"
              x:Name="RootView">
-
     <Border 
         StrokeThickness="0"
         BackgroundColor="White"
