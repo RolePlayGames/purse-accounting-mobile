@@ -9,10 +9,10 @@ public partial class MultiCategorySelector : ContentView
         = BindableProperty.Create(nameof(HeaderText), typeof(string), typeof(MultiCategorySelector), string.Empty);
 
     public static readonly BindableProperty ItemsSourceProperty
-        = BindableProperty.Create(nameof(ItemsSource), typeof(IList<TransactionCategoryDto>), typeof(MultiCategorySelector), null, propertyChanged: OnItemsSourceChanged);
+        = BindableProperty.Create(nameof(ItemsSource), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(MultiCategorySelector), null, propertyChanged: OnItemsSourceChanged);
 
     public static readonly BindableProperty SelectedItemIdsProperty
-        = BindableProperty.Create(nameof(SelectedItemIds), typeof(IList<long>), typeof(MultiCategorySelector), null, BindingMode.TwoWay, propertyChanged: OnSelectedIdsChanged);
+        = BindableProperty.Create(nameof(SelectedItemIds), typeof(IReadOnlyCollection<long>), typeof(MultiCategorySelector), new HashSet<long>(0), BindingMode.TwoWay, propertyChanged: OnSelectedIdsChanged);
 
     public event EventHandler<SelectedItemsChangedEventArgs>? SelectedItemsChanged;
 
@@ -22,15 +22,15 @@ public partial class MultiCategorySelector : ContentView
         set => SetValue(HeaderTextProperty, value);
     }
 
-    public IList<TransactionCategoryDto> ItemsSource
+    public IReadOnlyCollection<TransactionCategoryDto> ItemsSource
     {
-        get => (IList<TransactionCategoryDto>)GetValue(ItemsSourceProperty);
+        get => (IReadOnlyCollection<TransactionCategoryDto>)GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    public IList<long> SelectedItemIds
+    public IReadOnlyCollection<long> SelectedItemIds
     {
-        get => (IList<long>)GetValue(SelectedItemIdsProperty);
+        get => (IReadOnlyCollection<long>)GetValue(SelectedItemIdsProperty);
         set => SetValue(SelectedItemIdsProperty, value);
     }
 
@@ -48,26 +48,25 @@ public partial class MultiCategorySelector : ContentView
     private static void OnSelectedIdsChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is MultiCategorySelector control && control.ItemsSource != null)
-        {
-            control.UpdateSelection((IList<long>?)newValue);
-        }
+            control.UpdateSelection((IReadOnlyCollection<long>?)newValue);
     }
 
     private void UpdateItems()
     {
+        foreach (var view in ItemsContainer.Children.OfType<CategoryItem>())
+        {
+            if (long.TryParse(view.AutomationId, out var itemId))
+            {
+                view.Tapped -= (s, e) => OnItemTapped(itemId);
+            }
+        }
+
         ItemsContainer.Children.Clear();
 
-        if (ItemsSource == null || ItemsSource.Count == 0)
+        if (ItemsSource is null || ItemsSource.Count == 0)
             return;
 
-        var initialIds = SelectedItemIds ?? new List<long>();
-        
-        // Если ничего не выбрано, выбираем категорию по умолчанию
-        if (initialIds.Count == 0)
-        {
-            var defaultCategory = ItemsSource.FirstOrDefault(x => x.IsDefault) ?? ItemsSource.First();
-            initialIds = new List<long> { defaultCategory.ID };
-        }
+        var newIds = SelectedItemIds?.ToHashSet() ?? [];
 
         foreach (var item in ItemsSource)
         {
@@ -77,7 +76,7 @@ public partial class MultiCategorySelector : ContentView
             {
                 Name = item.Name,
                 CircleColor = brush,
-                IsSelected = initialIds.Contains(item.ID),
+                IsSelected = newIds.Contains(item.ID),
                 AutomationId = item.ID.ToString(),
             };
 
@@ -85,33 +84,24 @@ public partial class MultiCategorySelector : ContentView
             ItemsContainer.Children.Add(view);
         }
 
-        SelectedItemIds = initialIds;
+        SelectedItemIds = newIds;
     }
 
     private void OnItemTapped(long id)
     {
-        if (SelectedItemIds == null)
-            SelectedItemIds = new List<long>();
+        var newIds = SelectedItemIds?.ToHashSet() ?? new HashSet<long>(1);
 
-        if (SelectedItemIds.Contains(id))
-        {
-            // Если уже выбрано и это последний элемент, не снимаем выделение (оставляем хотя бы один выбранный)
-            if (SelectedItemIds.Count > 1)
-            {
-                SelectedItemIds.Remove(id);
-            }
-        }
-        else
-        {
-            SelectedItemIds.Add(id);
-        }
+        if (!newIds.Remove(id))
+            newIds.Add(id);
+
+        SelectedItemIds = newIds;
 
         SelectedItemsChanged?.Invoke(this, new SelectedItemsChangedEventArgs(SelectedItemIds));
     }
 
-    private void UpdateSelection(IList<long>? ids)
+    private void UpdateSelection(IReadOnlyCollection<long>? ids)
     {
-        if (ids == null)
+        if (ids is null)
             return;
 
         foreach (var view in ItemsContainer.Children.OfType<CategoryItem>())
@@ -123,4 +113,3 @@ public partial class MultiCategorySelector : ContentView
         }
     }
 }
-

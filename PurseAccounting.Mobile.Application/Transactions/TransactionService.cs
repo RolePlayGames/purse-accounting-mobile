@@ -13,13 +13,15 @@ internal class TransactionService : ITransactionService
     private readonly ITotalTransactionClient _totalTransactionClient;
     private readonly IApplicationContext _applicationContext;
     private readonly IAccountFactory _accountFactory;
+    private readonly ITransactionsClient _transactionsClient;
 
-    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory)
+    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory, ITransactionsClient transactionsClient)
     {
         _dailyTransactionClient = dailyTransactionClient;
         _totalTransactionClient = totalTransactionClient;
         _applicationContext = applicationContext;
         _accountFactory = accountFactory;
+        _transactionsClient = transactionsClient;
     }
 
     public async Task<MakeTransactionResult> MakeTransaction(Transaction transaction, CancellationToken cancellationToken)
@@ -63,5 +65,27 @@ internal class TransactionService : ITransactionService
                     _ => MakeTransactionResult.Unknown,
                 };
             });
+    }
+
+    public async Task<IReadOnlyCollection<TransactionGroup>> GetTransactionsByDate(IReadOnlyCollection<long> categoryIds, short timeZone, CancellationToken cancellationToken)
+    {
+        var transactions = await _transactionsClient.GetTransactions(categoryIds, cancellationToken);
+
+        var transactionsWithTimeZone = transactions
+            .Select(x => x with { Date = x.Date.AddHours(timeZone) })
+            .ToList();
+
+        var groupedByDate = transactionsWithTimeZone
+            .GroupBy(x => x.Date.Date)
+            .OrderByDescending(x => x.Key)
+            .Select(x => new TransactionGroup
+            {
+                GroupDate = x.Key,
+                Transactions = x.OrderByDescending(x => x.ID).ToList(),
+            })
+            .Take(10)
+            .ToList();
+
+        return groupedByDate;
     }
 }

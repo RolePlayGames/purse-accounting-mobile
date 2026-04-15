@@ -63,7 +63,8 @@ public partial class AuthorizedPage : ContentPage
 
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
-        SetActiveTab(_accountingTab);
+        SetActiveTab(_transactionsTab);
+        //SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
     }
 
@@ -73,9 +74,7 @@ public partial class AuthorizedPage : ContentPage
         MainContent.Content = authorizedTab.Tab;
 
         if (_isSheetOpen)
-        {
             CloseSheetAnimated();
-        }
     }
 
     private void OnAccountingTabClicked(object sender, EventArgs e)
