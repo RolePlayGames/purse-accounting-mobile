@@ -26,19 +26,19 @@ public class TransactionsTabViewModel : ReactiveObject
     public IReadOnlyCollection<TransactionCategoryDto> Categories
     {
         get => _categories;
-        set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
+        set => this.RaiseAndSetIfChanged(ref _categories, value);
     }
 
     public IReadOnlyCollection<long> SelectedCategoryIds
     {
         get => _selectedCategoryIds;
-        set => this.RaiseAndSetIfChanged(ref _selectedCategoryIds, value, nameof(SelectedCategoryIds));
+        set => this.RaiseAndSetIfChanged(ref _selectedCategoryIds, value);
     }
 
     public IReadOnlyCollection<TransactionGroup>? GroupedTransactions
     {
         get => _groupedTransactions;
-        set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
+        set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value);
     }
 
     public ObservableCollection<TransactionGroup> DisplayedGroups => _displayedGroups;
@@ -79,7 +79,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
             _currentGroupsCount += groupsToLoad;
 
-            OnPropertyChanged(nameof(CanLoadMore));
+            this.RaisePropertyChanged(nameof(CanLoadMore));
         }
         finally
         {
@@ -153,7 +153,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
             if (_groupedTransactions == null || _groupedTransactions.Count == 0)
             {
-                OnPropertyChanged(nameof(CanLoadMore));
+                this.RaisePropertyChanged(nameof(CanLoadMore));
                 return;
             }
 
@@ -164,7 +164,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
             _currentGroupsCount = groupsToLoad;
 
-            OnPropertyChanged(nameof(CanLoadMore));
+            this.RaisePropertyChanged(nameof(CanLoadMore));
         }
         finally
         {
