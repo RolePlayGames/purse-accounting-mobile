@@ -7,22 +7,30 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 public partial class TransactionRow : ContentView
 {
     public static readonly BindableProperty TransactionProperty =
-        BindableProperty.Create(nameof(Transaction), typeof(TransactionInfo?), typeof(TransactionRow), default(TransactionInfo?), propertyChanged: OnTransactionOrCategoriesChanged);
+        BindableProperty.Create(nameof(Transaction), typeof(TransactionInfo?), typeof(TransactionRow), default(TransactionInfo?), 
+            propertyChanged: OnTransactionOrCategoriesChanged,
+            defaultBindingMode: BindingMode.OneTime);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionRow), default(IReadOnlyCollection<TransactionCategoryDto>), propertyChanged: OnTransactionOrCategoriesChanged);
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionRow), default(IReadOnlyCollection<TransactionCategoryDto>), 
+            propertyChanged: OnTransactionOrCategoriesChanged,
+            defaultBindingMode: BindingMode.OneTime);
 
     public static readonly BindableProperty CircleColorProperty =
-        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(TransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
+        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(TransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray),
+            defaultBindingMode: BindingMode.OneWay);
 
     public static readonly BindableProperty AmountTextProperty =
-        BindableProperty.Create(nameof(AmountText), typeof(string), typeof(TransactionRow), string.Empty);
+        BindableProperty.Create(nameof(AmountText), typeof(string), typeof(TransactionRow), string.Empty,
+            defaultBindingMode: BindingMode.OneWay);
 
     public static readonly BindableProperty AmountTextColorProperty =
-        BindableProperty.Create(nameof(AmountTextColor), typeof(Color), typeof(TransactionRow), Microsoft.Maui.Graphics.Colors.Black);
+        BindableProperty.Create(nameof(AmountTextColor), typeof(Color), typeof(TransactionRow), Microsoft.Maui.Graphics.Colors.Black,
+            defaultBindingMode: BindingMode.OneWay);
 
     public static readonly BindableProperty TransactionTypeTextProperty =
-        BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
+        BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty,
+            defaultBindingMode: BindingMode.OneWay);
 
     public TransactionInfo? Transaction
     {

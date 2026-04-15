@@ -30,11 +30,14 @@
         </Border>
 
             <CollectionView 
+                x:Name="TransactionsCollectionView"
                 Grid.Row="1"
                 ItemsSource="{Binding DisplayedGroups}"
                 VerticalOptions="FillAndExpand"
-                RemainingItemsThreshold="1"
-                RemainingItemsThresholdReached="OnLoadMoreRequested">
+                RemainingItemsThreshold="3"
+                RemainingItemsThresholdReached="OnLoadMoreRequested"
+                IsGrouped="False"
+                CacheStrategy="RecycleElement">
                 <CollectionView.Resources>
                     <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
                         <Setter Property="HeightRequest" Value="12.5" />
@@ -42,7 +45,7 @@
                     </Style>
                 </CollectionView.Resources>
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" />
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

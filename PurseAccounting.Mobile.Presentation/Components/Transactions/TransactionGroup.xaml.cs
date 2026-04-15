@@ -8,16 +8,21 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 public partial class TransactionGroup : ContentView
 {
     public static readonly BindableProperty GroupProperty =
-        BindableProperty.Create(nameof(Group), typeof(TransactionGroupModel), typeof(TransactionGroup), default(TransactionGroupModel), propertyChanged: OnGroupChanged);
+        BindableProperty.Create(nameof(Group), typeof(TransactionGroupModel), typeof(TransactionGroup), default(TransactionGroupModel), 
+            propertyChanged: OnGroupChanged,
+            defaultBindingMode: BindingMode.OneTime);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionCategoryDto>));
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionCategoryDto>),
+            defaultBindingMode: BindingMode.OneTime);
 
     public static readonly BindableProperty DateTextProperty =
-        BindableProperty.Create(nameof(DateText), typeof(string), typeof(TransactionGroup), string.Empty);
+        BindableProperty.Create(nameof(DateText), typeof(string), typeof(TransactionGroup), string.Empty,
+            defaultBindingMode: BindingMode.OneWay);
 
     public static readonly BindableProperty TransactionsProperty =
-        BindableProperty.Create(nameof(Transactions), typeof(IReadOnlyCollection<TransactionInfo>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionInfo>));
+        BindableProperty.Create(nameof(Transactions), typeof(IReadOnlyCollection<TransactionInfo>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionInfo>),
+            defaultBindingMode: BindingMode.OneTime);
 
     public TransactionGroupModel Group
     {

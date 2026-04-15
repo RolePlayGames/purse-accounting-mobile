@@ -10,7 +10,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 public class TransactionsTabViewModel : ReactiveObject
 {
     private const int InitialGroupsCount = 2;
-    private const int LoadMoreStep = 2;
+    private const int LoadMoreStep = 5;
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
@@ -41,10 +41,9 @@ public class TransactionsTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
     }
 
-    public ObservableCollection<TransactionGroup> DisplayedGroups
-    {
-        get => _displayedGroups;
-    }
+    public ObservableCollection<TransactionGroup> DisplayedGroups => _displayedGroups;
+
+    public bool CanLoadMore => !_isUpdating && _groupedTransactions != null && _currentGroupsCount < _groupedTransactions.Count;
 
     public TransactionsTabViewModel(
         IApplicationContext applicationContext,
@@ -79,6 +78,8 @@ public class TransactionsTabViewModel : ReactiveObject
                 _displayedGroups.Add(group);
 
             _currentGroupsCount += groupsToLoad;
+
+            OnPropertyChanged(nameof(CanLoadMore));
         }
         finally
         {
@@ -151,7 +152,10 @@ public class TransactionsTabViewModel : ReactiveObject
             _currentGroupsCount = 0;
 
             if (_groupedTransactions == null || _groupedTransactions.Count == 0)
+            {
+                OnPropertyChanged(nameof(CanLoadMore));
                 return;
+            }
 
             var groupsToLoad = Math.Min(InitialGroupsCount, _groupedTransactions.Count);
 
@@ -159,6 +163,8 @@ public class TransactionsTabViewModel : ReactiveObject
                 _displayedGroups.Add(group);
 
             _currentGroupsCount = groupsToLoad;
+
+            OnPropertyChanged(nameof(CanLoadMore));
         }
         finally
         {
