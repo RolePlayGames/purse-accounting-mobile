@@ -1,4 +1,4 @@
-```gitignore
+```
 # Build artifacts
 *.o
 *.obj
@@ -18,7 +18,7 @@ __pycache__/
 target/
 .gradle/
 
-# IDE/Editor files
+# IDE files
 .vscode/
 .idea/
 *.swp

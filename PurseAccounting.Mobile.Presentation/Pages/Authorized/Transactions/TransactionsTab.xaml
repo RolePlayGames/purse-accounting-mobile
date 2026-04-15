@@ -34,16 +34,9 @@
                 Grid.Row="1"
                 ItemsSource="{Binding DisplayedGroups}"
                 VerticalOptions="FillAndExpand"
-                RemainingItemsThreshold="3"
+                RemainingItemsThreshold="5"
                 RemainingItemsThresholdReached="OnLoadMoreRequested"
-                IsGrouped="False"
-                CacheStrategy="RecycleElement">
-                <CollectionView.Resources>
-                    <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
-                        <Setter Property="HeightRequest" Value="12.5" />
-                        <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
-                    </Style>
-                </CollectionView.Resources>
+                IsGrouped="False">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
                 </CollectionView.ItemsLayout>

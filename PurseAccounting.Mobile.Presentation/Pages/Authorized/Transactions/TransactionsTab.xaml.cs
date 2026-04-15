@@ -45,11 +45,12 @@ public partial class TransactionsTab : ContentView
 
         try
         {
-            await Task.Delay(50);
+            await Task.Delay(100);
             viewModel.LoadMoreGroups();
         }
         finally
         {
+            await Task.Delay(50);
             _isLoadingMore = false;
         }
     }

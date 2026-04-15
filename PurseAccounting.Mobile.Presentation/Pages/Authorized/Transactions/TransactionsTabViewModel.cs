@@ -10,7 +10,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 public class TransactionsTabViewModel : ReactiveObject
 {
     private const int InitialGroupsCount = 2;
-    private const int LoadMoreStep = 5;
+    private const int LoadMoreStep = 10;
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
