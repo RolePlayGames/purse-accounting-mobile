@@ -73,17 +73,17 @@ public partial class TransactionGroup : ContentView
         if (groupDate.Date == today)
         {
             // Сегодня: число и название месяца, после ставить запятую и писать "сегодня"
-            return $"{groupDate:dd MMMM}, сегодня";
+            return $"{groupDate.ToString("d MMMM", culture)}, сегодня";
         }
         else if (groupDate.Date == today.AddDays(-1))
         {
             // Вчера: число и название месяца, после ставить запятую и писать "вчера"
-            return $"{groupDate:dd MMMM}, вчера";
+            return $"{groupDate.ToString("d MMMM", culture)}, вчера";
         }
         else if (groupDate.Year == today.Year)
         {
             // В этом году: число и название месяца, после ставить запятую и писать день недели
-            return $"{groupDate.ToString("dd MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
+            return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
         }
         else
         {
