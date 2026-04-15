@@ -46,12 +46,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ContentView >
-                            <transactions:TransactionGroup 
-                                Group="{Binding .}"
-                                Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
-                                Margin="0,7.5,0,7.5"/>
-                        </ContentView>
+                        <transactions:TransactionGroup 
+                            Group="{Binding .}"
+                            Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
+                            Margin="0,7.5,0,7.5"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Header>

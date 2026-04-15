@@ -86,7 +86,7 @@ public partial class TransactionRow : ContentView
 
     private void UpdateProperties()
     {
-        if (Categories is null || Categories.Count == 0)
+        if (Transaction is null || Categories is null || Categories.Count == 0)
             return;
 
         var category = Categories.FirstOrDefault(c => c.ID == Transaction.TransactionCategoryID);
