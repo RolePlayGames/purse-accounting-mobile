@@ -60,7 +60,33 @@ public partial class TransactionGroup : ContentView
         if (Group == null)
             return;
 
-        DateText = Group.GroupDate.ToString("dd.MM.yyyy");
+        DateText = GetDateText(Group.GroupDate);
         Transactions = Group.Transactions;
+    }
+
+    private static string GetDateText(DateTime groupDate)
+    {
+        var today = DateTime.Today;
+        
+        if (groupDate.Date == today)
+        {
+            // Сегодня: число и название месяца, после ставить запятую и писать "сегодня"
+            return $"{groupDate:dd MMMM}, сегодня";
+        }
+        else if (groupDate.Date == today.AddDays(-1))
+        {
+            // Вчера: число и название месяца, после ставить запятую и писать "вчера"
+            return $"{groupDate:dd MMMM}, вчера";
+        }
+        else if (groupDate.Year == today.Year)
+        {
+            // В этом году: число и название месяца, после ставить запятую и писать день недели
+            return $"{groupDate:dd MMMM}, {groupDate:dddd}";
+        }
+        else
+        {
+            // В другом году: DD.MM.YYYY, после ставить запятую и писать день недели
+            return $"{groupDate:dd.MM.yyyy}, {groupDate:dddd}";
+        }
     }
 }
