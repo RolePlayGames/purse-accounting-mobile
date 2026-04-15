@@ -1,5 +1,6 @@
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
+using System.Globalization;
 using TransactionGroupModel = PurseAccounting.Mobile.Application.Transactions.TransactionGroup;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
@@ -55,12 +56,35 @@ public partial class TransactionGroup : ContentView
         }
     }
 
+    private static string GetDateText(DateTime groupDate)
+    {
+        var today = DateTime.Today;
+        var culture = CultureInfo.GetCultureInfo("ru-RU");
+
+        if (groupDate.Date == today)
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, сегодня";
+        }
+        else if (groupDate.Date == today.AddDays(-1))
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, вчера";
+        }
+        else if (groupDate.Year == today.Year)
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
+        }
+        else
+        {
+            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
+        }
+    }
+
     private void UpdateProperties()
     {
         if (Group == null)
             return;
 
-        DateText = Group.GroupDate.ToString("dd.MM.yyyy");
+        DateText = GetDateText(Group.GroupDate);
         Transactions = Group.Transactions;
     }
 }
