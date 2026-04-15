@@ -27,7 +27,11 @@
             ItemsSource="{Binding DisplayedGroups}"
             VerticalOptions="FillAndExpand"
             RemainingItemsThreshold="5"
-            RemainingItemsThresholdReached="OnLoadMoreRequested">
+            RemainingItemsThresholdReached="OnLoadMoreRequested"
+            ItemSpacing="15">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <transactions:TransactionGroup 
@@ -35,6 +39,12 @@
                         Categories="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=BindingContext.Categories}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.Header>
+                <BoxView HeightRequest="20" />
+            </CollectionView.Header>
+            <CollectionView.Footer>
+                <BoxView HeightRequest="20" />
+            </CollectionView.Footer>
         </CollectionView>
     </VerticalStackLayout>
 </ContentView>
