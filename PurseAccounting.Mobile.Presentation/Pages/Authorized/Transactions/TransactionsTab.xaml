@@ -28,6 +28,12 @@
             VerticalOptions="FillAndExpand"
             RemainingItemsThreshold="5"
             RemainingItemsThresholdReached="OnLoadMoreRequested">
+            <CollectionView.Resources>
+                <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
+                    <Setter Property="HeightRequest" Value="20" />
+                    <Setter Property="BackgroundColor" Value="{StaticResource WorkBackground}" />
+                </Style>
+            </CollectionView.Resources>
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" />
             </CollectionView.ItemsLayout>
@@ -41,10 +47,10 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.Header>
-                <BoxView HeightRequest="20" />
+                <BoxView Style="{StaticResource SpacerBoxStyle}" />
             </CollectionView.Header>
             <CollectionView.Footer>
-                <BoxView HeightRequest="20" />
+                <BoxView Style="{StaticResource SpacerBoxStyle}" />
             </CollectionView.Footer>
         </CollectionView>
     </VerticalStackLayout>
