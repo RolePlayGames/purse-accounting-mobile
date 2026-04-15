@@ -1,3 +1,4 @@
+using System.Globalization;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using TransactionGroupModel = PurseAccounting.Mobile.Application.Transactions.TransactionGroup;
@@ -67,6 +68,7 @@ public partial class TransactionGroup : ContentView
     private static string GetDateText(DateTime groupDate)
     {
         var today = DateTime.Today;
+        var culture = CultureInfo.GetCultureInfo("ru-RU");
         
         if (groupDate.Date == today)
         {
@@ -81,12 +83,12 @@ public partial class TransactionGroup : ContentView
         else if (groupDate.Year == today.Year)
         {
             // В этом году: число и название месяца, после ставить запятую и писать день недели
-            return $"{groupDate:dd MMMM}, {groupDate:dddd}";
+            return $"{groupDate.ToString("dd MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
         }
         else
         {
             // В другом году: DD.MM.YYYY, после ставить запятую и писать день недели
-            return $"{groupDate:dd.MM.yyyy}, {groupDate:dddd}";
+            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
         }
     }
 }
