@@ -18,6 +18,7 @@
             </Border.Shadow>
             <categories:MultiCategorySelector
                 Margin="0,10,0,10"
+                HeaderText="Категория"
                 ItemsSource="{Binding Categories}"
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
         </Border>

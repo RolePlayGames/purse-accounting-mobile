@@ -1,6 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.AccountFactories;
 using PurseAccounting.Mobile.Application.Context;
-using PurseAccounting.Mobile.Application.Models;
 using PurseAccounting.Mobile.Infrastructure.ServerResults;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Daily;
@@ -68,26 +67,23 @@ internal class TransactionService : ITransactionService
             });
     }
 
-    public async Task<IReadOnlyCollection<IGrouping<DateTime, DateWithTimeZone>>> GetTransactionsByDate(
-        IReadOnlyCollection<long> categoryIds,
-        short timeZone,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<TransactionGroup>> GetTransactionsByDate(IReadOnlyCollection<long> categoryIds, short timeZone, CancellationToken cancellationToken)
     {
         var transactions = await _transactionsClient.GetTransactions(categoryIds, cancellationToken);
 
         var transactionsWithTimeZone = transactions
-            .Select(t => new DateWithTimeZone 
-            { 
-                Value = t.Date.AddHours(timeZone), 
-                TimeZone = timeZone,
-                TransactionId = t.ID
-            })
+            .Select(x => x with { Date = x.Date.AddHours(timeZone) })
             .ToList();
 
         var groupedByDate = transactionsWithTimeZone
-            .GroupBy(t => t.Value.Date)
-            .OrderByDescending(g => g.Key)
-            .Select(g => g.OrderByDescending(t => t.TransactionId).ToList() as IGrouping<DateTime, DateWithTimeZone>)
+            .GroupBy(x => x.Date.Date)
+            .OrderByDescending(x => x.Key)
+            .Select(x => new TransactionGroup
+            {
+                GroupDate = x.Key,
+                Transactions = x.OrderByDescending(x => x.ID).ToList(),
+            })
+            .Take(10)
             .ToList();
 
         return groupedByDate;

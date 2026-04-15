@@ -2,8 +2,7 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Categories;
 
 public class SelectedItemsChangedEventArgs : EventArgs
 {
-    public IList<long> SelectedIds { get; }
+    public IReadOnlyCollection<long> SelectedIds { get; }
 
-    public SelectedItemsChangedEventArgs(IList<long> ids) => SelectedIds = ids;
+    public SelectedItemsChangedEventArgs(IReadOnlyCollection<long> ids) => SelectedIds = ids;
 }
-

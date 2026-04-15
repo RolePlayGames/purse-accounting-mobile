@@ -73,51 +73,38 @@ public partial class TransactionRow : ContentView
         }
     }
 
+    private static string FormatAmount(double amount)
+    {
+        var rubles = (long)amount;
+        var kopecks = (int)(((amount - rubles) * 100) + 0.5);
+
+        if (kopecks == 0)
+            return $"{rubles:N0} ₽";
+
+        return $"{rubles:N0},{kopecks:D2} ₽";
+    }
+
     private void UpdateProperties()
     {
-        if (Categories == null || Categories.Count == 0)
-        {
+        if (Categories is null || Categories.Count == 0)
             return;
-        }
 
         var category = Categories.FirstOrDefault(c => c.ID == Transaction.TransactionCategoryID);
-        if (category != null && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
-        {
+
+        if (category is not null && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
-        }
         else
-        {
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
-        }
 
         var amount = Transaction.Amount;
         var amountInRubles = amount / 100.0;
         var amountAbs = Math.Abs(amountInRubles);
-        
+
         if (amount >= 0)
-        {
-            AmountTextColor = Microsoft.Maui.Graphics.Color.FromArgb("#333333"); // Gray1
             AmountText = FormatAmount(amountAbs);
-        }
         else
-        {
-            AmountTextColor = Microsoft.Maui.Graphics.Color.FromArgb("#1E9913"); // TransactionPositive
             AmountText = $"+ {FormatAmount(amountAbs)}";
-        }
 
         TransactionTypeText = Transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
-    }
-
-    private static string FormatAmount(double amount)
-    {
-        var rubles = (long)amount;
-        var kopecks = (int)((amount - rubles) * 100 + 0.5);
-
-        if (kopecks == 0)
-        {
-            return $"{rubles:N0} ₽";
-        }
-
-        return $"{rubles:N0},{kopecks:D2} ₽";
     }
 }

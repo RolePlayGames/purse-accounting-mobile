@@ -41,7 +41,7 @@ internal class TransactionsClient : ITransactionsClient
         if (categoryIds is null || categoryIds.Count == 0)
             return _baseUri;
 
-        var queryString = string.Join("&", categoryIds.Select(id => $"categoryIDs={id}"));
+        var queryString = string.Join("&", categoryIds.Select(id => $"%D1%81ategoryIDs={id}"));
         return new Uri($"{_baseUri}?{queryString}", UriKind.Relative);
     }
 }
