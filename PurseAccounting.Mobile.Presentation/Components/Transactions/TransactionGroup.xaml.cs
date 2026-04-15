@@ -1,6 +1,6 @@
-using System.Globalization;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
+using System.Globalization;
 using TransactionGroupModel = PurseAccounting.Mobile.Application.Transactions.TransactionGroup;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
@@ -56,6 +56,29 @@ public partial class TransactionGroup : ContentView
         }
     }
 
+    private static string GetDateText(DateTime groupDate)
+    {
+        var today = DateTime.Today;
+        var culture = CultureInfo.GetCultureInfo("ru-RU");
+
+        if (groupDate.Date == today)
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, сегодня";
+        }
+        else if (groupDate.Date == today.AddDays(-1))
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, вчера";
+        }
+        else if (groupDate.Year == today.Year)
+        {
+            return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
+        }
+        else
+        {
+            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
+        }
+    }
+
     private void UpdateProperties()
     {
         if (Group == null)
@@ -63,32 +86,5 @@ public partial class TransactionGroup : ContentView
 
         DateText = GetDateText(Group.GroupDate);
         Transactions = Group.Transactions;
-    }
-
-    private static string GetDateText(DateTime groupDate)
-    {
-        var today = DateTime.Today;
-        var culture = CultureInfo.GetCultureInfo("ru-RU");
-        
-        if (groupDate.Date == today)
-        {
-            // Сегодня: число и название месяца, после ставить запятую и писать "сегодня"
-            return $"{groupDate.ToString("d MMMM", culture)}, сегодня";
-        }
-        else if (groupDate.Date == today.AddDays(-1))
-        {
-            // Вчера: число и название месяца, после ставить запятую и писать "вчера"
-            return $"{groupDate.ToString("d MMMM", culture)}, вчера";
-        }
-        else if (groupDate.Year == today.Year)
-        {
-            // В этом году: число и название месяца, после ставить запятую и писать день недели
-            return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
-        }
-        else
-        {
-            // В другом году: DD.MM.YYYY, после ставить запятую и писать день недели
-            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
-        }
     }
 }
