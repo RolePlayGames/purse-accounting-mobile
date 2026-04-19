@@ -77,7 +77,7 @@ public partial class TransactionRow : ContentView
     {
         var panGesture = new PanGestureRecognizer();
         panGesture.PanUpdated += OnPanUpdated;
-        MainGrid.GestureRecognizers.Add(panGesture);
+        ContentContainer.GestureRecognizers.Add(panGesture);
     }
 
     private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)

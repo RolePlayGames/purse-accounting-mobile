@@ -13,37 +13,39 @@
             HorizontalOptions="Fill"
             VerticalOptions="Fill" />
         
-        <!-- Контейнер контента -->
-        <Grid 
+        <!-- Контейнер контента с фоном LightBlue -->
+        <Border
             x:Name="ContentContainer"
-            ColumnDefinitions="30,12,*,*" 
-            RowDefinitions="30"
-            BackgroundColor="{StaticResource LightBlue}">
-            <!-- Круг категории -->
-            <Ellipse 
-                Grid.Column="0"
-                WidthRequest="30"
-                HeightRequest="30"
-                Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
-            
-            <!-- Сумма транзакции -->
-            <Label 
-                Grid.Column="2"
-                Text="{Binding AmountText, Source={x:Reference RootView}}"
-                FontFamily="OpenSansRegular"
-                FontSize="{StaticResource FontSizeLarge}"
-                TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
-                VerticalOptions="Center" />
-            
-            <!-- Тип транзакции -->
-            <Label 
-                Grid.Column="3"
-                Text="{Binding TransactionTypeText, Source={x:Reference RootView}}"
-                FontFamily="OpenSansRegular"
-                FontSize="{StaticResource FontSizeRegular}"
-                TextColor="{StaticResource Gray3}"
-                HorizontalOptions="End"
-                VerticalOptions="Center" />
-        </Grid>
+            BackgroundColor="{StaticResource LightBlue}"
+            HorizontalOptions="Start"
+            VerticalOptions="Fill">
+            <Grid ColumnDefinitions="30,12,*,*" RowDefinitions="30">
+                <!-- Круг категории -->
+                <Ellipse 
+                    Grid.Column="0"
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
+                
+                <!-- Сумма транзакции -->
+                <Label 
+                    Grid.Column="2"
+                    Text="{Binding AmountText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeLarge}"
+                    TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
+                    VerticalOptions="Center" />
+                
+                <!-- Тип транзакции -->
+                <Label 
+                    Grid.Column="3"
+                    Text="{Binding TransactionTypeText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeRegular}"
+                    TextColor="{StaticResource Gray3}"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
     </Grid>
 </ContentView>
