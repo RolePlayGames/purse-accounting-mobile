@@ -83,7 +83,7 @@ internal class TransactionService : ITransactionService
                 GroupDate = x.Key,
                 Transactions = x.OrderByDescending(x => x.ID).ToList(),
             })
-            .Take(10)
+            .Take(2)
             .ToList();
 
         return groupedByDate;
