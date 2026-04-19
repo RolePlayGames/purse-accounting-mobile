@@ -88,4 +88,29 @@ internal class TransactionService : ITransactionService
 
         return groupedByDate;
     }
+
+    public async Task<bool> CancelTransaction(long transactionId, TransactionChangeAmountType changeAmountType, CancellationToken cancellationToken)
+    {
+        var cancelTrasactionTask = changeAmountType switch
+        {
+            TransactionChangeAmountType.Daily => _dailyTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            TransactionChangeAmountType.Total => _totalTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            _ => throw new NotImplementedException(),
+        };
+
+        var apiResult = await cancelTrasactionTask;
+
+        return apiResult.Match(
+            result =>
+            {
+                if (_applicationContext.Account is not null)
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+
+                return true;
+            },
+            exception =>
+            {
+                return false;
+            });
+    }
 }

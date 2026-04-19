@@ -4,15 +4,7 @@
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionRow"
              x:Name="RootView">
 
-    <Grid x:Name="MainGrid" ColumnDefinitions="30,12,*,*" RowDefinitions="30">
-        <!-- Фоновый прямоугольник (Purple) -->
-        <BoxView 
-            x:Name="BackgroundBox"
-            Grid.ColumnSpan="4"
-            BackgroundColor="{StaticResource Purple}"
-            HorizontalOptions="Fill"
-            VerticalOptions="Fill" />
-        
+    <Grid x:Name="MainGrid" ColumnDefinitions="30,12,*,*" RowDefinitions="30">        
         <!-- Контейнер контента с фоном LightBlue -->
         <Border
             x:Name="ContentContainer"
@@ -47,5 +39,13 @@
                     VerticalOptions="Center" />
             </Grid>
         </Border>
+        
+        <!-- Фоновый прямоугольник (Purple) -->
+        <BoxView 
+            x:Name="BackgroundBox"
+            Grid.ColumnSpan="4"
+            BackgroundColor="{StaticResource Purple}"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill" />
     </Grid>
 </ContentView>
