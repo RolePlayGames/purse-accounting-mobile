@@ -16,14 +16,14 @@ public class TransactionsTabViewModel : ReactiveObject
     private readonly ITransactionService _transactionService;
     private readonly ObservableCollection<TransactionGroup> _displayedGroups = [];
 
-    private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
+    private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
     private IReadOnlyCollection<long> _selectedCategoryIds = [];
     private IReadOnlyCollection<TransactionGroup>? _groupedTransactions;
     private int _currentGroupsCount;
     private bool _isUpdating;
     private CancellationTokenSource? _cancellationTokenSource;
 
-    public IReadOnlyCollection<TransactionCategoryDto> Categories
+    public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
     {
         get => _categories;
         set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
@@ -95,16 +95,15 @@ public class TransactionsTabViewModel : ReactiveObject
     {
         if (newValue is null || newValue.Count == 0)
         {
-            Categories = [];
+            Categories = new Dictionary<long, TransactionCategoryDto>();
             SelectedCategoryIds = [];
             return;
         }
 
-        Categories = newValue;
+        Categories = newValue.ToDictionary(c => c.ID);
 
-        SelectedCategoryIds = Categories
-            .Where(x => SelectedCategoryIds.Contains(x.ID))
-            .Select(x => x.ID)
+        SelectedCategoryIds = Categories.Keys
+            .Where(id => SelectedCategoryIds.Contains(id))
             .ToHashSet();
     }
 

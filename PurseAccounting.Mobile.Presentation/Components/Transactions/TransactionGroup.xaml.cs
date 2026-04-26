@@ -11,7 +11,7 @@ public partial class TransactionGroup : ContentView
         BindableProperty.Create(nameof(Group), typeof(TransactionGroupModel), typeof(TransactionGroup), default(TransactionGroupModel), propertyChanged: OnGroupChanged);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionCategoryDto>));
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(TransactionGroup), default(IReadOnlyDictionary<long, TransactionCategoryDto>));
 
     public static readonly BindableProperty DateTextProperty =
         BindableProperty.Create(nameof(DateText), typeof(string), typeof(TransactionGroup), string.Empty);
@@ -25,9 +25,9 @@ public partial class TransactionGroup : ContentView
         set => SetValue(GroupProperty, value);
     }
 
-    public IReadOnlyCollection<TransactionCategoryDto> Categories
+    public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
     {
-        get => (IReadOnlyCollection<TransactionCategoryDto>)GetValue(CategoriesProperty);
+        get => (IReadOnlyDictionary<long, TransactionCategoryDto>)GetValue(CategoriesProperty);
         set => SetValue(CategoriesProperty, value);
     }
 
