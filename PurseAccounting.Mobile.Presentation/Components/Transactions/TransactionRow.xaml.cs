@@ -1,6 +1,7 @@
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Colors;
+using PurseAccountinng.Mobile.Presentation.Extensions;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
@@ -82,61 +83,75 @@ public partial class TransactionRow : ContentView
 
     private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)
     {
-        switch (e.StatusType)
+        Task.Run(() =>
         {
-            case GestureStatus.Started:
-                _isSwiping = true;
-                _startX = e.TotalX;
-                _currentTranslationX = ContentContainer.TranslationX;
-                break;
+            ContentContainer.Background = Application.Current?.Resources.GetColor("LightBlue");
 
-            case GestureStatus.Running:
-                if (!_isSwiping) return;
+            switch (e.StatusType)
+            {
+                case GestureStatus.Started:
+                    _isSwiping = true;
+                    _startX = e.TotalX;
+                    _currentTranslationX = ContentContainer.TranslationX;
+                    break;
 
-                var deltaX = e.TotalX - _startX;
-                
-                // Разрешаем движение только влево
-                if (deltaX < 0)
-                {
-                    var newTranslationX = Math.Max(deltaX, -MainGrid.Width);
-                    ContentContainer.TranslationX = newTranslationX;
-                    _currentTranslationX = newTranslationX;
-                }
-                break;
+                case GestureStatus.Running:
+                    if (!_isSwiping)
+                        return;
 
-            case GestureStatus.Completed:
-                if (!_isSwiping) return;
-                _isSwiping = false;
+                    var deltaX = e.TotalX - _startX;
 
-                var parentWidth = MainGrid.Width;
-                var swipeProgress = Math.Abs(_currentTranslationX) / parentWidth;
+                    if (Math.Abs(e.TotalX - _currentTranslationX) < 1)
+                        return;
 
-                if (swipeProgress >= SwipeThreshold)
-                {
-                    // Свайп завершен - убираем элемент
-                    AnimateSwipeOut(-parentWidth);
-                }
-                else
-                {
-                    // Возвращаем на место
+                    // Разрешаем движение только влево
+                    if (deltaX < 0)
+                    {
+                        var newTranslationX = Math.Max(deltaX, -MainGrid.Width);
+                        ContentContainer.TranslationX = newTranslationX;
+                        _currentTranslationX = newTranslationX;
+                    }
+                    break;
+
+                case GestureStatus.Completed:
+                    if (!_isSwiping)
+                        return;
+
+                    _isSwiping = false;
+
+                    var parentWidth = MainGrid.Width;
+                    var swipeProgress = Math.Abs(_currentTranslationX) / parentWidth;
+
+                    if (swipeProgress >= SwipeThreshold)
+                    {
+                        // Свайп завершен - убираем элемент
+                        AnimateSwipeOut(-parentWidth);
+                    }
+                    else
+                    {
+                        // Возвращаем на место
+                        AnimateBackToPosition();
+                    }
+
+                    ContentContainer.Background = Application.Current?.Resources.GetColor("WorkBackground");
+                    break;
+
+                case GestureStatus.Canceled:
+                    _isSwiping = false;
                     AnimateBackToPosition();
-                }
-                break;
-
-            case GestureStatus.Canceled:
-                _isSwiping = false;
-                AnimateBackToPosition();
-                break;
-        }
+                    ContentContainer.Background = Application.Current?.Resources.GetColor("WorkBackground");
+                    break;
+            }
+        });
     }
 
     private async void AnimateSwipeOut(double targetX)
     {
         await ContentContainer.TranslateTo(targetX, 0, 150, Easing.CubicIn);
-        
+
         // Вызываем событие о том, что элемент был свайпнут
         TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction));
-        
+
         // Скрываем контент полностью
         ContentContainer.IsVisible = false;
     }

@@ -81,7 +81,7 @@ public partial class TransactionGroup : ContentView
 
     private void UpdateProperties()
     {
-        if (Group == null)
+        if (Group is null)
             return;
 
         DateText = GetDateText(Group.GroupDate);

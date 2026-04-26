@@ -29,35 +29,35 @@
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
         </Border>
 
-            <CollectionView 
-                Grid.Row="1"
-                ItemsSource="{Binding DisplayedGroups}"
-                VerticalOptions="FillAndExpand"
-                RemainingItemsThreshold="1"
-                RemainingItemsThresholdReached="OnLoadMoreRequested">
-                <CollectionView.Resources>
-                    <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
-                        <Setter Property="HeightRequest" Value="12.5" />
-                        <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
-                    </Style>
-                </CollectionView.Resources>
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <transactions:TransactionGroup 
-                            Group="{Binding .}"
-                            Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
-                            Margin="0,7.5,0,7.5"/>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.Header>
-                    <BoxView Style="{StaticResource SpacerBoxStyle}" />
-                </CollectionView.Header>
-                <CollectionView.Footer>
-                    <BoxView Style="{StaticResource SpacerBoxStyle}" />
-                </CollectionView.Footer>
-            </CollectionView>
+        <CollectionView 
+            Grid.Row="1"
+            ItemsSource="{Binding DisplayedGroups}"
+            VerticalOptions="FillAndExpand"
+            RemainingItemsThreshold="1"
+            RemainingItemsThresholdReached="OnLoadMoreRequested">
+            <CollectionView.Resources>
+                <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
+                    <Setter Property="HeightRequest" Value="12.5" />
+                    <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
+                </Style>
+            </CollectionView.Resources>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <transactions:TransactionGroup 
+                        Group="{Binding .}"
+                        Categories="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.Categories}"
+                        Margin="0,7.5,0,7.5"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Header>
+                <BoxView Style="{StaticResource SpacerBoxStyle}" />
+            </CollectionView.Header>
+            <CollectionView.Footer>
+                <BoxView Style="{StaticResource SpacerBoxStyle}" />
+            </CollectionView.Footer>
+        </CollectionView>
     </Grid>
 </ContentView>

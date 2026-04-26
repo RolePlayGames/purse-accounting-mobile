@@ -6,32 +6,31 @@
              x:Name="RootView">
     <Border 
         StrokeThickness="0"
-        BackgroundColor="White"
+        BackgroundColor="{StaticResource WorkBackground}"
         StrokeShape="RoundRectangle 20"
-        Padding="16,11,16,11"
+        Padding="0,11,0,11"
         Margin="15,0,15,0">
         <Border.Shadow>
             <Shadow Brush="#40000000" Offset="0,2" Radius="30"/>
         </Border.Shadow>
         
         <VerticalStackLayout>
-            <!-- Заголовок с датой -->
-            <Label 
-                Text="{Binding DateText, Source={x:Reference RootView}}"
-                FontFamily="OpenSansSemibold"
-                FontSize="{StaticResource FontSizeLarge}"
-                TextColor="{StaticResource DarkPurple}"
-                HorizontalOptions="Start" />
+
+            <VerticalStackLayout Margin="16,0,16,0">                
+                <Label 
+                    Text="{Binding DateText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="{StaticResource FontSizeLarge}"
+                    TextColor="{StaticResource DarkPurple}"
+                    HorizontalOptions="Start"/>
             
-            <!-- Разделительная линия -->
-            <BoxView 
-                HeightRequest="1"
-                BackgroundColor="{StaticResource InactiveElementFill}"
-                Margin="0,12,0,0" />
+                <BoxView 
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource InactiveElementFill}"
+                    Margin="0,12,0,0" />            
+            </VerticalStackLayout>
             
-            <!-- Список транзакций -->
-            <VerticalStackLayout 
-                Spacing="15"
+            <VerticalStackLayout
                 Margin="0,15,0,0"
                 BindableLayout.ItemsSource="{Binding Transactions, Source={x:Reference RootView}}">                
                 <BindableLayout.ItemTemplate>
