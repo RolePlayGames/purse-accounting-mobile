@@ -11,7 +11,7 @@ public partial class TransactionRow : ContentView
         BindableProperty.Create(nameof(Transaction), typeof(TransactionInfo?), typeof(TransactionRow), default(TransactionInfo?), propertyChanged: OnTransactionOrCategoriesChanged);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyCollection<TransactionCategoryDto>), typeof(TransactionRow), default(IReadOnlyCollection<TransactionCategoryDto>), propertyChanged: OnTransactionOrCategoriesChanged);
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(TransactionRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnTransactionOrCategoriesChanged);
 
     public static readonly BindableProperty CircleColorProperty =
         BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(TransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
@@ -36,9 +36,9 @@ public partial class TransactionRow : ContentView
         set => SetValue(TransactionProperty, value);
     }
 
-    public IReadOnlyCollection<TransactionCategoryDto> Categories
+    public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
     {
-        get => (IReadOnlyCollection<TransactionCategoryDto>)GetValue(CategoriesProperty);
+        get => (IReadOnlyDictionary<long, TransactionCategoryDto>)GetValue(CategoriesProperty);
         set => SetValue(CategoriesProperty, value);
     }
 
@@ -187,9 +187,9 @@ public partial class TransactionRow : ContentView
             return;
 
         var transaction = Transaction.Value;
-        var category = Categories.FirstOrDefault(c => c.ID == transaction.TransactionCategoryID);
-
-        if (category is not null && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
+        
+        if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && 
+            ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
         else
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
