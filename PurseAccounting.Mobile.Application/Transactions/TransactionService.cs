@@ -83,9 +83,34 @@ internal class TransactionService : ITransactionService
                 GroupDate = x.Key,
                 Transactions = x.OrderByDescending(x => x.ID).ToList(),
             })
-            .Take(10)
+            .Take(2)
             .ToList();
 
         return groupedByDate;
+    }
+
+    public async Task<bool> CancelTransaction(long transactionId, TransactionChangeAmountType changeAmountType, CancellationToken cancellationToken)
+    {
+        var cancelTrasactionTask = changeAmountType switch
+        {
+            TransactionChangeAmountType.Daily => _dailyTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            TransactionChangeAmountType.Total => _totalTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            _ => throw new NotImplementedException(),
+        };
+
+        var apiResult = await cancelTrasactionTask;
+
+        return apiResult.Match(
+            result =>
+            {
+                if (_applicationContext.Account is not null)
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+
+                return true;
+            },
+            exception =>
+            {
+                return false;
+            });
     }
 }

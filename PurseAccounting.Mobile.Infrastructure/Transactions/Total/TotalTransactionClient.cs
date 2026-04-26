@@ -22,4 +22,9 @@ internal class TotalTransactionClient : ClientBase, ITotalTransactionClient
     {
         return SafeCall<AddTransactionResponse, AddTotalTransactoinsExceptionCode>(_httpClient.PutAsJsonAsync, "api/accounting/transactions/total-transactions/withdrawal-transactions", request, cancellationToken);
     }
+
+    public Task<ApiResult<CancelTransactionResponse>> CancelTransaction(long transactionId, CancellationToken cancellationToken)
+    {
+        return SafeCall<CancelTransactionResponse>(_httpClient.DeleteAsync, $"api/accounting/transactions/total-transactions/{transactionId}", cancellationToken);
+    }
 }
