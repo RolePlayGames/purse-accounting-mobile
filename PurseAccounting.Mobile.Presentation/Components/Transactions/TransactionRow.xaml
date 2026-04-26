@@ -4,38 +4,56 @@
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionRow"
              x:Name="RootView">
 
-    <Grid x:Name="MainGrid">
-        <!-- Контейнер контента с фоном LightBlue -->
-        <Grid
-            x:Name="ContentContainer"
-            Grid.Column="0"
-            Grid.Row="0"
-            Padding="16,7.5,16,7.5"
-            BackgroundColor="{StaticResource WorkBackground}"
-            ColumnDefinitions="30,12,*,*">
-            
-            <Ellipse
+    <SwipeView x:Name="SwipeContainer" Threshold="100">
+        <SwipeView.RightItems>
+            <SwipeItems Mode="Execute">
+                <SwipeItemView x:Name="DeleteSwipeItem" 
+                               BackgroundColor="{StaticResource Purple}"
+                               WidthRequest="100">
+                    <Grid HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="🗑" 
+                               FontSize="24" 
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </SwipeItemView>
+            </SwipeItems>
+        </SwipeView.RightItems>
+        
+        <Grid x:Name="MainGrid">
+            <!-- Контейнер контента с фоном LightBlue -->
+            <Grid
+                x:Name="ContentContainer"
                 Grid.Column="0"
-                WidthRequest="30"
-                HeightRequest="30"
-                Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
-            
-            <Label 
-                Grid.Column="2"
-                Text="{Binding AmountText, Source={x:Reference RootView}}"
-                FontFamily="OpenSansRegular"
-                FontSize="{StaticResource FontSizeLarge}"
-                TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
-                VerticalOptions="Center" />
-            
-            <Label 
-                Grid.Column="3"
-                Text="{Binding TransactionTypeText, Source={x:Reference RootView}}"
-                FontFamily="OpenSansRegular"
-                FontSize="{StaticResource FontSizeRegular}"
-                TextColor="{StaticResource Gray3}"
-                HorizontalOptions="End"
-                VerticalOptions="Center" />
+                Grid.Row="0"
+                Padding="16,7.5,16,7.5"
+                BackgroundColor="{StaticResource WorkBackground}"
+                ColumnDefinitions="30,12,*,*">
+                
+                <Ellipse
+                    Grid.Column="0"
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
+                
+                <Label 
+                    Grid.Column="2"
+                    Text="{Binding AmountText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeLarge}"
+                    TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
+                    VerticalOptions="Center" />
+                
+                <Label 
+                    Grid.Column="3"
+                    Text="{Binding TransactionTypeText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="{StaticResource FontSizeRegular}"
+                    TextColor="{StaticResource Gray3}"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center" />
+            </Grid>
         </Grid>
-    </Grid>
+    </SwipeView>
 </ContentView>

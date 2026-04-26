@@ -25,6 +25,8 @@ public partial class TransactionRow : ContentView
     public static readonly BindableProperty TransactionTypeTextProperty =
         BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
 
+    public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
+
     public TransactionInfo? Transaction
     {
         get => (TransactionInfo?)GetValue(TransactionProperty);
@@ -64,6 +66,20 @@ public partial class TransactionRow : ContentView
     public TransactionRow()
     {
         InitializeComponent();
+        SetupSwipeGesture();
+    }
+
+    private void SetupSwipeGesture()
+    {
+        SwipeContainer.InvokeCommand = new Command(OnSwipeInvoked);
+    }
+
+    private void OnSwipeInvoked()
+    {
+        if (Transaction.HasValue)
+        {
+            TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+        }
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
@@ -108,5 +124,15 @@ public partial class TransactionRow : ContentView
             AmountText = $"+ {FormatAmount(amountAbs)}";
 
         TransactionTypeText = transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
+    }
+}
+
+public class TransactionSwipedEventArgs : EventArgs
+{
+    public TransactionInfo Transaction { get; }
+
+    public TransactionSwipedEventArgs(TransactionInfo transaction)
+    {
+        Transaction = transaction;
     }
 }
