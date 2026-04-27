@@ -123,6 +123,9 @@
 	  <MauiXaml Update="Components\Fields\NumericField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Icons\ReverseIcon.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\ToastView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

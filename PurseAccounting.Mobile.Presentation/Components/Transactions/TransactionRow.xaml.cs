@@ -71,14 +71,28 @@ public partial class TransactionRow : ContentView
 
     private void SetupSwipeGesture()
     {
-        SwipeContainer.InvokeCommand = new Command(OnSwipeInvoked);
+        SwipeContainer.SwipeStarted += OnSwipeStarted;
+        SwipeContainer.SwipeEnded += OnSwipeEnded;
     }
 
-    private void OnSwipeInvoked()
+    private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
-        if (Transaction.HasValue)
+        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+    }
+
+    private double _treshold => SwipeContainer.Width / 2;
+
+    private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
+    {
+        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && DeleteSwipeItem.Frame.X >= -_treshold)
         {
+            SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+        }
+        else
+        {
+            SwipeContainer.Close(true);
+            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
         }
     }
 
@@ -108,8 +122,7 @@ public partial class TransactionRow : ContentView
 
         var transaction = Transaction.Value;
         
-        if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && 
-            ColorsMap.Map.TryGetValue(category.ColorID, out var color))
+        if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
         else
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
