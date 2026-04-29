@@ -2,20 +2,21 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
+             xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionRow"
              x:Name="RootView">
 
     <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}">
         <SwipeView.RightItems>
             <SwipeItems Mode="Reveal">
-                <SwipeItemView x:Name="DeleteSwipeItem" 
+                <transactions:CustomSwipeItemView x:Name="DeleteSwipeItem" 
                                BackgroundColor="{StaticResource Purple}"
                                WidthRequest="{Binding Source={x:Reference RootView}, Path=Width}">
                     <icons:ReverseIcon
                         Margin="0,0,16,0"
                         HorizontalOptions="End"
                         VerticalOptions="Center"/>
-                </SwipeItemView>
+                </transactions:CustomSwipeItemView>
             </SwipeItems>
         </SwipeView.RightItems>
                   

@@ -67,29 +67,42 @@ public partial class TransactionRow : ContentView
     {
         InitializeComponent();
         SetupSwipeEvents();
+        SetupCustomSwipeEvents();
     }
 
     private void SetupSwipeEvents()
     {
-        SwipeContainer.Swiped += OnSwiped;
         SwipeContainer.SwipeEnded += OnSwipeEnded;
+    }
+
+    private double _swipeOffset;
+
+    private void SetupCustomSwipeEvents()
+    {
+        DeleteSwipeItem.SwipeProgressChanged += OnSwipeProgressChanged;
+        DeleteSwipeItem.CustomSwipeEnded += OnCustomSwipeEnded;
     }
 
     private bool _shouldPerformAction;
 
-    private void OnSwiped(object? sender, SwipedEventArgs e)
+    private void OnSwipeProgressChanged(object? sender, CustomSwipeProgressEventArgs e)
     {
-        // e.OffsetX отрицательный при свайпе влево
-        // Проверяем, достигнута ли половина ширины элемента
+        // e.Offset отрицательный при свайпе влево
         if (SwipeContainer.Width > 0)
         {
             double threshold = SwipeContainer.Width * 0.5;
-            _shouldPerformAction = e.Direction == SwipeDirection.Left && Math.Abs(e.OffsetX) >= threshold;
+            _shouldPerformAction = Math.Abs(e.Offset) >= threshold;
+            _swipeOffset = e.Offset;
         }
         else
         {
             _shouldPerformAction = false;
         }
+    }
+
+    private void OnCustomSwipeEnded(object? sender, CustomSwipeEndedEventArgs e)
+    {
+        // Логика перенесена в OnSwipeEnded
     }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
@@ -107,6 +120,7 @@ public partial class TransactionRow : ContentView
         }
         
         ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
+        _shouldPerformAction = false;
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
