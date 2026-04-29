@@ -67,7 +67,47 @@ public partial class TransactionRow : ContentView
     {
         InitializeComponent();
         SetupSwipeEvents();
-        SetupCustomSwipeEvents();
+        StartTrackingSwipePosition();
+    }
+
+    private void StartTrackingSwipePosition()
+    {
+        // Запускаем фоновую задачу для отслеживания позиции контента
+        _ = TrackSwipePositionAsync();
+    }
+
+    private async System.Threading.Tasks.Task TrackSwipePositionAsync()
+    {
+        double lastOffset = 0;
+        
+        while (true)
+        {
+            try
+            {
+                // Получаем текущее смещение контента при свайпе
+                var currentOffset = ContentContainer.TranslationX;
+                
+                // Если смещение изменилось значительно
+                if (Math.Abs(currentOffset - lastOffset) > 0.5)
+                {
+                    lastOffset = currentOffset;
+                    
+                    // Проверяем порог
+                    if (SwipeContainer.Width > 0)
+                    {
+                        double threshold = SwipeContainer.Width * 0.5;
+                        _shouldPerformAction = Math.Abs(currentOffset) >= threshold;
+                        _swipeOffset = currentOffset;
+                    }
+                }
+            }
+            catch
+            {
+                // Игнорируем ошибки
+            }
+            
+            await System.Threading.Tasks.Task.Delay(16); // ~60 FPS
+        }
     }
 
     private void SetupSwipeEvents()
@@ -76,47 +116,20 @@ public partial class TransactionRow : ContentView
     }
 
     private double _swipeOffset;
-
-    private void SetupCustomSwipeEvents()
-    {
-        DeleteSwipeItem.SwipeProgressChanged += OnSwipeProgressChanged;
-        DeleteSwipeItem.CustomSwipeEnded += OnCustomSwipeEnded;
-    }
-
     private bool _shouldPerformAction;
-
-    private void OnSwipeProgressChanged(object? sender, CustomSwipeProgressEventArgs e)
-    {
-        // e.Offset отрицательный при свайпе влево
-        if (SwipeContainer.Width > 0)
-        {
-            double threshold = SwipeContainer.Width * 0.5;
-            _shouldPerformAction = Math.Abs(e.Offset) >= threshold;
-            _swipeOffset = e.Offset;
-        }
-        else
-        {
-            _shouldPerformAction = false;
-        }
-    }
-
-    private void OnCustomSwipeEnded(object? sender, CustomSwipeEndedEventArgs e)
-    {
-        // Логика перенесена в OnSwipeEnded
-    }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
         if (_shouldPerformAction && Transaction.HasValue)
         {
             // Открываем свайп полностью и выполняем действие
-            SwipeContainer.Open(OpenSwipeItem.RightItems, false);
+            SwipeContainer.Open(OpenSwipeItem.RightItems, animated: false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
         }
         else
         {
             // Закрываем свайп без выполнения действия
-            SwipeContainer.Close(true);
+            SwipeContainer.Close(animated: true);
         }
         
         ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
