@@ -70,6 +70,7 @@ public partial class TransactionRow : ContentView
     }
 
     private double _swipeDistance;
+    private double _lastSwipeDistance;
     private double _treshold => SwipeContainer.Width / 2;
 
     private void SetupSwipeGesture()
@@ -85,6 +86,8 @@ public partial class TransactionRow : ContentView
     private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
         ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        _swipeDistance = 0;
+        _lastSwipeDistance = 0;
     }
 
     private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)
@@ -96,18 +99,19 @@ public partial class TransactionRow : ContentView
                 break;
             case GestureStatus.Running:
                 _swipeDistance = Math.Abs(e.TotalX);
+                _lastSwipeDistance = _swipeDistance;
                 break;
             case GestureStatus.Completed:
             case GestureStatus.Canceled:
-                // Сбрасываем расстояние после завершения
-                _swipeDistance = 0;
+                // Сохраняем последнее значение перед завершением
+                _lastSwipeDistance = _swipeDistance;
                 break;
         }
     }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && _swipeDistance >= _treshold)
+        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && _lastSwipeDistance >= _treshold)
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
