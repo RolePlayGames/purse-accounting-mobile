@@ -69,10 +69,17 @@ public partial class TransactionRow : ContentView
         SetupSwipeGesture();
     }
 
+    private double _swipeDistance;
+    private double _treshold => SwipeContainer.Width / 2;
+
     private void SetupSwipeGesture()
     {
         SwipeContainer.SwipeStarted += OnSwipeStarted;
         SwipeContainer.SwipeEnded += OnSwipeEnded;
+        
+        var panGesture = new PanGestureRecognizer();
+        panGesture.PanUpdated += OnPanUpdated;
+        ContentContainer.GestureRecognizers.Add(panGesture);
     }
 
     private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
@@ -80,11 +87,27 @@ public partial class TransactionRow : ContentView
         ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
     }
 
-    private double _treshold => SwipeContainer.Width / 2;
+    private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)
+    {
+        switch (e.StatusType)
+        {
+            case GestureStatus.Started:
+                _swipeDistance = 0;
+                break;
+            case GestureStatus.Running:
+                _swipeDistance = Math.Abs(e.TotalX);
+                break;
+            case GestureStatus.Completed:
+            case GestureStatus.Canceled:
+                // Сбрасываем расстояние после завершения
+                _swipeDistance = 0;
+                break;
+        }
+    }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && DeleteSwipeItem.Frame.X >= -_treshold)
+        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && _swipeDistance >= _treshold)
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
