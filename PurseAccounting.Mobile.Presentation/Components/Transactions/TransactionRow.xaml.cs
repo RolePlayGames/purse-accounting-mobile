@@ -66,61 +66,47 @@ public partial class TransactionRow : ContentView
     public TransactionRow()
     {
         InitializeComponent();
-        SetupSwipeGesture();
+        SetupSwipeEvents();
     }
 
-    private double _swipeDistance;
-    private double _lastSwipeDistance;
-    private double _treshold => SwipeContainer.Width / 2;
-
-    private void SetupSwipeGesture()
+    private void SetupSwipeEvents()
     {
-        SwipeContainer.SwipeStarted += OnSwipeStarted;
+        SwipeContainer.Swiped += OnSwiped;
         SwipeContainer.SwipeEnded += OnSwipeEnded;
-        
-        var panGesture = new PanGestureRecognizer();
-        panGesture.PanUpdated += OnPanUpdated;
-        ContentContainer.GestureRecognizers.Add(panGesture);
     }
 
-    private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
-    {
-        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
-        _swipeDistance = 0;
-        _lastSwipeDistance = 0;
-    }
+    private bool _shouldPerformAction;
 
-    private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)
+    private void OnSwiped(object? sender, SwipedEventArgs e)
     {
-        switch (e.StatusType)
+        // e.OffsetX отрицательный при свайпе влево
+        // Проверяем, достигнута ли половина ширины элемента
+        if (SwipeContainer.Width > 0)
         {
-            case GestureStatus.Started:
-                _swipeDistance = 0;
-                break;
-            case GestureStatus.Running:
-                _swipeDistance = Math.Abs(e.TotalX);
-                _lastSwipeDistance = _swipeDistance;
-                break;
-            case GestureStatus.Completed:
-            case GestureStatus.Canceled:
-                // Сохраняем последнее значение перед завершением
-                _lastSwipeDistance = _swipeDistance;
-                break;
+            double threshold = SwipeContainer.Width * 0.5;
+            _shouldPerformAction = e.Direction == SwipeDirection.Left && Math.Abs(e.OffsetX) >= threshold;
+        }
+        else
+        {
+            _shouldPerformAction = false;
         }
     }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && _lastSwipeDistance >= _treshold)
+        if (_shouldPerformAction && Transaction.HasValue)
         {
+            // Открываем свайп полностью и выполняем действие
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
         }
         else
         {
+            // Закрываем свайп без выполнения действия
             SwipeContainer.Close(true);
-            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
         }
+        
+        ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
