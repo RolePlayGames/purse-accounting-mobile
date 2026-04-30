@@ -16,17 +16,24 @@ public class TransactionsTabViewModel : ReactiveObject
     private readonly ITransactionService _transactionService;
     private readonly ObservableCollection<TransactionGroup> _displayedGroups = [];
 
-    private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
+    private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
+    private IReadOnlyDictionary<long, TransactionCategoryDto> _categoriesById = new Dictionary<long, TransactionCategoryDto>();
     private IReadOnlyCollection<long> _selectedCategoryIds = [];
     private IReadOnlyCollection<TransactionGroup>? _groupedTransactions;
     private int _currentGroupsCount;
     private bool _isUpdating;
     private CancellationTokenSource? _cancellationTokenSource;
 
-    public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
+    public IReadOnlyCollection<TransactionCategoryDto> Categories
     {
         get => _categories;
         set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
+    }
+
+    public IReadOnlyDictionary<long, TransactionCategoryDto> CategoriesById
+    {
+        get => _categoriesById;
+        set => this.RaiseAndSetIfChanged(ref _categoriesById, value, nameof(Categories));
     }
 
     public IReadOnlyCollection<long> SelectedCategoryIds
@@ -95,14 +102,16 @@ public class TransactionsTabViewModel : ReactiveObject
     {
         if (newValue is null || newValue.Count == 0)
         {
-            Categories = new Dictionary<long, TransactionCategoryDto>();
+            Categories = [];
+            CategoriesById = new Dictionary<long, TransactionCategoryDto>();
             SelectedCategoryIds = [];
             return;
         }
 
-        Categories = newValue.ToDictionary(c => c.ID);
+        Categories = newValue;
+        CategoriesById = newValue.ToDictionary(c => c.ID);
 
-        SelectedCategoryIds = Categories.Keys
+        SelectedCategoryIds = CategoriesById.Keys
             .Where(id => SelectedCategoryIds.Contains(id))
             .ToHashSet();
     }

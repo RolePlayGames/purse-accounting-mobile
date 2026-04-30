@@ -25,10 +25,10 @@ public partial class TransactionRow : ContentView
     public static readonly BindableProperty TransactionTypeTextProperty =
         BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
 
-    private bool _isSwiping;
-    private double _startX;
-    private double _currentTranslationX;
-    private const double SwipeThreshold = 0.5; // 50% ширины для подтверждения свайпа
+    public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
+
+    private readonly Queue<bool> _swipeDirections = new();
+    private const int MaxDirectionHistory = 3;
 
     public TransactionInfo? Transaction
     {
@@ -66,100 +66,56 @@ public partial class TransactionRow : ContentView
         set => SetValue(TransactionTypeTextProperty, value);
     }
 
-    public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
-
     public TransactionRow()
     {
         InitializeComponent();
-        SetupPanGesture();
+        SetupSwipeGesture();
     }
 
-    private void SetupPanGesture()
+    private void SetupSwipeGesture()
     {
-        var panGesture = new PanGestureRecognizer();
-        panGesture.PanUpdated += OnPanUpdated;
-        ContentContainer.GestureRecognizers.Add(panGesture);
+        SwipeContainer.SwipeStarted += OnSwipeStarted;
+        SwipeContainer.SwipeChanging += OnSwipeChanging;
+        SwipeContainer.SwipeEnded += OnSwipeEnded;
     }
 
-    private void OnPanUpdated(object? sender, PanUpdatedEventArgs e)
+    private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
-        Task.Run(() =>
+        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        _swipeDirections.Clear();
+    }
+
+    private double _lastOffset = default;
+
+    private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
+    {
+        var isLeft = _lastOffset >= e.Offset;
+        _lastOffset = e.Offset;
+
+        _swipeDirections.Enqueue(isLeft);
+
+        if (_swipeDirections.Count > MaxDirectionHistory)
         {
-            ContentContainer.Background = Application.Current?.Resources.GetColor("LightBlue");
-
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    _isSwiping = true;
-                    _startX = e.TotalX;
-                    _currentTranslationX = ContentContainer.TranslationX;
-                    break;
-
-                case GestureStatus.Running:
-                    if (!_isSwiping)
-                        return;
-
-                    var deltaX = e.TotalX - _startX;
-
-                    if (Math.Abs(e.TotalX - _currentTranslationX) < 1)
-                        return;
-
-                    // Разрешаем движение только влево
-                    if (deltaX < 0)
-                    {
-                        var newTranslationX = Math.Max(deltaX, -MainGrid.Width);
-                        ContentContainer.TranslationX = newTranslationX;
-                        _currentTranslationX = newTranslationX;
-                    }
-                    break;
-
-                case GestureStatus.Completed:
-                    if (!_isSwiping)
-                        return;
-
-                    _isSwiping = false;
-
-                    var parentWidth = MainGrid.Width;
-                    var swipeProgress = Math.Abs(_currentTranslationX) / parentWidth;
-
-                    if (swipeProgress >= SwipeThreshold)
-                    {
-                        // Свайп завершен - убираем элемент
-                        AnimateSwipeOut(-parentWidth);
-                    }
-                    else
-                    {
-                        // Возвращаем на место
-                        AnimateBackToPosition();
-                    }
-
-                    ContentContainer.Background = Application.Current?.Resources.GetColor("WorkBackground");
-                    break;
-
-                case GestureStatus.Canceled:
-                    _isSwiping = false;
-                    AnimateBackToPosition();
-                    ContentContainer.Background = Application.Current?.Resources.GetColor("WorkBackground");
-                    break;
-            }
-        });
+            _swipeDirections.Dequeue();
+        }
     }
 
-    private async void AnimateSwipeOut(double targetX)
+    private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        await ContentContainer.TranslateTo(targetX, 0, 150, Easing.CubicIn);
+        var allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
 
-        // Вызываем событие о том, что элемент был свайпнут
-        TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction));
+        if (allLeft && Transaction.HasValue)
+        {
+            SwipeContainer.Open(OpenSwipeItem.RightItems, false);
+            TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+        }
+        else
+        {
+            SwipeContainer.Close(true);
+            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
+        }
 
-        // Скрываем контент полностью
-        ContentContainer.IsVisible = false;
-    }
-
-    private async void AnimateBackToPosition()
-    {
-        await ContentContainer.TranslateTo(0, 0, 200, Easing.CubicOut);
-        _currentTranslationX = 0;
+        _swipeDirections.Clear();
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
@@ -188,8 +144,7 @@ public partial class TransactionRow : ContentView
 
         var transaction = Transaction.Value;
         
-        if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && 
-            ColorsMap.Map.TryGetValue(category.ColorID, out var color))
+        if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
         else
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
@@ -209,9 +164,9 @@ public partial class TransactionRow : ContentView
 
 public class TransactionSwipedEventArgs : EventArgs
 {
-    public TransactionInfo? Transaction { get; }
+    public TransactionInfo Transaction { get; }
 
-    public TransactionSwipedEventArgs(TransactionInfo? transaction)
+    public TransactionSwipedEventArgs(TransactionInfo transaction)
     {
         Transaction = transaction;
     }

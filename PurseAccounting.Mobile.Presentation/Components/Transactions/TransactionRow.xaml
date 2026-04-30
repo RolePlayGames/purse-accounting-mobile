@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.TransactionRow"
              x:Name="RootView">
 
-    <Grid x:Name="MainGrid">
-
-        <!-- Фоновый прямоугольник (Purple) -->
-        <BoxView 
-            x:Name="BackgroundBox"
-            Grid.Column="0"
-            Grid.Row="0"
-            BackgroundColor="{StaticResource Purple}" />
-        
-        <!-- Контейнер контента с фоном LightBlue -->
+    <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}">
+        <SwipeView.RightItems>
+            <SwipeItems Mode="Reveal">
+                <SwipeItemView x:Name="DeleteSwipeItem" 
+                               BackgroundColor="{StaticResource Purple}"
+                               WidthRequest="{Binding Source={x:Reference RootView}, Path=Width}">
+                    <icons:ReverseIcon
+                        Margin="0,0,16,0"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"/>
+                </SwipeItemView>
+            </SwipeItems>
+        </SwipeView.RightItems>
+                  
         <Grid
             x:Name="ContentContainer"
-            Grid.Column="0"
-            Grid.Row="0"
             Padding="16,7.5,16,7.5"
             BackgroundColor="{StaticResource WorkBackground}"
             ColumnDefinitions="30,12,*,*">
@@ -45,5 +48,5 @@
                 HorizontalOptions="End"
                 VerticalOptions="Center" />
         </Grid>
-    </Grid>
+    </SwipeView>
 </ContentView>
