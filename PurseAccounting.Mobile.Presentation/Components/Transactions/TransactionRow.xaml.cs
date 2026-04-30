@@ -85,10 +85,14 @@ public partial class TransactionRow : ContentView
         _swipeDirections.Clear();
     }
 
+    private double _lastOffset = default;
+
     private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
     {
         // true = влево, false = вправо
-        bool isLeft = e.Direction == SwipeDirection.Left;
+        var isLeft = _lastOffset >= e.Offset; // e.SwipeDirection == SwipeDirection.Left;
+        _lastOffset = e.Offset;
+
         _swipeDirections.Enqueue(isLeft);
 
         if (_swipeDirections.Count > MaxDirectionHistory)
