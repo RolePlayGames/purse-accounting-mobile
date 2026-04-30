@@ -89,8 +89,7 @@ public partial class TransactionRow : ContentView
 
     private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
     {
-        // true = влево, false = вправо
-        var isLeft = _lastOffset >= e.Offset; // e.SwipeDirection == SwipeDirection.Left;
+        var isLeft = _lastOffset >= e.Offset;
         _lastOffset = e.Offset;
 
         _swipeDirections.Enqueue(isLeft);
@@ -103,8 +102,7 @@ public partial class TransactionRow : ContentView
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        // Проверяем, были ли все последние движения влево
-        bool allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
+        var allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
 
         if (allLeft && Transaction.HasValue)
         {
