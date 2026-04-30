@@ -27,6 +27,9 @@ public partial class TransactionRow : ContentView
 
     public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
 
+    private readonly Queue<bool> _swipeDirections = new();
+    private const int MaxDirectionHistory = 3;
+
     public TransactionInfo? Transaction
     {
         get => (TransactionInfo?)GetValue(TransactionProperty);
@@ -72,19 +75,36 @@ public partial class TransactionRow : ContentView
     private void SetupSwipeGesture()
     {
         SwipeContainer.SwipeStarted += OnSwipeStarted;
+        SwipeContainer.SwipeChanging += OnSwipeChanging;
         SwipeContainer.SwipeEnded += OnSwipeEnded;
     }
 
     private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
         ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        _swipeDirections.Clear();
     }
 
-    private double _treshold => SwipeContainer.Width / 2;
+    private double _lastOffset = default;
+
+    private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
+    {
+        var isLeft = _lastOffset >= e.Offset;
+        _lastOffset = e.Offset;
+
+        _swipeDirections.Enqueue(isLeft);
+
+        if (_swipeDirections.Count > MaxDirectionHistory)
+        {
+            _swipeDirections.Dequeue();
+        }
+    }
 
     private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
     {
-        if (e.SwipeDirection == SwipeDirection.Left && Transaction.HasValue && DeleteSwipeItem.Frame.X >= -_treshold)
+        var allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
+
+        if (allLeft && Transaction.HasValue)
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
@@ -94,6 +114,8 @@ public partial class TransactionRow : ContentView
             SwipeContainer.Close(true);
             ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
         }
+
+        _swipeDirections.Clear();
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
