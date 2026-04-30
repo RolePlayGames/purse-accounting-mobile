@@ -75,7 +75,7 @@ public partial class TransactionRow : ContentView
     private void SetupSwipeGesture()
     {
         SwipeContainer.SwipeStarted += OnSwipeStarted;
-        SwipeContainer.Swiping += OnSwiping;
+        SwipeContainer.SwipeChanging += OnSwipeChanging;
         SwipeContainer.SwipeEnded += OnSwipeEnded;
     }
 
@@ -85,7 +85,7 @@ public partial class TransactionRow : ContentView
         _swipeDirections.Clear();
     }
 
-    private void OnSwiping(object? sender, SwipingEventArgs e)
+    private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
     {
         // true = влево, false = вправо
         bool isLeft = e.Direction == SwipeDirection.Left;
