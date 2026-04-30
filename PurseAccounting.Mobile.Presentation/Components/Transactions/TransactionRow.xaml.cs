@@ -131,7 +131,7 @@ public partial class TransactionRow : ContentView
 
         if (isSwiping)
         {
-            var rect = new Rectangle(0, 0, width - 10, height);
+            var rect = new Rectangle(0d, 0d, width - 10d, height);
             ContentContainer.Clip = new RoundRectangleGeometry
             {
                 Rect = rect,
@@ -142,7 +142,7 @@ public partial class TransactionRow : ContentView
         {
             ContentContainer.Clip = new RectangleGeometry
             {
-                Rect = new Rectangle(0, 0, width, height)
+                Rect = new Rectangle(0d, 0d, width, height)
             };
         }
     }
