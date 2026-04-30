@@ -82,6 +82,7 @@ public partial class TransactionRow : ContentView
     private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
         ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        UpdateClip(true);
         _swipeDirections.Clear();
     }
 
@@ -108,14 +109,42 @@ public partial class TransactionRow : ContentView
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+            UpdateClip(true);
         }
         else
         {
             SwipeContainer.Close(true);
             ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
+            UpdateClip(false);
         }
 
         _swipeDirections.Clear();
+    }
+
+    private void UpdateClip(bool isSwiping)
+    {
+        if (ContentContainer.Width <= 0)
+            return;
+
+        var width = ContentContainer.Width;
+        var height = ContentContainer.Height;
+
+        if (isSwiping)
+        {
+            var rect = new Rectangle(0, 0, width - 10, height);
+            ContentContainer.Clip = new RoundRectangleGeometry
+            {
+                Rect = rect,
+                CornerRadius = new CornerRadius(0, 10, 10, 0)
+            };
+        }
+        else
+        {
+            ContentContainer.Clip = new RectangleGeometry
+            {
+                Rect = new Rectangle(0, 0, width, height)
+            };
+        }
     }
 
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
