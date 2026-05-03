@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls.Shapes;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Colors;
@@ -27,8 +28,14 @@ public partial class TransactionRow : ContentView
 
     public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
 
+    private const int _maxDirectionHistory = 3;
+    private const double _cornerRadius = 10; // pixels
+
+    private static RoundRectangleGeometry? _contentContainerNormalRectangle;
+    private static RoundRectangleGeometry? _contentContainerRoundedRectangle;
+
     private readonly Queue<bool> _swipeDirections = new();
-    private const int MaxDirectionHistory = 3;
+    private double? _lastOffset = null;
 
     public TransactionInfo? Transaction
     {
@@ -72,81 +79,6 @@ public partial class TransactionRow : ContentView
         SetupSwipeGesture();
     }
 
-    private void SetupSwipeGesture()
-    {
-        SwipeContainer.SwipeStarted += OnSwipeStarted;
-        SwipeContainer.SwipeChanging += OnSwipeChanging;
-        SwipeContainer.SwipeEnded += OnSwipeEnded;
-    }
-
-    private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
-    {
-        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
-        UpdateClip(true);
-        _swipeDirections.Clear();
-    }
-
-    private double _lastOffset = default;
-
-    private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
-    {
-        var isLeft = _lastOffset >= e.Offset;
-        _lastOffset = e.Offset;
-
-        _swipeDirections.Enqueue(isLeft);
-
-        if (_swipeDirections.Count > MaxDirectionHistory)
-        {
-            _swipeDirections.Dequeue();
-        }
-    }
-
-    private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
-    {
-        var allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
-
-        if (allLeft && Transaction.HasValue)
-        {
-            SwipeContainer.Open(OpenSwipeItem.RightItems, false);
-            TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
-            UpdateClip(true);
-        }
-        else
-        {
-            SwipeContainer.Close(true);
-            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
-            UpdateClip(false);
-        }
-
-        _swipeDirections.Clear();
-    }
-
-    private void UpdateClip(bool isSwiping)
-    {
-        if (ContentContainer.Width <= 0)
-            return;
-
-        var width = ContentContainer.Width;
-        var height = ContentContainer.Height;
-
-        if (isSwiping)
-        {
-            var rect = new Rectangle(0d, 0d, width - 10d, height);
-            ContentContainer.Clip = new RoundRectangleGeometry
-            {
-                Rect = rect,
-                CornerRadius = new CornerRadius(0, 10, 10, 0)
-            };
-        }
-        else
-        {
-            ContentContainer.Clip = new RectangleGeometry
-            {
-                Rect = new Rectangle(0d, 0d, width, height)
-            };
-        }
-    }
-
     private static void OnTransactionOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is TransactionRow row)
@@ -166,13 +98,85 @@ public partial class TransactionRow : ContentView
         return $"{rubles:N0},{kopecks:D2} ₽";
     }
 
+    private void SetupSwipeGesture()
+    {
+        SwipeContainer.SwipeStarted += OnSwipeStarted;
+        SwipeContainer.SwipeChanging += OnSwipeChanging;
+        SwipeContainer.SwipeEnded += OnSwipeEnded;
+    }
+
+    private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
+    {
+        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        RoundContentContainerClip(true);
+        _swipeDirections.Clear();
+    }
+
+    private void OnSwipeChanging(object? sender, SwipeChangingEventArgs e)
+    {
+        if (!_lastOffset.HasValue)
+        {
+            _lastOffset = e.Offset;
+            return;
+        }
+
+        var isLeft = _lastOffset >= e.Offset;
+        _lastOffset = e.Offset;
+
+        _swipeDirections.Enqueue(isLeft);
+
+        if (_swipeDirections.Count > _maxDirectionHistory)
+        {
+            _swipeDirections.Dequeue();
+        }
+    }
+
+    private void OnSwipeEnded(object? sender, SwipeEndedEventArgs e)
+    {
+        var allLeft = _swipeDirections.Count > 0 && _swipeDirections.All(d => d);
+
+        if (allLeft && Transaction.HasValue)
+        {
+            SwipeContainer.Open(OpenSwipeItem.RightItems, false);
+            TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+        }
+        else
+        {
+            SwipeContainer.Close(true);
+            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
+            RoundContentContainerClip(false);
+        }
+
+        _lastOffset = null;
+        _swipeDirections.Clear();
+    }
+
+    private RoundRectangleGeometry ContentContainerNormalRectangle => _contentContainerNormalRectangle ??= new()
+    {
+        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+    };
+
+    private RoundRectangleGeometry ContentContainerRoundedRectangle => _contentContainerRoundedRectangle ??= new()
+    {
+        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+        CornerRadius = new(0, _cornerRadius, 0, _cornerRadius),
+    };
+
+    private void RoundContentContainerClip(bool isSwiping)
+    {
+        if (ContentContainer.Width <= 0)
+            return;
+
+        ContentContainer.Clip = isSwiping ? ContentContainerRoundedRectangle : ContentContainerNormalRectangle;
+    }
+
     private void UpdateProperties()
     {
         if (!Transaction.HasValue || Categories is null || Categories.Count == 0)
             return;
 
         var transaction = Transaction.Value;
-        
+
         if (Categories.TryGetValue(transaction.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleColor = new SolidColorBrush(color);
         else
@@ -182,21 +186,8 @@ public partial class TransactionRow : ContentView
         var amountInRubles = amount / 100.0;
         var amountAbs = Math.Abs(amountInRubles);
 
-        if (amount >= 0)
-            AmountText = FormatAmount(amountAbs);
-        else
-            AmountText = $"+ {FormatAmount(amountAbs)}";
+        AmountText = amount >= 0 ? FormatAmount(amountAbs) : $"+ {FormatAmount(amountAbs)}";
 
         TransactionTypeText = transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
-    }
-}
-
-public class TransactionSwipedEventArgs : EventArgs
-{
-    public TransactionInfo Transaction { get; }
-
-    public TransactionSwipedEventArgs(TransactionInfo transaction)
-    {
-        Transaction = transaction;
     }
 }
