@@ -1,66 +1,44 @@
-# Compiled and build artifacts
-*.o
-*.obj
-*.exe
+```gitignore
+# Build artifacts
+bin/
+obj/
 *.dll
+*.exe
+*.pdb
 *.so
-*.a
-*.out
-*.pyc
-*.class
-*.jar
-*.war
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+*.dylib
+*.nupkg
 
 # Dependencies
+packages/
 node_modules/
-venv/
-.venv/
-__pycache__/
-dist/
-build/
-target/
-.gradle/
-.mypy_cache/
-.pytest_cache/
-coverage/
-htmlcov/
-.coverage
+vendor/
 
-# Editors and IDEs
+# IDE files
+.vs/
 .vscode/
 .idea/
-*.swp
-*.swo
-*.tmp
+*.userprefs
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# System files
+# OS files
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# Logs
+*.log
+
+# Environment
 .env
 .env.local
 *.env.*
 
-# Logs
-*.log
+# Test results
+TestResults/
+```

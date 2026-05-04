@@ -34,7 +34,7 @@
             ItemsSource="{Binding DisplayedGroups}"
             VerticalOptions="FillAndExpand"
             RemainingItemsThreshold="1"
-            RemainingItemsThresholdReached="OnLoadMoreRequested">
+            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
             <CollectionView.Resources>
                 <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
                     <Setter Property="HeightRequest" Value="12.5" />

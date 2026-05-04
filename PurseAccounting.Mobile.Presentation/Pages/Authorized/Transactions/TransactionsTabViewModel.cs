@@ -5,6 +5,7 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Windows.Input;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
@@ -56,6 +57,8 @@ public class TransactionsTabViewModel : ReactiveObject
 
     public bool HasMoreGroupsToLoad => _groupedTransactions != null && _currentGroupsCount < _groupedTransactions.Count;
 
+    public ICommand LoadMoreCommand { get; }
+
     public TransactionsTabViewModel(
         IApplicationContext applicationContext,
         ITransactionService transactionService)
@@ -64,6 +67,10 @@ public class TransactionsTabViewModel : ReactiveObject
         _transactionService = transactionService;
         _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
         _applicationContext.AccountChanged += OnAccountChanged;
+
+        LoadMoreCommand = this.WhenAnyValue(x => x.HasMoreGroupsToLoad)
+            .Select(canLoad => canLoad)
+            .ToCommand(this, _ => LoadMoreGroups());
 
         OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
 
