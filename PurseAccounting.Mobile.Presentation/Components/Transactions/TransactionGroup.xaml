@@ -37,7 +37,8 @@
                     <DataTemplate>
                         <transactions:TransactionRow 
                             Transaction="{Binding .}"
-                            Categories="{Binding Source={x:Reference RootView}, Path=Categories}" />
+                            Categories="{Binding Source={x:Reference RootView}, Path=Categories}"
+                            SwipeCompleted="OnTransactionSwipeCompleted" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </VerticalStackLayout>

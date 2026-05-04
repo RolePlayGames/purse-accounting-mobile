@@ -1,3 +1,5 @@
+using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using System.Globalization;
@@ -17,7 +19,12 @@ public partial class TransactionGroup : ContentView
         BindableProperty.Create(nameof(DateText), typeof(string), typeof(TransactionGroup), string.Empty);
 
     public static readonly BindableProperty TransactionsProperty =
-        BindableProperty.Create(nameof(Transactions), typeof(IReadOnlyCollection<TransactionInfo>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionInfo>));
+        BindableProperty.Create(nameof(Transactions), typeof(ObservableCollection<TransactionInfo>), typeof(TransactionGroup), default(ObservableCollection<TransactionInfo>));
+
+    public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
+
+    private readonly ITransactionService? _transactionService;
+    private readonly IApplicationContext? _applicationContext;
 
     public TransactionGroupModel Group
     {
@@ -37,15 +44,44 @@ public partial class TransactionGroup : ContentView
         set => SetValue(DateTextProperty, value);
     }
 
-    public IReadOnlyCollection<TransactionInfo> Transactions
+    public ObservableCollection<TransactionInfo> Transactions
     {
-        get => (IReadOnlyCollection<TransactionInfo>)GetValue(TransactionsProperty);
+        get => (ObservableCollection<TransactionInfo>)GetValue(TransactionsProperty);
         set => SetValue(TransactionsProperty, value);
     }
 
     public TransactionGroup()
     {
         InitializeComponent();
+        _transactionService = App.Current?.Handler?.MauiContext?.Services.GetService<ITransactionService>();
+        _applicationContext = App.Current?.Handler?.MauiContext?.Services.GetService<IApplicationContext>();
+    }
+
+    private void OnTransactionSwipeCompleted(object? sender, TransactionSwipedEventArgs e)
+    {
+        HandleTransactionSwipe(e.Transaction);
+    }
+
+    private async void HandleTransactionSwipe(TransactionInfo transaction)
+    {
+        if (_transactionService is null || _applicationContext is null)
+            return;
+
+        var changeAmountType = transaction.ChangeAmountType == "Daily" 
+            ? TransactionChangeAmountType.Daily 
+            : TransactionChangeAmountType.Total;
+
+        var result = await _transactionService.CancelTransaction(transaction.ID, changeAmountType, CancellationToken.None);
+
+        if (result && _applicationContext.Account is not null)
+        {
+            // Удаляем транзакцию из ObservableCollection, что автоматически обновит UI
+            var transactionToRemove = Transactions.FirstOrDefault(t => t.ID == transaction.ID);
+            if (transactionToRemove is not null)
+            {
+                Transactions.Remove(transactionToRemove);
+            }
+        }
     }
 
     private static void OnGroupChanged(BindableObject bindable, object oldValue, object newValue)
@@ -85,6 +121,6 @@ public partial class TransactionGroup : ContentView
             return;
 
         DateText = GetDateText(Group.GroupDate);
-        Transactions = Group.Transactions;
+        Transactions = new ObservableCollection<TransactionInfo>(Group.Transactions);
     }
 }

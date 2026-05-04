@@ -27,6 +27,7 @@ public partial class TransactionRow : ContentView
         BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
 
     public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
+    public event EventHandler<TransactionSwipedEventArgs>? SwipeCompleted;
 
     private const int _maxDirectionHistory = 3;
     private const double _cornerRadius = 10; // pixels
@@ -139,6 +140,7 @@ public partial class TransactionRow : ContentView
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
             TransactionSwiped?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
+            SwipeCompleted?.Invoke(this, new TransactionSwipedEventArgs(Transaction.Value));
         }
         else
         {
