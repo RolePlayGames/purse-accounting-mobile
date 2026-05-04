@@ -178,6 +178,12 @@ public class TransactionsTabViewModel : ReactiveObject
 
         try
         {
+            foreach (var group in _displayedGroups)
+            {
+                group.GroupBecameEmpty -= OnGroupBecameEmpty;
+                group.Dispose();
+            }
+
             _displayedGroups.Clear();
             _currentGroupsCount = 0;
 
@@ -212,6 +218,7 @@ public class TransactionsTabViewModel : ReactiveObject
         {
             _displayedGroups.Remove(viewModel);
             viewModel.GroupBecameEmpty -= OnGroupBecameEmpty;
+            viewModel.Dispose();
         }
         finally
         {

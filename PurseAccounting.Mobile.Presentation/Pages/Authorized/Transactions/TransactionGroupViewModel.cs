@@ -6,12 +6,13 @@ using System.Windows.Input;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
-public class TransactionGroupViewModel : ReactiveObject
+public class TransactionGroupViewModel : ReactiveObject, IDisposable
 {
     private readonly TransactionGroup _group;
     private readonly ITransactionService _transactionService;
     private readonly ObservableCollection<TransactionInfo> _transactions;
     private string _dateText = string.Empty;
+    private bool _disposed;
 
     public event Action<TransactionGroupViewModel>? GroupBecameEmpty;
 
@@ -82,6 +83,15 @@ public class TransactionGroupViewModel : ReactiveObject
         else
         {
             DateText = $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
+        }
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            GroupBecameEmpty = null;
+            _disposed = true;
         }
     }
 }
