@@ -1,21 +1,30 @@
-```gitignore
+```
 # Build artifacts
-bin/
-obj/
-*.dll
+*.o
+*.obj
 *.exe
-*.pdb
+*.dll
 *.so
-*.dylib
-*.nupkg
+*.a
+*.out
 
 # Dependencies
 packages/
-node_modules/
-vendor/
+lib/
+bin/
+obj/
 
-# IDE files
-.vs/
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
 .vscode/
 .idea/
 *.userprefs
@@ -24,21 +33,14 @@ vendor/
 *.userosscache
 *.sln.docstates
 
-# OS files
+# OS generated files
 .DS_Store
 Thumbs.db
 ehthumbs.db
 Icon?
-desktop.ini
+._*
 
-# Logs
-*.log
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Test results
+# Testing
 TestResults/
+coverage/
 ```
