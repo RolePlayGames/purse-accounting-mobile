@@ -14,7 +14,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
-    private readonly ObservableCollection<TransactionGroup> _displayedGroups = [];
+    private readonly ObservableCollection<TransactionGroupViewModel> _displayedGroups = [];
 
     private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categoriesById = new Dictionary<long, TransactionCategoryDto>();
@@ -48,7 +48,7 @@ public class TransactionsTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
     }
 
-    public ObservableCollection<TransactionGroup> DisplayedGroups
+    public ObservableCollection<TransactionGroupViewModel> DisplayedGroups
     {
         get => _displayedGroups;
     }
@@ -83,7 +83,7 @@ public class TransactionsTabViewModel : ReactiveObject
             var groupsToLoad = Math.Min(LoadMoreStep, _groupedTransactions.Count - _currentGroupsCount);
 
             foreach (var group in _groupedTransactions.Skip(_currentGroupsCount).Take(groupsToLoad))
-                _displayedGroups.Add(group);
+                _displayedGroups.Add(new TransactionGroupViewModel(group, _transactionService));
 
             _currentGroupsCount += groupsToLoad;
         }
@@ -164,7 +164,7 @@ public class TransactionsTabViewModel : ReactiveObject
             var groupsToLoad = Math.Min(InitialGroupsCount, _groupedTransactions.Count);
 
             foreach (var group in _groupedTransactions.Take(groupsToLoad))
-                _displayedGroups.Add(group);
+                _displayedGroups.Add(new TransactionGroupViewModel(group, _transactionService));
 
             _currentGroupsCount = groupsToLoad;
         }

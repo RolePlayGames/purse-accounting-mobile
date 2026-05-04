@@ -1,14 +1,15 @@
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
-using System.Globalization;
-using TransactionGroupModel = PurseAccounting.Mobile.Application.Transactions.TransactionGroup;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
 public partial class TransactionGroup : ContentView
 {
-    public static readonly BindableProperty GroupProperty =
-        BindableProperty.Create(nameof(Group), typeof(TransactionGroupModel), typeof(TransactionGroup), default(TransactionGroupModel), propertyChanged: OnGroupChanged);
+    public static readonly BindableProperty ViewModelProperty =
+        BindableProperty.Create(nameof(ViewModel), typeof(TransactionGroupViewModel), typeof(TransactionGroup), default(TransactionGroupViewModel), propertyChanged: OnViewModelChanged);
 
     public static readonly BindableProperty CategoriesProperty =
         BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(TransactionGroup), default(IReadOnlyDictionary<long, TransactionCategoryDto>));
@@ -17,12 +18,12 @@ public partial class TransactionGroup : ContentView
         BindableProperty.Create(nameof(DateText), typeof(string), typeof(TransactionGroup), string.Empty);
 
     public static readonly BindableProperty TransactionsProperty =
-        BindableProperty.Create(nameof(Transactions), typeof(IReadOnlyCollection<TransactionInfo>), typeof(TransactionGroup), default(IReadOnlyCollection<TransactionInfo>));
+        BindableProperty.Create(nameof(Transactions), typeof(ObservableCollection<TransactionInfo>), typeof(TransactionGroup), default(ObservableCollection<TransactionInfo>));
 
-    public TransactionGroupModel Group
+    public TransactionGroupViewModel? ViewModel
     {
-        get => (TransactionGroupModel)GetValue(GroupProperty);
-        set => SetValue(GroupProperty, value);
+        get => (TransactionGroupViewModel?)GetValue(ViewModelProperty);
+        set => SetValue(ViewModelProperty, value);
     }
 
     public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
@@ -37,9 +38,9 @@ public partial class TransactionGroup : ContentView
         set => SetValue(DateTextProperty, value);
     }
 
-    public IReadOnlyCollection<TransactionInfo> Transactions
+    public ObservableCollection<TransactionInfo> Transactions
     {
-        get => (IReadOnlyCollection<TransactionInfo>)GetValue(TransactionsProperty);
+        get => (ObservableCollection<TransactionInfo>)GetValue(TransactionsProperty);
         set => SetValue(TransactionsProperty, value);
     }
 
@@ -48,7 +49,15 @@ public partial class TransactionGroup : ContentView
         InitializeComponent();
     }
 
-    private static void OnGroupChanged(BindableObject bindable, object oldValue, object newValue)
+    private void OnTransactionSwipeCompleted(object? sender, TransactionSwipedEventArgs e)
+    {
+        if (ViewModel?.CancelTransactionCommand is ICommand command && command.CanExecute(e.Transaction))
+        {
+            command.Execute(e.Transaction);
+        }
+    }
+
+    private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is TransactionGroup group)
         {
@@ -56,35 +65,12 @@ public partial class TransactionGroup : ContentView
         }
     }
 
-    private static string GetDateText(DateTime groupDate)
-    {
-        var today = DateTime.Today;
-        var culture = CultureInfo.GetCultureInfo("ru-RU");
-
-        if (groupDate.Date == today)
-        {
-            return $"{groupDate.ToString("d MMMM", culture)}, сегодня";
-        }
-        else if (groupDate.Date == today.AddDays(-1))
-        {
-            return $"{groupDate.ToString("d MMMM", culture)}, вчера";
-        }
-        else if (groupDate.Year == today.Year)
-        {
-            return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
-        }
-        else
-        {
-            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
-        }
-    }
-
     private void UpdateProperties()
     {
-        if (Group is null)
+        if (ViewModel is null)
             return;
 
-        DateText = GetDateText(Group.GroupDate);
-        Transactions = Group.Transactions;
+        DateText = ViewModel.DateText;
+        Transactions = ViewModel.Transactions;
     }
 }
