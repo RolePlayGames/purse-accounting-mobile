@@ -16,18 +16,7 @@ public partial class TransactionsTab : ContentView
     {
         if (BindingContext is TransactionsTabViewModel viewModel && viewModel.HasMoreGroupsToLoad)
         {
-            // Проверяем, что все отображенные группы полностью показаны (все транзакции видны)
-            var allGroupsFullyDisplayed = viewModel.DisplayedGroups.All(g => 
-            {
-                // В текущей реализации TransactionGroup не имеет ограничения на отображение,
-                // поэтому считаем, что все группы всегда полностью отображены
-                return true;
-            });
-
-            if (allGroupsFullyDisplayed)
-            {
-                viewModel.LoadMoreGroups();
-            }
+            viewModel.LoadMoreGroups();
         }
     }
 }
