@@ -87,11 +87,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
             foreach (var group in _groupedTransactions.Skip(_currentGroupsCount))
             {
-                var viewModel = new TransactionGroupViewModel(group, _transactionService);
-                viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
-                _displayedGroups.Add(viewModel);
-                loadedTransactionCount += group.Transactions.Count;
-                _currentGroupsCount++;
+                AddGroupToDisplayed(group, ref loadedTransactionCount);
 
                 if (loadedTransactionCount >= LoadMoreTransactionCount || 
                     _currentGroupsCount >= _groupedTransactions.Count)
@@ -102,6 +98,15 @@ public class TransactionsTabViewModel : ReactiveObject
         {
             _isUpdating = false;
         }
+    }
+
+    private void AddGroupToDisplayed(TransactionGroup group, ref int loadedTransactionCount)
+    {
+        var viewModel = new TransactionGroupViewModel(group, _transactionService);
+        viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
+        _displayedGroups.Add(viewModel);
+        loadedTransactionCount += group.Transactions.Count;
+        _currentGroupsCount++;
     }
 
     private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
@@ -176,11 +181,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
             foreach (var group in _groupedTransactions)
             {
-                var viewModel = new TransactionGroupViewModel(group, _transactionService);
-                viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
-                _displayedGroups.Add(viewModel);
-                loadedTransactionCount += group.Transactions.Count;
-                _currentGroupsCount++;
+                AddGroupToDisplayed(group, ref loadedTransactionCount);
 
                 if (loadedTransactionCount >= InitialTransactionCount || 
                     _currentGroupsCount >= _groupedTransactions.Count)
