@@ -1,5 +1,6 @@
-using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 

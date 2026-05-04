@@ -20,9 +20,9 @@ public class TransactionGroupViewModel : ReactiveObject
         _group = group;
         _transactionService = transactionService;
         _transactions = new ObservableCollection<TransactionInfo>(group.Transactions);
-        
+
         CancelTransactionCommand = ReactiveCommand.CreateFromTask<TransactionInfo>(HandleCancelTransaction);
-        
+
         UpdateDateText();
     }
 
@@ -47,7 +47,7 @@ public class TransactionGroupViewModel : ReactiveObject
         if (result)
         {
             var transactionToRemove = _transactions.FirstOrDefault(t => t.ID == transaction.ID);
-            if (transactionToRemove is not null)
+            if (transactionToRemove != default)
             {
                 _transactions.Remove(transactionToRemove);
             }
