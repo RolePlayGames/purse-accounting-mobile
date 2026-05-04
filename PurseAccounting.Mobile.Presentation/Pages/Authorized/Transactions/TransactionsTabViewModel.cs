@@ -3,14 +3,15 @@ using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
 public class TransactionsTabViewModel : ReactiveObject
 {
-    private const int InitialGroupsCount = 2;
-    private const int LoadMoreStep = 2;
+    private const int InitialTransactionCount = 15;
+    private const int LoadMoreTransactionCount = 15;
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
@@ -53,6 +54,8 @@ public class TransactionsTabViewModel : ReactiveObject
         get => _displayedGroups;
     }
 
+    public bool HasMoreGroupsToLoad => _groupedTransactions != null && _currentGroupsCount < _groupedTransactions.Count;
+
     public TransactionsTabViewModel(
         IApplicationContext applicationContext,
         ITransactionService transactionService)
@@ -80,16 +83,20 @@ public class TransactionsTabViewModel : ReactiveObject
 
         try
         {
-            var groupsToLoad = Math.Min(LoadMoreStep, _groupedTransactions.Count - _currentGroupsCount);
+            var loadedTransactionCount = 0;
 
-            foreach (var group in _groupedTransactions.Skip(_currentGroupsCount).Take(groupsToLoad))
+            foreach (var group in _groupedTransactions.Skip(_currentGroupsCount))
             {
                 var viewModel = new TransactionGroupViewModel(group, _transactionService);
                 viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
                 _displayedGroups.Add(viewModel);
-            }
+                loadedTransactionCount += group.Transactions.Count;
+                _currentGroupsCount++;
 
-            _currentGroupsCount += groupsToLoad;
+                if (loadedTransactionCount >= LoadMoreTransactionCount || 
+                    _currentGroupsCount >= _groupedTransactions.Count)
+                    break;
+            }
         }
         finally
         {
@@ -165,16 +172,20 @@ public class TransactionsTabViewModel : ReactiveObject
             if (_groupedTransactions == null || _groupedTransactions.Count == 0)
                 return;
 
-            var groupsToLoad = Math.Min(InitialGroupsCount, _groupedTransactions.Count);
+            var loadedTransactionCount = 0;
 
-            foreach (var group in _groupedTransactions.Take(groupsToLoad))
+            foreach (var group in _groupedTransactions)
             {
                 var viewModel = new TransactionGroupViewModel(group, _transactionService);
                 viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
                 _displayedGroups.Add(viewModel);
-            }
+                loadedTransactionCount += group.Transactions.Count;
+                _currentGroupsCount++;
 
-            _currentGroupsCount = groupsToLoad;
+                if (loadedTransactionCount >= InitialTransactionCount || 
+                    _currentGroupsCount >= _groupedTransactions.Count)
+                    break;
+            }
         }
         finally
         {
