@@ -49,19 +49,19 @@ public partial class TransactionGroup : ContentView
         InitializeComponent();
     }
 
-    private void OnTransactionSwipeCompleted(object? sender, TransactionSwipedEventArgs e)
-    {
-        if (ViewModel?.CancelTransactionCommand is ICommand command && command.CanExecute(e.Transaction))
-        {
-            command.Execute(e.Transaction);
-        }
-    }
-
     private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is TransactionGroup group)
         {
             group.UpdateProperties();
+        }
+    }
+
+    private void OnTransactionSwipeCompleted(object? sender, TransactionSwipedEventArgs e)
+    {
+        if (ViewModel?.CancelTransactionCommand is ICommand command && command.CanExecute(e.Transaction))
+        {
+            command.Execute(e.Transaction);
         }
     }
 

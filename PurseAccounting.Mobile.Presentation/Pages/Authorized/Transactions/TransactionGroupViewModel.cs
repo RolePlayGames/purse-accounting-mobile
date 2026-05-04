@@ -13,6 +13,8 @@ public class TransactionGroupViewModel : ReactiveObject
     private readonly ObservableCollection<TransactionInfo> _transactions;
     private string _dateText = string.Empty;
 
+    public event Action<TransactionGroupViewModel>? GroupBecameEmpty;
+
     public TransactionGroupViewModel(
         TransactionGroup group,
         ITransactionService transactionService)
@@ -50,6 +52,11 @@ public class TransactionGroupViewModel : ReactiveObject
             if (transactionToRemove != default)
             {
                 _transactions.Remove(transactionToRemove);
+
+                if (_transactions.Count == 0)
+                {
+                    GroupBecameEmpty?.Invoke(this);
+                }
             }
         }
     }

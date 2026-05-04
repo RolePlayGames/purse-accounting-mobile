@@ -83,7 +83,11 @@ public class TransactionsTabViewModel : ReactiveObject
             var groupsToLoad = Math.Min(LoadMoreStep, _groupedTransactions.Count - _currentGroupsCount);
 
             foreach (var group in _groupedTransactions.Skip(_currentGroupsCount).Take(groupsToLoad))
-                _displayedGroups.Add(new TransactionGroupViewModel(group, _transactionService));
+            {
+                var viewModel = new TransactionGroupViewModel(group, _transactionService);
+                viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
+                _displayedGroups.Add(viewModel);
+            }
 
             _currentGroupsCount += groupsToLoad;
         }
@@ -164,9 +168,31 @@ public class TransactionsTabViewModel : ReactiveObject
             var groupsToLoad = Math.Min(InitialGroupsCount, _groupedTransactions.Count);
 
             foreach (var group in _groupedTransactions.Take(groupsToLoad))
-                _displayedGroups.Add(new TransactionGroupViewModel(group, _transactionService));
+            {
+                var viewModel = new TransactionGroupViewModel(group, _transactionService);
+                viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
+                _displayedGroups.Add(viewModel);
+            }
 
             _currentGroupsCount = groupsToLoad;
+        }
+        finally
+        {
+            _isUpdating = false;
+        }
+    }
+
+    private void OnGroupBecameEmpty(TransactionGroupViewModel viewModel)
+    {
+        if (_isUpdating)
+            return;
+
+        _isUpdating = true;
+
+        try
+        {
+            _displayedGroups.Remove(viewModel);
+            viewModel.GroupBecameEmpty -= OnGroupBecameEmpty;
         }
         finally
         {

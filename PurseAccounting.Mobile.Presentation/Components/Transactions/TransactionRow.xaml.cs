@@ -3,6 +3,7 @@ using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Colors;
 using PurseAccountinng.Mobile.Presentation.Extensions;
+using PurseAccountinng.Mobile.Presentation.Services.Utils;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
@@ -27,6 +28,7 @@ public partial class TransactionRow : ContentView
         BindableProperty.Create(nameof(TransactionTypeText), typeof(string), typeof(TransactionRow), string.Empty);
 
     public event EventHandler<TransactionSwipedEventArgs>? TransactionSwiped;
+
     public event EventHandler<TransactionSwipedEventArgs>? SwipeCompleted;
 
     private const int _maxDirectionHistory = 3;
@@ -74,6 +76,17 @@ public partial class TransactionRow : ContentView
         set => SetValue(TransactionTypeTextProperty, value);
     }
 
+    private RoundRectangleGeometry ContentContainerNormalRectangle => _contentContainerNormalRectangle ??= new()
+    {
+        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+    };
+
+    private RoundRectangleGeometry ContentContainerRoundedRectangle => _contentContainerRoundedRectangle ??= new()
+    {
+        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+        CornerRadius = new(0, _cornerRadius, 0, _cornerRadius),
+    };
+
     public TransactionRow()
     {
         InitializeComponent();
@@ -86,17 +99,6 @@ public partial class TransactionRow : ContentView
         {
             row.UpdateProperties();
         }
-    }
-
-    private static string FormatAmount(double amount)
-    {
-        var rubles = (long)amount;
-        var kopecks = (int)(((amount - rubles) * 100) + 0.5);
-
-        if (kopecks == 0)
-            return $"{rubles:N0} ₽";
-
-        return $"{rubles:N0},{kopecks:D2} ₽";
     }
 
     private void SetupSwipeGesture()
@@ -153,17 +155,6 @@ public partial class TransactionRow : ContentView
         _swipeDirections.Clear();
     }
 
-    private RoundRectangleGeometry ContentContainerNormalRectangle => _contentContainerNormalRectangle ??= new()
-    {
-        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
-    };
-
-    private RoundRectangleGeometry ContentContainerRoundedRectangle => _contentContainerRoundedRectangle ??= new()
-    {
-        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
-        CornerRadius = new(0, _cornerRadius, 0, _cornerRadius),
-    };
-
     private void RoundContentContainerClip(bool isSwiping)
     {
         if (ContentContainer.Width <= 0)
@@ -185,10 +176,11 @@ public partial class TransactionRow : ContentView
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
 
         var amount = transaction.Amount;
-        var amountInRubles = amount / 100.0;
-        var amountAbs = Math.Abs(amountInRubles);
+        var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
+        var amountSign = amount >= 0 ? '+' : '-';
 
-        AmountText = amount >= 0 ? FormatAmount(amountAbs) : $"+ {FormatAmount(amountAbs)}";
+        AmountText = $"{amountSign} {formattedAmount} ₽";
+        AmountTextColor = (amount >= 0 ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
 
         TransactionTypeText = transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
     }
