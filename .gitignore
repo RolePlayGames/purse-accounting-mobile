@@ -1,63 +1,63 @@
 ```
 # Build artifacts
-bin/
-obj/
+*.o
+*.obj
 *.dll
 *.exe
-*.pdb
 *.so
-*.dylib
-*.aar
-*.jar
-*.war
-*.class
+*.a
+*.out
 
 # Dependencies
 node_modules/
-packages/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
-# Logs
+# Logs and temp files
 *.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# User-specific files
-.vs/
-.idea/
-*.userprefs
-*.suo
-*.user
-*.aps
-*.ncb
-*.obj
-*.ilk
-*.idb
-*.tmp
-*.tmp_proj
-*_i.c
-*_p.c
-*.ilk
-*.meta
-*.pidb
-*.svclog
-*.sdf
-*.opensdf
-*.userosscache
-*.scc
-*.backup
-*.local
-*.cache
-*.lock
-*.tmp
-*.temp
-*.log
-*.db
-*.sqlite
-*.sqlite3
-*.db-shm
-*.db-wal
-*.swp
-*.swo
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
 ```
