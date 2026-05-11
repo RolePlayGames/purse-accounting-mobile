@@ -15,6 +15,7 @@
             HorizontalOptions="Fill"
             VerticalOptions="Start"
             Grid.Row="0">
+            
             <Border.Shadow>
                 <Shadow
                     Brush="#40000000"
@@ -22,28 +23,37 @@
                     Radius="4"
                     Opacity="0.25" />
             </Border.Shadow>
+            
             <categories:MultiCategorySelector
                 Margin="0,10,0,10"
                 HeaderText="Категория"
                 ItemsSource="{Binding Categories}"
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
+            
         </Border>
 
         <CollectionView 
             Grid.Row="1"
             ItemsSource="{Binding DisplayedGroups}"
             VerticalOptions="FillAndExpand"
-            RemainingItemsThreshold="1"
+            RemainingItemsThreshold="2"
             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+            
             <CollectionView.Resources>
                 <Style x:Key="SpacerBoxStyle" TargetType="BoxView">
                     <Setter Property="HeightRequest" Value="12.5" />
                     <Setter Property="BackgroundColor" Value="{StaticResource LightBlue}" />
                 </Style>
             </CollectionView.Resources>
+            
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" />
             </CollectionView.ItemsLayout>
+
+            <CollectionView.Header>
+                <BoxView Style="{StaticResource SpacerBoxStyle}" />
+            </CollectionView.Header>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <transactions:TransactionGroup 
@@ -52,12 +62,11 @@
                         Margin="0,7.5,0,7.5"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-            <CollectionView.Header>
-                <BoxView Style="{StaticResource SpacerBoxStyle}" />
-            </CollectionView.Header>
+            
             <CollectionView.Footer>
                 <BoxView Style="{StaticResource SpacerBoxStyle}" />
             </CollectionView.Footer>
+            
         </CollectionView>
     </Grid>
 </ContentView>

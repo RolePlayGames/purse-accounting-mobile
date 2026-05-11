@@ -1,7 +1,5 @@
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
-using System.Linq;
-
 public partial class TransactionsTab : ContentView
 {
     public TransactionsTab(IServiceProvider serviceProvider)

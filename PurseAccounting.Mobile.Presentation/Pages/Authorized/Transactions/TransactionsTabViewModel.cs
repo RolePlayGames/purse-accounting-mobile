@@ -1,9 +1,9 @@
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.Transactions;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccountinng.Mobile.Presentation.Services.Notifications;
 using ReactiveUI;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
 
@@ -11,18 +11,15 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
 public class TransactionsTabViewModel : ReactiveObject
 {
-    private const int InitialTransactionCount = 15;
-    private const int LoadMoreTransactionCount = 15;
+    private const int InitialTransactionCount = 20;
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
-    private readonly ObservableCollection<TransactionGroupViewModel> _displayedGroups = [];
-
+    private readonly INotificationService _notificationService;
     private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categoriesById = new Dictionary<long, TransactionCategoryDto>();
     private IReadOnlyCollection<long> _selectedCategoryIds = [];
     private IReadOnlyCollection<TransactionGroup>? _groupedTransactions;
-    private int _currentGroupsCount;
     private bool _isUpdating;
     private CancellationTokenSource? _cancellationTokenSource;
 
@@ -50,27 +47,22 @@ public class TransactionsTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
     }
 
-    public ObservableCollection<TransactionGroupViewModel> DisplayedGroups
-    {
-        get => _displayedGroups;
-    }
-
-    public bool HasMoreGroupsToLoad => _groupedTransactions != null && _currentGroupsCount < _groupedTransactions.Count;
+    public ObservableCollection<TransactionGroupViewModel> DisplayedGroups { get; } = [];
 
     public ICommand LoadMoreCommand { get; }
 
-    public TransactionsTabViewModel(
-        IApplicationContext applicationContext,
-        ITransactionService transactionService)
+    public bool HasMoreGroupsToLoad => _groupedTransactions is not null && DisplayedGroups.Count < _groupedTransactions.Count;
+
+    public TransactionsTabViewModel(IApplicationContext applicationContext, ITransactionService transactionService, INotificationService notificationService)
     {
         _applicationContext = applicationContext;
         _transactionService = transactionService;
+        _notificationService = notificationService;
+
         _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
         _applicationContext.AccountChanged += OnAccountChanged;
 
-        LoadMoreCommand = this.WhenAnyValue(x => x.HasMoreGroupsToLoad)
-            .Select(canLoad => canLoad)
-            .ToCommand(this, _ => LoadMoreGroups());
+        LoadMoreCommand = ReactiveCommand.Create(LoadMoreGroups, this.WhenAnyValue(x => x.HasMoreGroupsToLoad));
 
         OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
 
@@ -80,26 +72,17 @@ public class TransactionsTabViewModel : ReactiveObject
 
     public void LoadMoreGroups()
     {
-        if (_isUpdating || _groupedTransactions == null)
+        if (_isUpdating || _groupedTransactions is null)
             return;
 
-        if (_currentGroupsCount >= _groupedTransactions.Count)
+        if (DisplayedGroups.Count >= _groupedTransactions.Count)
             return;
 
         _isUpdating = true;
 
         try
         {
-            var loadedTransactionCount = 0;
-
-            foreach (var group in _groupedTransactions.Skip(_currentGroupsCount))
-            {
-                AddGroupToDisplayed(group, ref loadedTransactionCount);
-
-                if (loadedTransactionCount >= LoadMoreTransactionCount || 
-                    _currentGroupsCount >= _groupedTransactions.Count)
-                    break;
-            }
+            AddGroupsToDisplayed(_groupedTransactions.Skip(DisplayedGroups.Count));
         }
         finally
         {
@@ -107,13 +90,48 @@ public class TransactionsTabViewModel : ReactiveObject
         }
     }
 
-    private void AddGroupToDisplayed(TransactionGroup group, ref int loadedTransactionCount)
+    private void ResetDisplayedGroups()
     {
-        var viewModel = new TransactionGroupViewModel(group, _transactionService);
-        viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
-        _displayedGroups.Add(viewModel);
-        loadedTransactionCount += group.Transactions.Count;
-        _currentGroupsCount++;
+        if (_isUpdating)
+            return;
+
+        _isUpdating = true;
+
+        try
+        {
+            foreach (var group in DisplayedGroups)
+            {
+                group.GroupBecameEmpty -= OnGroupBecameEmpty;
+                group.Dispose();
+            }
+
+            DisplayedGroups.Clear();
+
+            if (_groupedTransactions is not null && _groupedTransactions.Count != 0)
+                AddGroupsToDisplayed(_groupedTransactions);
+        }
+        finally
+        {
+            _isUpdating = false;
+        }
+    }
+
+    private void AddGroupsToDisplayed(IEnumerable<TransactionGroup> groups)
+    {
+        var loadedTransactionCount = 0;
+
+        foreach (var group in groups)
+        {
+            var viewModel = new TransactionGroupViewModel(group, _transactionService, _notificationService);
+            viewModel.GroupBecameEmpty += OnGroupBecameEmpty;
+
+            DisplayedGroups.Add(viewModel);
+
+            loadedTransactionCount += group.Transactions.Count;
+
+            if (loadedTransactionCount >= InitialTransactionCount || DisplayedGroups.Count >= _groupedTransactions?.Count)
+                break;
+        }
     }
 
     private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
@@ -151,10 +169,7 @@ public class TransactionsTabViewModel : ReactiveObject
         {
             try
             {
-                var transactions = await _transactionService.GetTransactionsByDate(
-                    SelectedCategoryIds,
-                    timeZone,
-                    cancellationToken);
+                var transactions = await _transactionService.GetTransactionsByDate(SelectedCategoryIds, timeZone, cancellationToken);
 
                 if (!cancellationToken.IsCancellationRequested)
                 {
@@ -169,44 +184,6 @@ public class TransactionsTabViewModel : ReactiveObject
         }, cancellationToken);
     }
 
-    private void ResetDisplayedGroups()
-    {
-        if (_isUpdating)
-            return;
-
-        _isUpdating = true;
-
-        try
-        {
-            foreach (var group in _displayedGroups)
-            {
-                group.GroupBecameEmpty -= OnGroupBecameEmpty;
-                group.Dispose();
-            }
-
-            _displayedGroups.Clear();
-            _currentGroupsCount = 0;
-
-            if (_groupedTransactions == null || _groupedTransactions.Count == 0)
-                return;
-
-            var loadedTransactionCount = 0;
-
-            foreach (var group in _groupedTransactions)
-            {
-                AddGroupToDisplayed(group, ref loadedTransactionCount);
-
-                if (loadedTransactionCount >= InitialTransactionCount || 
-                    _currentGroupsCount >= _groupedTransactions.Count)
-                    break;
-            }
-        }
-        finally
-        {
-            _isUpdating = false;
-        }
-    }
-
     private void OnGroupBecameEmpty(TransactionGroupViewModel viewModel)
     {
         if (_isUpdating)
@@ -216,7 +193,7 @@ public class TransactionsTabViewModel : ReactiveObject
 
         try
         {
-            _displayedGroups.Remove(viewModel);
+            DisplayedGroups.Remove(viewModel);
             viewModel.GroupBecameEmpty -= OnGroupBecameEmpty;
             viewModel.Dispose();
         }
