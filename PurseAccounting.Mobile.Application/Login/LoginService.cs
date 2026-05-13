@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Application.Accounting;
+﻿using PurseAccounting.Mobile.Application.Accounts;
 using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 
 namespace PurseAccounting.Mobile.Application.Login;
@@ -6,9 +6,9 @@ namespace PurseAccounting.Mobile.Application.Login;
 internal class LoginService : ILoginService
 {
     private readonly IMailboxAuthorizationClient _mailboxAuthorizationClient;
-    private readonly IAccountingService _accountingService;
+    private readonly IAccountService _accountingService;
 
-    public LoginService(IMailboxAuthorizationClient mailboxAuthorizationClient, IAccountingService accountingService)
+    public LoginService(IMailboxAuthorizationClient mailboxAuthorizationClient, IAccountService accountingService)
     {
         _mailboxAuthorizationClient = mailboxAuthorizationClient;
         _accountingService = accountingService;

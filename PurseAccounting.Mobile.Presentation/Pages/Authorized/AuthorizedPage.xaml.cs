@@ -56,7 +56,7 @@ public partial class AuthorizedPage : ContentPage
 
         _accountingTab = new() { Header = "Добавить транзакцию", Tab = ActivatorUtilities.CreateInstance<AccountingTab>(serviceProvider) };
         _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
-        _accountTab = new() { Header = "Настройка счета", Tab = new AccountTab() };
+        _accountTab = new() { Header = "Настройка счета", Tab = new PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab(serviceProvider) };
         _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
         _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
 

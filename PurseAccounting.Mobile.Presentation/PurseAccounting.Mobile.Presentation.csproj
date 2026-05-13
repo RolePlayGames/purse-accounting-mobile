@@ -120,10 +120,16 @@
 	  <MauiXaml Update="Components\Chips\DualChipsSelector.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Fields\NumericField.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\ToastView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Accounting\TransactionAmountInput.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\Account\AccountAttributesWidget.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Widgets\AccountWidget.xaml">
@@ -144,7 +150,7 @@
 	  <MauiXaml Update="Components\MenuItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Components\PasswordField.xaml">
+	  <MauiXaml Update="Components\Fields\PasswordField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\PrimaryButton.xaml">
@@ -156,13 +162,13 @@
 	  <MauiXaml Update="Components\TabIconButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Components\TextField.xaml">
+	  <MauiXaml Update="Components\Fields\TextField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Accounting\AccountingTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Authorized\AccountTab.xaml">
+	  <MauiXaml Update="Pages\Authorized\Account\AccountTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\AuthorizedPage.xaml">
@@ -189,10 +195,6 @@
 	  <MauiXaml Update="Pages\Unauthorized\Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Converters\" />
 	</ItemGroup>
 
 </Project>

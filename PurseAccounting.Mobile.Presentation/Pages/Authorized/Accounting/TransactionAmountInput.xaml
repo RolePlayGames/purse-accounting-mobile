@@ -18,6 +18,7 @@
 
             <Entry
                 x:Name="AmountEntry"
+                Keyboard="Numeric"
                 Placeholder="Введите сумму"
                 TextColor="{StaticResource Gray1}"
                 PlaceholderColor="{StaticResource Gray2}"

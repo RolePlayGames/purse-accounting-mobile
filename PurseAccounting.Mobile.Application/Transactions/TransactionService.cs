@@ -37,8 +37,8 @@ internal class TransactionService : ITransactionService
 
         var addTrasactionTask = transaction.ChangeAmountType switch
         {
-            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Income => _dailyTransactionClient.AddDailyIncomeTransaction(request, cancellationToken),
-            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Withdrawal => _dailyTransactionClient.AddDailyWithdrawalTransaction(request, cancellationToken),
+            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Income => _dailyTransactionClient.AddIncomeTransaction(request, cancellationToken),
+            TransactionChangeAmountType.Daily when transaction.ChangeType == TransactionChangeType.Withdrawal => _dailyTransactionClient.AddWithdrawalTransaction(request, cancellationToken),
             TransactionChangeAmountType.Total when transaction.ChangeType == TransactionChangeType.Income => _totalTransactionClient.AddTotalIncomeTransaction(request, cancellationToken),
             TransactionChangeAmountType.Total when transaction.ChangeType == TransactionChangeType.Withdrawal => _totalTransactionClient.AddTotalWithdrawalTransaction(request, cancellationToken),
             _ => throw new NotImplementedException(),

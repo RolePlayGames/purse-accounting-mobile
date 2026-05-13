@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
+             xmlns:fields="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Fields"
+             xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountAttributesWidget">
+
+    <Border Stroke="Transparent"
+            StrokeThickness="0"
+            Background="{StaticResource WorkBackground}"
+            StrokeShape="RoundRectangle 20"
+            Padding="15,20,15,25">
+
+        <Border.Shadow>
+            <Shadow Brush="#40000000" Offset="0,2" Radius="30" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="16">
+            <Label Text="Бюджет"
+                   TextColor="{StaticResource DarkPurple}"
+                   FontFamily="OpenSansRegular"
+                   FontSize="{StaticResource FontSizeLarge}"
+                   HorizontalOptions="Center" />
+
+            <Grid>
+
+                <Grid HeightRequest="60" VerticalOptions="Start">
+                    
+                <Border Stroke="{StaticResource InactiveElementFill}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 30"
+                        BackgroundColor="White" />
+
+                <Label x:Name="DateLabel"
+                       Text="28.01.2026"
+                       FontFamily="OpenSansRegular"
+                       FontSize="{StaticResource FontSizeRegular}"
+                       TextColor="{StaticResource Gray2}"
+                       VerticalOptions="Center"
+                       Margin="20,0,0,0" />
+
+                <DatePicker x:Name="NativeDatePicker"
+                            Format="dd.MM.yyyy"
+                            DateSelected="OnDateSelected"
+                            BackgroundColor="Transparent"
+                            TextColor="Transparent"
+                            Opacity="0.01"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            Margin="0,0,10,0" />
+
+                <Path Data="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zm0-12H5V6h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z"
+                      Fill="{StaticResource Gray2}"
+                      StrokeThickness="0"
+                      Aspect="Uniform"
+                      HeightRequest="30"
+                      WidthRequest="30"
+                      VerticalOptions="Center"
+                      HorizontalOptions="End"
+                      Margin="0,0,20,0" />
+                </Grid>
+
+                <Label Text="Планируемая дата"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start"
+                       ZIndex="1" />
+            </Grid>
+
+            <Grid>
+                <Grid HeightRequest="60">
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Picker x:Name="TimeZonePicker"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Fill"
+                                HorizontalOptions="Fill"
+                                Grid.ColumnSpan="2"
+                                SelectedIndexChanged="OnTimeZoneSelectedIndexChanged" />
+
+                        <Label x:Name="TimeZoneLabel"
+                               Text="(UTC+03:00) Москва, Санкт-Петербург"
+                               FontFamily="OpenSansRegular"
+                               FontSize="{StaticResource FontSizeRegular}"
+                               TextColor="{StaticResource Gray2}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation"
+                               Margin="20,0,0,0"
+                               Grid.Column="0" />
+
+                        <Path Data="M7 10l5 5 5-5z"
+                              Fill="{StaticResource Gray2}"
+                              StrokeThickness="0"
+                              Aspect="Uniform"
+                              HeightRequest="16"
+                              WidthRequest="16"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End"
+                              Margin="0,0,20,0"
+                              Grid.Column="1" />
+                    </Grid>
+                </Grid>
+
+                <Label Text="Часовой пояс"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start" />
+            </Grid>
+
+            <fields:NumericField x:Name="AmountTextField"
+                                 Placeholder="Сумма бюджета"/>
+
+            <components:PrimaryButton x:Name="SaveButton"
+                                      Text="Сохранить"
+                                      Command="{Binding Source={RelativeSource AncestorType={x:Type local:AccountAttributesWidget}}, Path=SaveCommand}"
+                                      IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:AccountAttributesWidget}}, Path=IsSaveEnabled}"
+                                      Margin="0,2,0,0" />
+        </VerticalStackLayout>
+
+    </Border>
+</ContentView>

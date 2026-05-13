@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Infrastructure.ApiResults;
+﻿using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.Base;
 using System.Net.Http.Json;
 

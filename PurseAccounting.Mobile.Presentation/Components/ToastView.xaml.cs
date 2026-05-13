@@ -8,6 +8,10 @@ public partial class ToastView : ContentView
     public static new readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(
         nameof(BackgroundColor), typeof(Color), typeof(ToastView), Microsoft.Maui.Graphics.Colors.Gray);
 
+    private const int _menuBottomMargin = 70;
+    private const int _fadeInLength = 150;
+    private const int _fadeOutLength = 200;
+
     public string Text
     {
         get => (string)GetValue(TextProperty);
@@ -25,7 +29,7 @@ public partial class ToastView : ContentView
         InitializeComponent();
     }
 
-    public async Task ShowAsync(uint durationMs = 3000)
+    public async Task ShowAsync(double bottomMargin = 0, uint durationMs = 3000)
     {
         IsVisible = true;
 
@@ -47,11 +51,11 @@ public partial class ToastView : ContentView
 
         HorizontalOptions = LayoutOptions.Fill;
         VerticalOptions = LayoutOptions.End;
-        Margin = new Thickness(3, 0, 3, 156);
+        Margin = new Thickness(3, 0, 3, bottomMargin + _menuBottomMargin);
 
-        await this.FadeTo(1, 150);
+        await this.FadeTo(1, _fadeInLength);
         await Task.Delay((int)durationMs);
-        await this.FadeTo(0, 200);
+        await this.FadeTo(0, _fadeOutLength);
 
         rootLayout.Remove(this);
         IsVisible = false;
@@ -63,7 +67,6 @@ public partial class ToastView : ContentView
         if (window?.Page is not Page currentPage)
             return null;
 
-        // Разворачиваем NavigationPage, если есть
         var currentContentPage = currentPage switch
         {
             ContentPage contentPage => contentPage,
@@ -74,10 +77,9 @@ public partial class ToastView : ContentView
         if (currentContentPage?.Content is Layout layout)
             return layout;
 
-        // Если Content не Layout — оборачиваем в Grid
         if (currentContentPage?.Content is not null)
         {
-            var grid = new Grid { Children = { currentContentPage.Content } };
+            var grid = new Grid { Children = { currentContentPage.Content } }; // to be sure layout is grid
             currentContentPage.Content = grid;
             return grid;
         }

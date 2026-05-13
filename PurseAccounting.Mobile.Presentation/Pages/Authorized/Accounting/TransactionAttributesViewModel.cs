@@ -1,7 +1,7 @@
 ﻿using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.TransactionCategories;
 using PurseAccounting.Mobile.Application.Transactions;
-using PurseAccounting.Mobile.Infrastructure.Accounting.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Services.Notifications;
 using ReactiveUI;
@@ -13,6 +13,8 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 
 public class TransactionAttributesViewModel : ReactiveObject, IDisposable
 {
+    private const int _additionalBottomMargin = 86;
+
     private readonly ITransactionService _transactionService;
     private readonly INotificationService _notificationService;
     private readonly CompositeDisposable _disposables = new();
@@ -139,7 +141,7 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
 
         if (result == MakeTransactionResult.Success)
         {
-            _notificationService.ShowSuccess("Транзакция прошла успешно");
+            _notificationService.ShowSuccess("Транзакция прошла успешно", _additionalBottomMargin);
             TransactionAmount = null;
         }
         else
@@ -151,7 +153,7 @@ public class TransactionAttributesViewModel : ReactiveObject, IDisposable
                 _ => "Непредвиденная ошибка",
             };
 
-            _notificationService.ShowError(message);
+            _notificationService.ShowError(message, _additionalBottomMargin);
         }
     }
 }

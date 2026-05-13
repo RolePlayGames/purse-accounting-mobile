@@ -1,4 +1,4 @@
-﻿using PurseAccounting.Mobile.Application.Accounting;
+﻿using PurseAccounting.Mobile.Application.Accounts;
 using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
@@ -11,11 +11,11 @@ public partial class LogoPage : ContentPage
     private const int _maxAttempts = 20;
     private static readonly TimeSpan _requestTimeout = TimeSpan.FromSeconds(2);
 
-    private readonly IAccountingService _accountingService;
+    private readonly IAccountService _accountingService;
     private readonly INavigator _navigator;
     private readonly IHttpClientInitializer _httpClientInitializer;
 
-    public LogoPage(IAccountingService accountingService, INavigator navigator, IHttpClientInitializer httpClientInitializer)
+    public LogoPage(IAccountService accountingService, INavigator navigator, IHttpClientInitializer httpClientInitializer)
     {
         _accountingService = accountingService;
         _navigator = navigator;
@@ -48,19 +48,25 @@ public partial class LogoPage : ContentPage
 
                 return;
             }
-            catch (TaskCanceledException ex)
+            catch (TaskCanceledException)
             {
                 await HandleError("Сервер долго не отвечает", attemptCount);
             }
             catch (Exception ex)
             {
-                await HandleError("Ошибка подключения", attemptCount);
+#if DEBUG
+                await HandleError($"Ошибка подключения: {ex}", attemptCount);
+#else
+                await HandleError($"Ошибка подключения", attemptCount);
+#endif
             }
 
             await Task.Delay(100);
         }
 
         await DisplayFinalError();
+        await Task.Delay(_requestTimeout);
+        await NavigateToMainPageAsync(false);
     }
 
     private async Task HandleError(string message, int attemptCount)

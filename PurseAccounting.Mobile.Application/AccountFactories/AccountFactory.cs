@@ -1,5 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.Models;
-using PurseAccounting.Mobile.Infrastructure.Accounting;
+using PurseAccounting.Mobile.Infrastructure.Accounts;
 
 namespace PurseAccounting.Mobile.Application.AccountFactories;
 

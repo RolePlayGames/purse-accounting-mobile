@@ -1,4 +1,4 @@
-﻿namespace PurseAccounting.Mobile.Infrastructure.Accounting;
+﻿namespace PurseAccounting.Mobile.Infrastructure.Accounts;
 
 public record AccountDto
 {

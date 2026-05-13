@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 
-namespace PurseAccounting.Mobile.Infrastructure.Accounting.TransactionCategories;
+namespace PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 
 internal class TransactionCategoryClient : ITransactionCategoryClient
 {

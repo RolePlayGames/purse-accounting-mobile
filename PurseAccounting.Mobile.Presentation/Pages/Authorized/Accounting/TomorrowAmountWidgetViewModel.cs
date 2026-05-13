@@ -1,6 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.Calculators.TomorrowAmountCalculators;
 using PurseAccounting.Mobile.Application.Context;
-using PurseAccounting.Mobile.Application.Models;
 using PurseAccountinng.Mobile.Presentation.Services.Utils;
 using ReactiveUI;
 
@@ -33,7 +32,7 @@ internal class TomorrowAmountWidgetViewModel : ReactiveObject
         OnAccountChanged(null, applicationContext.Account);
     }
 
-    private void OnAccountChanged(Account? oldValue, Account? newValue)
+    private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
     {
         if (newValue is null)
             return;

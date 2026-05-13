@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
+             xmlns:fields="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Fields"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login.LoginPage"
              BackgroundColor="{StaticResource LightBlue}"
              Padding="0"
@@ -66,8 +67,8 @@
                     Grid.Column="1"
                     Grid.Row="0">                    
                     <components:AuthHeader Text="Войти" />
-                    <components:TextField Placeholder="Логин" Text="{Binding Login}" />
-                    <components:PasswordField Placeholder="Пароль" Text="{Binding Password}" />
+                    <fields:TextField Placeholder="Логин" Text="{Binding Login}" />
+                    <fields:PasswordField Placeholder="Пароль" Text="{Binding Password}" />
                         
                     <Grid Margin="20,0,20,0">
                         <components:LinkLabel

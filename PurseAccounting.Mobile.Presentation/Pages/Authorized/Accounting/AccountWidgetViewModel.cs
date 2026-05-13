@@ -1,6 +1,5 @@
-﻿using PurseAccounting.Mobile.Application.Accounting;
+﻿using PurseAccounting.Mobile.Application.Accounts;
 using PurseAccounting.Mobile.Application.Context;
-using PurseAccounting.Mobile.Application.Models;
 using ReactiveUI;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
@@ -29,7 +28,7 @@ public class AccountWidgetViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _daysCount, value, nameof(DaysCount));
     }
 
-    public AccountWidgetViewModel(IAccountingService accountingService, IApplicationContext applicationContext)
+    public AccountWidgetViewModel(IAccountService accountingService, IApplicationContext applicationContext)
     {
         applicationContext.AccountChanged += OnAccountChanged;
         OnAccountChanged(null, applicationContext.Account);
@@ -37,7 +36,7 @@ public class AccountWidgetViewModel : ReactiveObject
         Task.Run(() => accountingService.LoadAccount(CancellationToken.None));
     }
 
-    private void OnAccountChanged(Account? oldValue, Account? newValue)
+    private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
     {
         if (newValue is null)
             return;
