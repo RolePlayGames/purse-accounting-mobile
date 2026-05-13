@@ -11,7 +11,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 
 public class TransactionsTabViewModel : ReactiveObject
 {
-    private const int InitialTransactionCount = 20;
+    private const int InitialTransactionCount = 15;
 
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
@@ -62,7 +62,7 @@ public class TransactionsTabViewModel : ReactiveObject
         _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
         _applicationContext.AccountChanged += OnAccountChanged;
 
-        LoadMoreCommand = ReactiveCommand.Create(LoadMoreGroups, this.WhenAnyValue(x => x.HasMoreGroupsToLoad));
+        LoadMoreCommand = ReactiveCommand.Create(LoadMoreGroups);
 
         OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
 

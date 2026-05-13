@@ -71,11 +71,7 @@ internal class TransactionService : ITransactionService
     {
         var transactions = await _transactionsClient.GetTransactions(categoryIds, cancellationToken);
 
-        var transactionsWithTimeZone = transactions
-            .Select(x => x with { Date = x.Date.AddHours(timeZone) })
-            .ToList();
-
-        var groupedByDate = transactionsWithTimeZone
+        var groupedByDate = transactions
             .GroupBy(x => x.Date.Date)
             .OrderByDescending(x => x.Key)
             .Select(x => new TransactionGroup
