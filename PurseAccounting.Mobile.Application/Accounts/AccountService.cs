@@ -29,7 +29,7 @@ internal class AccountService : IAccountService
         var response = await _accountClient.UpdateAccount(new()
         {
             FullAmount = totalAmount,
-            PlannedDate = plannedDate,
+            PlannedDate = DateTime.SpecifyKind(plannedDate, DateTimeKind.Utc),
             TimeZone = timeZone,
         }, cancellationToken);
 

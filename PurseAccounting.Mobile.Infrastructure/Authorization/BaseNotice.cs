@@ -1,7 +1,6 @@
-﻿namespace PurseAccounting.Mobile.Infrastructure.Authorization
+﻿namespace PurseAccounting.Mobile.Infrastructure.Authorization;
+
+public record BaseNotice
 {
-    public record BaseNotice
-    {
-        public required string NoticeType { get; init; }
-    }
+    public required string NoticeType { get; init; }
 }

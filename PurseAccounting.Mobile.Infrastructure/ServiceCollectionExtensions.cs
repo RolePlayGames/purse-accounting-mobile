@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PurseAccounting.Mobile.Infrastructure.Accounts;
 using PurseAccounting.Mobile.Infrastructure.AuthCookieStorages;
+using PurseAccounting.Mobile.Infrastructure.Authorization;
 using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
@@ -18,6 +19,7 @@ namespace PurseAccounting.Mobile.Infrastructure
             return services
                 .AddSingleton(httpClient)
                 .AddScoped<IAccountClient, AccountClient>()
+                .AddScoped<IAuthorizationClient, AuthorizationClient>()
                 .AddScoped<IDailyTransactionClient, DailyTransactionClient>()
                 .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>()
                 .AddScoped<ITotalTransactionClient, TotalTransactionClient>()

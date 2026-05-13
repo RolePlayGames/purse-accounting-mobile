@@ -25,6 +25,12 @@ public partial class MenuItem : ContentView
         set => SetValue(IconSourceProperty, value);
     }
 
+    public ICommand? Command
+    {
+        get => (ICommand?)GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
     public event EventHandler? Clicked;
 
     public MenuItem()
@@ -42,6 +48,7 @@ public partial class MenuItem : ContentView
 
     private void MenuItem_Tapped(object? sender, TappedEventArgs e)
     {
+        Command?.Execute(null);
         Clicked?.Invoke(this, EventArgs.Empty);
     }
 }
