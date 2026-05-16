@@ -4,14 +4,25 @@
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions.TransactionsTab">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="Divider" TargetType="BoxView">
+                <Setter Property="Color" Value="{StaticResource InactiveElementFill}" />
+                <Setter Property="HeightRequest" Value="1" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <Border
             BackgroundColor="White"
+            StrokeThickness="0"
             HorizontalOptions="Fill"
             VerticalOptions="Start"
             Grid.Row="0">
@@ -29,11 +40,13 @@
                 HeaderText="Категория"
                 ItemsSource="{Binding Categories}"
                 SelectedItemIds="{Binding SelectedCategoryIds}" />
-            
+
         </Border>
+        
+        <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
 
         <CollectionView 
-            Grid.Row="1"
+            Grid.Row="2"
             ItemsSource="{Binding DisplayedGroups}"
             VerticalOptions="FillAndExpand"
             RemainingItemsThreshold="2"

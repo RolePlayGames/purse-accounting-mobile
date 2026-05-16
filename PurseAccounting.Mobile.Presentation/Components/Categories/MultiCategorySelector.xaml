@@ -9,7 +9,7 @@
         <Label
             Text="{Binding HeaderText, Source={x:Reference Root}}"
             FontFamily="OpenSansSemibold"
-            FontSize="{StaticResource FontSizeRegular}"
+            FontSize="{StaticResource FontSizeLarge}"
             TextColor="{StaticResource DarkPurple}"
             HorizontalOptions="Center" />
         
