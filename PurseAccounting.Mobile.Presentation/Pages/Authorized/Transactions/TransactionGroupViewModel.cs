@@ -11,6 +11,7 @@ public class TransactionGroupViewModel : ReactiveObject, IDisposable
 {
     private readonly INotificationService _notificationService;
     private readonly ITransactionService _transactionService;
+
     private string _dateText = string.Empty;
     private bool _disposed;
 
@@ -64,10 +65,8 @@ public class TransactionGroupViewModel : ReactiveObject, IDisposable
         {
             return $"{groupDate.ToString("d MMMM", culture)}, {groupDate.ToString("dddd", culture)}";
         }
-        else
-        {
-            return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
-        }
+
+        return $"{groupDate.ToString("dd.MM.yyyy", culture)}, {groupDate.ToString("dddd", culture)}";
     }
 
     private async Task HandleCancelTransaction(TransactionInfo transaction)

@@ -12,13 +12,22 @@ public partial class AuthorizedPage : ContentPage
 
     private readonly Queue<SwipeDirection> _directionHistory = new(_directionStabilityLimit);
 
-    private AuthorizedTabBase _accountingTab;
+    private readonly AuthorizedTabBase _accountingTab;
+
     private AuthorizedTabBase? _transactionsTab;
     private AuthorizedTabBase? _accountTab;
     private AuthorizedTabBase? _userProfileTab;
     private AuthorizedTabBase? _categoriesTab;
 
     private TabIconButton? _lastActiveTabButton;
+
+    private bool _isSheetOpen = false;
+    private bool _isDragging = false;
+    private double _currentY = 0;
+    private double _lastTotalY = 0;
+    private SwipeDirection? _lastStableDirection = null;
+
+    private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 
     private TabIconButton? LastActiveTabButton
     {
@@ -38,14 +47,6 @@ public partial class AuthorizedPage : ContentPage
             _lastActiveTabButton = value;
         }
     }
-
-    private bool _isSheetOpen = false;
-    private bool _isDragging = false;
-    private double _currentY = 0;
-    private double _lastTotalY = 0;
-    private SwipeDirection? _lastStableDirection = null;
-
-    private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 
     private double SheetHiddenPosition => ScreenHeight - TabbarGrid.Height;
 
