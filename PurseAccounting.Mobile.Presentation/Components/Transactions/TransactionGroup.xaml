@@ -26,10 +26,11 @@
                     BackgroundColor="{StaticResource InactiveElementFill}"
                     Margin="0,12,0,0" />            
             </VerticalStackLayout>
-            
+
             <VerticalStackLayout
                 Margin="0,15,0,0"
-                BindableLayout.ItemsSource="{Binding Transactions, Source={x:Reference RootView}}">                
+                BindableLayout.ItemsSource="{Binding Transactions, Source={x:Reference RootView}}">
+                
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <transactions:TransactionRow 
@@ -38,6 +39,7 @@
                             SwipeCompleted="OnTransactionSwipeCompleted" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
+                
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

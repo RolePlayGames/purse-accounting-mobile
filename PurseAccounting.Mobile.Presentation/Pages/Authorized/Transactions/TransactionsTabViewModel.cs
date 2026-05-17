@@ -16,6 +16,7 @@ public class TransactionsTabViewModel : ReactiveObject
     private readonly IApplicationContext _applicationContext;
     private readonly ITransactionService _transactionService;
     private readonly INotificationService _notificationService;
+
     private IReadOnlyCollection<TransactionCategoryDto> _categories = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categoriesById = new Dictionary<long, TransactionCategoryDto>();
     private IReadOnlyCollection<long> _selectedCategoryIds = [];
