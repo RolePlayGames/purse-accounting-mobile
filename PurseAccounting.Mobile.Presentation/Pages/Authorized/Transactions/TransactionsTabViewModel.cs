@@ -184,7 +184,7 @@ public class TransactionsTabViewModel : ReactiveObject
         }
         catch (OperationCanceledException)
         {
-            // Запрос был отменён, игнорируем
+            // ignoring
         }
     }
 
