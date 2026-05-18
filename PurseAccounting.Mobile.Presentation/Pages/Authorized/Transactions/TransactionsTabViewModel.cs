@@ -158,7 +158,7 @@ public class TransactionsTabViewModel : ReactiveObject
             .ToHashSet();
     }
 
-    private void LoadTransactions()
+    private async void LoadTransactions()
     {
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource = new CancellationTokenSource();
@@ -166,23 +166,20 @@ public class TransactionsTabViewModel : ReactiveObject
         var cancellationToken = _cancellationTokenSource.Token;
         var timeZone = _applicationContext.Account?.TimeZone ?? 0;
 
-        Task.Run(async () =>
+        try
         {
-            try
-            {
-                var transactions = await _transactionService.GetTransactionsByDate(SelectedCategoryIds, timeZone, cancellationToken);
+            var transactions = await _transactionService.GetTransactionsByDate(SelectedCategoryIds, timeZone, cancellationToken);
 
-                if (!cancellationToken.IsCancellationRequested)
-                {
-                    GroupedTransactions = transactions;
-                    ResetDisplayedGroups();
-                }
-            }
-            catch (OperationCanceledException)
+            if (!cancellationToken.IsCancellationRequested)
             {
-                // Запрос был отменён, игнорируем
+                GroupedTransactions = transactions;
+                ResetDisplayedGroups();
             }
-        }, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            // Запрос был отменён, игнорируем
+        }
     }
 
     private void OnGroupBecameEmpty(TransactionGroupViewModel viewModel)
