@@ -21,6 +21,7 @@ public class TransactionsTabViewModel : ReactiveObject
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categoriesById = new Dictionary<long, TransactionCategoryDto>();
     private IReadOnlyCollection<long> _selectedCategoryIds = [];
     private IReadOnlyCollection<TransactionGroup>? _groupedTransactions;
+    private ObservableCollection<TransactionGroupViewModel> _displayedGroups = [];
     private bool _isUpdating;
     private CancellationTokenSource? _cancellationTokenSource;
 
@@ -48,7 +49,11 @@ public class TransactionsTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _groupedTransactions, value, nameof(GroupedTransactions));
     }
 
-    public ObservableCollection<TransactionGroupViewModel> DisplayedGroups { get; } = [];
+    public ObservableCollection<TransactionGroupViewModel> DisplayedGroups
+    {
+        get => _displayedGroups;
+        set => this.RaiseAndSetIfChanged(ref _displayedGroups, value, nameof(DisplayedGroups));
+    }
 
     public ICommand LoadMoreCommand { get; }
 
@@ -107,6 +112,7 @@ public class TransactionsTabViewModel : ReactiveObject
             }
 
             DisplayedGroups.Clear();
+            DisplayedGroups = [];
 
             if (_groupedTransactions is not null && _groupedTransactions.Count != 0)
                 AddGroupsToDisplayed(_groupedTransactions);
