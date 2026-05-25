@@ -1,6 +1,5 @@
 using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.Base;
-using System.Net.Http.Json;
 
 namespace PurseAccounting.Mobile.Infrastructure.Distribution;
 
