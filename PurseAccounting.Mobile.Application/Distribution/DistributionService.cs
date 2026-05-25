@@ -21,9 +21,24 @@ internal class DistributionService : IDistributionService
     {
         var apiResult = await _distributionClient.GetDistributionStrategy(cancellationToken);
 
-        return apiResult.Match(
+        var strategyInfo = apiResult.Match(
             result => result,
             exception => throw new InvalidOperationException("Failed to get distribution strategy"));
+
+        if (strategyInfo.Type == "Automatic")
+        {
+            var distributeResult = await _distributionClient.DistributeAutomatically(cancellationToken);
+
+            distributeResult.Match(
+                result =>
+                {
+                    if (_applicationContext.Account is not null)
+                        _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+                },
+                _ => { });
+        }
+
+        return strategyInfo;
     }
 
     public async Task<bool> DistributeAllToToday(CancellationToken cancellationToken)
