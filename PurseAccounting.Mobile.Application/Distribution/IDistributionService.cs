@@ -5,10 +5,10 @@ namespace PurseAccounting.Mobile.Application.Distribution;
 public interface IDistributionService
 {
     /// <summary>
-    /// Gets current distribution strategy
+    /// Gets available user choice distribution strategy info, or null if automatic/do not need
     /// </summary>
-    /// <returns>Distribution strategy info</returns>
-    Task<DistributionStrategyInfo> GetDistributionStrategy(CancellationToken cancellationToken);
+    /// <returns>Available user choice distribution strategy info or null</returns>
+    Task<AvailableUserChoiceDistributionStrategyInfo?> GetAvailableUserChoiceDistributionStrategy(CancellationToken cancellationToken);
 
     /// <summary>
     /// Distributes all amount to today

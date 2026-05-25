@@ -17,7 +17,7 @@ internal class DistributionService : IDistributionService
         _accountFactory = accountFactory;
     }
 
-    public async Task<DistributionStrategyInfo> GetDistributionStrategy(CancellationToken cancellationToken)
+    public async Task<AvailableUserChoiceDistributionStrategyInfo?> GetAvailableUserChoiceDistributionStrategy(CancellationToken cancellationToken)
     {
         var apiResult = await _distributionClient.GetDistributionStrategy(cancellationToken);
 
@@ -38,7 +38,13 @@ internal class DistributionService : IDistributionService
                 _ => { });
         }
 
-        return strategyInfo;
+        return strategyInfo as UserChoiceDistributionStrategyInfo is { } userChoiceStrategy
+            ? new AvailableUserChoiceDistributionStrategyInfo
+            {
+                AllToTodayDistributedDayAmount = userChoiceStrategy.AllToTodayDistributedDayAmount,
+                BetweenDaysDistributedDayAmount = userChoiceStrategy.BetweenDaysDistributedDayAmount
+            }
+            : null;
     }
 
     public async Task<bool> DistributeAllToToday(CancellationToken cancellationToken)
