@@ -20,16 +20,16 @@ internal class DistributionClient : ClientBase, IDistributionClient
 
     public Task<ApiResult<DistributeAccountResponse>> DistributeAllToToday(CancellationToken cancellationToken)
     {
-        return SafeCall<DistributeAccountResponse>(_httpClient.PostAsync, "api/accounting/account/distribute-all-to-today", cancellationToken);
+        return SafeCall<DistributeAccountResponse, DistributionExceptionCode>((url, token) => _httpClient.PostAsync(url, null, token), "api/accounting/account/distribute-all-to-today", cancellationToken);
     }
 
     public Task<ApiResult<DistributeAccountResponse>> DistributeAutomatically(CancellationToken cancellationToken)
     {
-        return SafeCall<DistributeAccountResponse>(_httpClient.PostAsync, "api/accounting/account/distribute-automatically", cancellationToken);
+        return SafeCall<DistributeAccountResponse, DistributionExceptionCode>((url, token) => _httpClient.PostAsync(url, null, token), "api/accounting/account/distribute-automatically", cancellationToken);
     }
 
     public Task<ApiResult<DistributeAccountResponse>> DistributeBetweenDays(CancellationToken cancellationToken)
     {
-        return SafeCall<DistributeAccountResponse>(_httpClient.PostAsync, "api/accounting/account/distribute-between-days", cancellationToken);
+        return SafeCall<DistributeAccountResponse, DistributionExceptionCode>((url, token) => _httpClient.PostAsync(url, null, token), "api/accounting/account/distribute-between-days", cancellationToken);
     }
 }
