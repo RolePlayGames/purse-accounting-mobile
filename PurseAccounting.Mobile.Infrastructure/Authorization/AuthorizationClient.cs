@@ -1,7 +1,4 @@
-﻿using PurseAccounting.Mobile.Infrastructure.AuthCookieStorages;
-using System.Text.Json;
-
-namespace PurseAccounting.Mobile.Infrastructure.Authorization;
+﻿namespace PurseAccounting.Mobile.Infrastructure.Authorization;
 
 internal class AuthorizationClient : IAuthorizationClient
 {

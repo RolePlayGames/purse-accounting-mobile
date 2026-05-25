@@ -1,6 +1,8 @@
 using PurseAccounting.Mobile.Application.AccountFactories;
 using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.Distribution;
+using PurseAccounting.Mobile.Infrastructure.ServerResults;
 
 namespace PurseAccounting.Mobile.Application.Distribution;
 
@@ -21,59 +23,62 @@ internal class DistributionService : IDistributionService
     {
         var apiResult = await _distributionClient.GetDistributionStrategy(cancellationToken);
 
-        var strategyInfo = apiResult.Match(
-            result => result,
-            exception => throw new InvalidOperationException("Failed to get distribution strategy"));
+        var strategyInfo = apiResult.Match(result => result, exception => throw new InvalidOperationException("Failed to get distribution strategy"));
 
         if (strategyInfo.Type == "Automatic")
         {
-            var distributeResult = await _distributionClient.DistributeAutomatically(cancellationToken);
-
-            distributeResult.Match(
-                result =>
-                {
-                    if (_applicationContext.Account is not null)
-                        _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
-                },
-                _ => { });
+            await DistributeAccount(_distributionClient.DistributeAutomatically, cancellationToken);
         }
 
-        return strategyInfo as UserChoiceDistributionStrategyInfo is { } userChoiceStrategy
+        return strategyInfo is UserChoiceDistributionStrategyInfo userChoiceStrategy
             ? new AvailableUserChoiceDistributionStrategyInfo
             {
                 AllToTodayDistributedDayAmount = userChoiceStrategy.AllToTodayDistributedDayAmount,
-                BetweenDaysDistributedDayAmount = userChoiceStrategy.BetweenDaysDistributedDayAmount
+                BetweenDaysDistributedDayAmount = userChoiceStrategy.BetweenDaysDistributedDayAmount,
             }
             : null;
     }
 
-    public async Task<bool> DistributeAllToToday(CancellationToken cancellationToken)
+    public Task<DistributionResult> DistributeAllToToday(CancellationToken cancellationToken)
     {
-        var apiResult = await _distributionClient.DistributeAllToToday(cancellationToken);
-
-        return apiResult.Match(
-            result =>
-            {
-                if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
-
-                return true;
-            },
-            exception => false);
+        return DistributeAccount(_distributionClient.DistributeAllToToday, cancellationToken);
     }
 
-    public async Task<bool> DistributeBetweenDays(CancellationToken cancellationToken)
+    public Task<DistributionResult> DistributeBetweenDays(CancellationToken cancellationToken)
     {
-        var apiResult = await _distributionClient.DistributeBetweenDays(cancellationToken);
+        return DistributeAccount(_distributionClient.DistributeBetweenDays, cancellationToken);
+    }
+
+    private async Task<DistributionResult> DistributeAccount(Func<CancellationToken, Task<ApiResult<DistributeAccountResponse>>> distributeAction, CancellationToken cancellationToken)
+    {
+        var apiResult = await distributeAction(cancellationToken);
 
         return apiResult.Match(
             result =>
             {
-                if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+                _applicationContext.Account = _applicationContext.Account is null
+                    ? _accountFactory.CreateAccount(new()
+                    {
+                        DayAmount = result.DayAmount,
+                        RestAmount = result.RestAmount,
+                        TimeZone = result.TimeZone, 
+                        PlannedDate = result.PlannedDate,
+                    })
+                    : _accountFactory.CreateAccount(_applicationContext.Account, new()
+                    {
+                        DayAmount = result.DayAmount,
+                        RestAmount = result.RestAmount,
+                    });
 
-                return true;
+                return DistributionResult.Success;
             },
-            exception => false);
+            exception =>
+            {
+                return exception switch
+                {
+                    ServerException<DistributionExceptionCode> ex when ex.NoticeType == DistributionExceptionCode.DistributionIsNotNeeded => DistributionResult.DoNotNeeded,
+                    _ => DistributionResult.Failed,
+                };
+            });
     }
 }

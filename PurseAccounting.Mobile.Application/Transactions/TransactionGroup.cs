@@ -1,5 +1,4 @@
-﻿using PurseAccounting.Mobile.Application.Models;
-using PurseAccounting.Mobile.Infrastructure.Transactions;
+﻿using PurseAccounting.Mobile.Infrastructure.Transactions;
 
 namespace PurseAccounting.Mobile.Application.Transactions;
 

@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace PurseAccounting.Mobile.Infrastructure.Distribution;
 
 /// <summary>

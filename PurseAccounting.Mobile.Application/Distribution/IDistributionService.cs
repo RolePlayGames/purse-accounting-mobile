@@ -1,5 +1,3 @@
-using PurseAccounting.Mobile.Infrastructure.Distribution;
-
 namespace PurseAccounting.Mobile.Application.Distribution;
 
 public interface IDistributionService
@@ -14,11 +12,11 @@ public interface IDistributionService
     /// Distributes all amount to today
     /// </summary>
     /// <returns>Is operation succeeded</returns>
-    Task<bool> DistributeAllToToday(CancellationToken cancellationToken);
+    Task<DistributionResult> DistributeAllToToday(CancellationToken cancellationToken);
 
     /// <summary>
     /// Distributes amount between days
     /// </summary>
     /// <returns>Is operation succeeded</returns>
-    Task<bool> DistributeBetweenDays(CancellationToken cancellationToken);
+    Task<DistributionResult> DistributeBetweenDays(CancellationToken cancellationToken);
 }
