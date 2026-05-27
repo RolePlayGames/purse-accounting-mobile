@@ -2,10 +2,125 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution.DistributionTab">
-    <VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- 1. Отступ по вертикали в 10% -->
+            <RowDefinition Height="10*" />
+            <!-- 2. Надпись "Поздравляем!" (FontSize 24) -->
+            <RowDefinition Height="Auto" />
+            <!-- 3. Отступ 10 -->
+            <RowDefinition Height="10" />
+            <!-- Надпись "Вы сэкономили 1 000 ₽" (FontSize 18) -->
+            <RowDefinition Height="Auto" />
+            <!-- 4. Отступ по вертикали в 6,2% -->
+            <RowDefinition Height="6.2*" />
+            <!-- 5. Картинка 25% от общей высоты -->
+            <RowDefinition Height="25*" />
+            <!-- 6. Отступ по вертикали в 10% -->
+            <RowDefinition Height="10*" />
+            <!-- 7. Надпись в три строки (FontSize 26) -->
+            <RowDefinition Height="Auto" />
+            <!-- 8. Отступ 21 -->
+            <RowDefinition Height="21" />
+            <!-- Кнопка "Распределить между днями" (Height 40) -->
+            <RowDefinition Height="40" />
+            <!-- 9. Отступ 2 -->
+            <RowDefinition Height="2" />
+            <!-- Надпись "Получится 1 200,06 ₽" (FontSize 16) -->
+            <RowDefinition Height="Auto" />
+            <!-- 10. Отступ 21 -->
+            <RowDefinition Height="21" />
+            <!-- Кнопка "Перенести всё на сегодня" (Height 40) -->
+            <RowDefinition Height="40" />
+            <!-- 11. Отступ 2 -->
+            <RowDefinition Height="2" />
+            <!-- Надпись "Получится 2 021,99 ₽" (FontSize 16) -->
+            <RowDefinition Height="Auto" />
+            <!-- 12. Отступ до нижнего конца 60 -->
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+
+        <!-- 2. Надпись "Поздравляем!" -->
         <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
+            Grid.Row="1"
+            Text="Поздравляем!"
+            FontFamily="OpenSansSemibold"
+            TextColor="{StaticResource DarkPurple}"
+            FontSize="24"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+        
+        <!-- 3. Надпись "Вы сэкономили 1 000 ₽" -->
+        <Label 
+            Grid.Row="3"
+            Text="Вы сэкономили 1 000 ₽"
+            TextColor="{StaticResource DarkPurple}"
+            FontFamily="OpenSansSemibold"
+            FontSize="18"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+        
+        <!-- 5. Картинка congratulations_purple.png -->
+        <Image 
+            Grid.Row="5"
+            Source="congratulations_purple.png"
+            Aspect="AspectFit"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+        
+        <!-- 7. Надпись по центру в три строки -->
+        <Label 
+            Grid.Row="7"
+            Text="Осталось решить,&#10;что делать с&#10;остатком?"
+            FontFamily="OpenSansSemibold"
+            TextColor="{StaticResource DarkPurple}"
+            FontSize="26"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            LineBreakMode="WordWrap" />
+        
+        <!-- 8. Кнопка "Распределить между днями" -->
+        <Button 
+            Grid.Row="9"
+            Text="Распределить между днями"
+            HeightRequest="40"
+            WidthRequest="272"
+            BackgroundColor="{StaticResource Purple}"
+            TextColor="{StaticResource WorkBackground}"
+            FontSize="16"
+            FontFamily="OpenSansSemibold"
             HorizontalOptions="Center" />
-    </VerticalStackLayout>
+        
+        <!-- 9. Надпись "Получится 1 200,06 ₽" -->
+        <Label 
+            Grid.Row="11"
+            Text="Получится 1 200,06 ₽"
+            TextColor="{StaticResource Gray3}"
+            FontFamily="OpenSans"
+            FontSize="16"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+        
+        <!-- 10. Кнопка "Перенести всё на сегодня" -->
+        <Button 
+            Grid.Row="13"
+            Text="Перенести всё на сегодня"
+            HeightRequest="40"
+            WidthRequest="272"
+            BackgroundColor="{StaticResource Purple}"
+            TextColor="{StaticResource WorkBackground}"
+            FontSize="16"
+            FontFamily="OpenSansSemibold"
+            HorizontalOptions="Center" />
+        
+        <!-- 11. Надпись "Получится 2 021,99 ₽" -->
+        <Label 
+            Grid.Row="15"
+            Text="Получится 2 021,99 ₽"
+            TextColor="{StaticResource Gray3}"
+            FontFamily="OpenSans"
+            FontSize="16"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+    </Grid>
 </ContentView>
