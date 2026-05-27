@@ -2,6 +2,27 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution.DistributionTab">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DistributionButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="WidthRequest" Value="272" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Purple}" />
+                <Setter Property="TextColor" Value="{StaticResource WorkBackground}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+            
+            <Style x:Key="DistributionAmountLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Gray3}" />
+                <Setter Property="FontFamily" Value="OpenSans" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <!-- 1. Отступ по вертикали в 10% -->
@@ -82,45 +103,25 @@
         <!-- 8. Кнопка "Распределить между днями" -->
         <Button 
             Grid.Row="9"
-            Text="Распределить между днями"
-            HeightRequest="40"
-            WidthRequest="272"
-            BackgroundColor="{StaticResource Purple}"
-            TextColor="{StaticResource WorkBackground}"
-            FontSize="16"
-            FontFamily="OpenSansSemibold"
-            HorizontalOptions="Center" />
+            Style="{StaticResource DistributionButtonStyle}"
+            Text="Распределить между днями" />
         
         <!-- 9. Надпись "Получится 1 200,06 ₽" -->
         <Label 
             Grid.Row="11"
-            Text="Получится 1 200,06 ₽"
-            TextColor="{StaticResource Gray3}"
-            FontFamily="OpenSans"
-            FontSize="16"
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center" />
+            Style="{StaticResource DistributionAmountLabelStyle}"
+            Text="Получится 1 200,06 ₽" />
         
         <!-- 10. Кнопка "Перенести всё на сегодня" -->
         <Button 
             Grid.Row="13"
-            Text="Перенести всё на сегодня"
-            HeightRequest="40"
-            WidthRequest="272"
-            BackgroundColor="{StaticResource Purple}"
-            TextColor="{StaticResource WorkBackground}"
-            FontSize="16"
-            FontFamily="OpenSansSemibold"
-            HorizontalOptions="Center" />
+            Style="{StaticResource DistributionButtonStyle}"
+            Text="Перенести всё на сегодня" />
         
         <!-- 11. Надпись "Получится 2 021,99 ₽" -->
         <Label 
             Grid.Row="15"
-            Text="Получится 2 021,99 ₽"
-            TextColor="{StaticResource Gray3}"
-            FontFamily="OpenSans"
-            FontSize="16"
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center" />
+            Style="{StaticResource DistributionAmountLabelStyle}"
+            Text="Получится 2 021,99 ₽" />
     </Grid>
 </ContentView>
