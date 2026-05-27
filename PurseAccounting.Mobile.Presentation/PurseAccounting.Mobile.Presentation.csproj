@@ -135,6 +135,9 @@
 	  <MauiXaml Update="Pages\Authorized\Account\AccountAttributesWidget.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\Distribution\DistributionTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Transactions\TransactionsTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
