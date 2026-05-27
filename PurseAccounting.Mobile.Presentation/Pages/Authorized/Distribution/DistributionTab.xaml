@@ -75,7 +75,7 @@
         <!-- 3. Надпись "Вы сэкономили 1 000 ₽" -->
         <Label 
             Grid.Row="3"
-            Text="Вы сэкономили 1 000 ₽"
+            Text="{Binding RestDayAmount, StringFormat='Вы сэкономили {0} ₽'}"
             TextColor="{StaticResource DarkPurple}"
             FontFamily="OpenSansSemibold"
             FontSize="18"
@@ -107,24 +107,26 @@
         <Button 
             Grid.Row="9"
             Style="{StaticResource DistributionButtonStyle}"
-            Text="Распределить между днями" />
+            Text="Распределить между днями"
+            Command="{Binding DistributeBetweenDaysCommand}" />
         
         <!-- 9. Надпись "Получится 1 200,06 ₽" -->
         <Label 
             Grid.Row="11"
             Style="{StaticResource DistributionAmountLabelStyle}"
-            Text="Получится 1 200,06 ₽" />
+            Text="{Binding BetweenDaysDistributedDayAmount, StringFormat='Получится {0:N2} ₽'}" />
         
         <!-- 10. Кнопка "Перенести всё на сегодня" -->
         <Button 
             Grid.Row="13"
             Style="{StaticResource DistributionButtonStyle}"
-            Text="Перенести всё на сегодня" />
+            Text="Перенести всё на сегодня"
+            Command="{Binding DistributeAllToTodayCommand}" />
         
         <!-- 11. Надпись "Получится 2 021,99 ₽" -->
         <Label 
             Grid.Row="15"
             Style="{StaticResource DistributionAmountLabelStyle}"
-            Text="Получится 2 021,99 ₽" />
+            Text="{Binding AllToTodayDistributedDayAmount, StringFormat='Получится {0:N2} ₽'}" />
     </Grid>
 </ContentView>
