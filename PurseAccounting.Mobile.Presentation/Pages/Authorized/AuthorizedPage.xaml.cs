@@ -63,7 +63,7 @@ public partial class AuthorizedPage : ContentPage
 
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
-        _distributionTab = new() { Header = "Распределение остатка", Tab = new DistributionTab() };
+        _distributionTab = new() { Header = "Распределение остатка", Tab = new DistributionTab(serviceProvider) };
         SetActiveTab(_distributionTab);
         //SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;

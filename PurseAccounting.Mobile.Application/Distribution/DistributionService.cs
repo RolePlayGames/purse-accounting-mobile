@@ -61,7 +61,7 @@ internal class DistributionService : IDistributionService
                     {
                         DayAmount = result.DayAmount,
                         RestAmount = result.RestAmount,
-                        TimeZone = result.TimeZone, 
+                        TimeZone = result.TimeZone,
                         PlannedDate = result.PlannedDate,
                     })
                     : _accountFactory.CreateAccount(_applicationContext.Account, new()

@@ -1,6 +1,7 @@
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.Distribution;
 using PurseAccountinng.Mobile.Presentation.Services.Notifications;
+using PurseAccountinng.Mobile.Presentation.Services.Utils;
 using ReactiveUI;
 using System.Windows.Input;
 
@@ -14,7 +15,7 @@ public class DistributionTabViewModel : ReactiveObject
 
     private long _allToTodayDistributedDayAmount;
     private long _betweenDaysDistributedDayAmount;
-    private long _restDayAmount;
+    private string _restDayAmount;
 
     public long AllToTodayDistributedDayAmount
     {
@@ -28,13 +29,14 @@ public class DistributionTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _betweenDaysDistributedDayAmount, value, nameof(BetweenDaysDistributedDayAmount));
     }
 
-    public long RestDayAmount
+    public string RestDayAmount
     {
         get => _restDayAmount;
         set => this.RaiseAndSetIfChanged(ref _restDayAmount, value, nameof(RestDayAmount));
     }
 
     public ICommand DistributeAllToTodayCommand { get; }
+
     public ICommand DistributeBetweenDaysCommand { get; }
 
     public DistributionTabViewModel(
@@ -73,11 +75,11 @@ public class DistributionTabViewModel : ReactiveObject
             _notificationService.ShowError("Распределение не удалось. Повторите попытку позже");
     }
 
-    private void OnAccountChanged(Account? oldValue, Account? newValue)
+    private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)
     {
         if (newValue is null)
             return;
 
-        RestDayAmount = newValue.DailyDistributedAmount.RestAmount;
+        RestDayAmount = AmountFormatter.FormatAmount(newValue.DailyDistributedAmount.DayAmount);
     }
 }

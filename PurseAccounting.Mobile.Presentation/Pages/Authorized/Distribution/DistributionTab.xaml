@@ -10,7 +10,7 @@
                 <Setter Property="WidthRequest" Value="272" />
                 <Setter Property="BackgroundColor" Value="{StaticResource Purple}" />
                 <Setter Property="TextColor" Value="{StaticResource WorkBackground}" />
-                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="HorizontalOptions" Value="Center" />
             </Style>
@@ -18,7 +18,7 @@
             <Style x:Key="DistributionAmountLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource Gray3}" />
                 <Setter Property="FontFamily" Value="OpenSans" />
-                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
@@ -26,63 +26,43 @@
     </ContentView.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <!-- 1. Отступ по вертикали в 10% -->
             <RowDefinition Height="10*" />
-            <!-- 2. Надпись "Поздравляем!" (FontSize 24) -->
             <RowDefinition Height="Auto" />
-            <!-- 3. Отступ 10 -->
             <RowDefinition Height="10" />
-            <!-- Надпись "Вы сэкономили 1 000 ₽" (FontSize 18) -->
             <RowDefinition Height="Auto" />
-            <!-- 4. Отступ по вертикали в 6,2% -->
             <RowDefinition Height="6.2*" />
-            <!-- 5. Картинка 25% от общей высоты -->
             <RowDefinition Height="25*" />
-            <!-- 6. Отступ по вертикали в 10% -->
             <RowDefinition Height="10*" />
-            <!-- 7. Надпись в три строки (FontSize 26) -->
             <RowDefinition Height="Auto" />
-            <!-- 8. Отступ 21 -->
             <RowDefinition Height="21" />
-            <!-- Кнопка "Распределить между днями" (Height 40) -->
             <RowDefinition Height="40" />
-            <!-- 9. Отступ 2 -->
             <RowDefinition Height="2" />
-            <!-- Надпись "Получится 1 200,06 ₽" (FontSize 16) -->
             <RowDefinition Height="Auto" />
-            <!-- 10. Отступ 21 -->
             <RowDefinition Height="21" />
-            <!-- Кнопка "Перенести всё на сегодня" (Height 40) -->
             <RowDefinition Height="40" />
-            <!-- 11. Отступ 2 -->
             <RowDefinition Height="2" />
-            <!-- Надпись "Получится 2 021,99 ₽" (FontSize 16) -->
             <RowDefinition Height="Auto" />
-            <!-- 12. Отступ до нижнего конца 60 -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- 2. Надпись "Поздравляем!" -->
         <Label 
             Grid.Row="1"
             Text="Поздравляем!"
             FontFamily="OpenSansSemibold"
             TextColor="{StaticResource DarkPurple}"
-            FontSize="24"
+            FontSize="{StaticResource FontSizeXLarge}"
             HorizontalOptions="Center"
             HorizontalTextAlignment="Center" />
         
-        <!-- 3. Надпись "Вы сэкономили 1 000 ₽" -->
         <Label 
             Grid.Row="3"
             Text="{Binding RestDayAmount, StringFormat='Вы сэкономили {0} ₽'}"
             TextColor="{StaticResource DarkPurple}"
             FontFamily="OpenSansSemibold"
-            FontSize="18"
+            FontSize="{StaticResource FontSizeMedium}"
             HorizontalOptions="Center"
             HorizontalTextAlignment="Center" />
         
-        <!-- 5. Картинка congratulations_purple.png -->
         <Image 
             Grid.Row="5"
             Source="congratulations_purple.png"
@@ -92,41 +72,36 @@
             HorizontalOptions="Center"
             VerticalOptions="Center" />
         
-        <!-- 7. Надпись по центру в три строки -->
         <Label 
             Grid.Row="7"
             Text="Осталось решить,&#10;что делать с&#10;остатком?"
             FontFamily="OpenSansSemibold"
             TextColor="{StaticResource DarkPurple}"
-            FontSize="16"
+            FontSize="{StaticResource FontSizeRegular}"
             HorizontalOptions="Center"
             HorizontalTextAlignment="Center"
             LineBreakMode="WordWrap" />
         
-        <!-- 8. Кнопка "Распределить между днями" -->
         <Button 
             Grid.Row="9"
             Style="{StaticResource DistributionButtonStyle}"
             Text="Распределить между днями"
             Command="{Binding DistributeBetweenDaysCommand}" />
         
-        <!-- 9. Надпись "Получится 1 200,06 ₽" -->
         <Label 
             Grid.Row="11"
             Style="{StaticResource DistributionAmountLabelStyle}"
-            Text="{Binding BetweenDaysDistributedDayAmount, StringFormat='Получится {0:N2} ₽'}" />
+            Text="{Binding BetweenDaysDistributedDayAmount, StringFormat='Получится {0} ₽'}" />
         
-        <!-- 10. Кнопка "Перенести всё на сегодня" -->
         <Button 
             Grid.Row="13"
             Style="{StaticResource DistributionButtonStyle}"
             Text="Перенести всё на сегодня"
             Command="{Binding DistributeAllToTodayCommand}" />
         
-        <!-- 11. Надпись "Получится 2 021,99 ₽" -->
         <Label 
             Grid.Row="15"
             Style="{StaticResource DistributionAmountLabelStyle}"
-            Text="{Binding AllToTodayDistributedDayAmount, StringFormat='Получится {0:N2} ₽'}" />
+            Text="{Binding AllToTodayDistributedDayAmount, StringFormat='Получится {0} ₽'}" />
     </Grid>
 </ContentView>
