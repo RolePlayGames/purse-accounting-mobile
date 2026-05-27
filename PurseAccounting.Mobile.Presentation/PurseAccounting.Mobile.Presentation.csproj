@@ -59,6 +59,8 @@
 	  <None Remove="Resources\Images\account_inactive.svg" />
 	  <None Remove="Resources\Images\categories_inactive.svg" />
 	  <None Remove="Resources\Images\google.png" />
+	  <None Remove="Resources\Images\congratulations_purple.png" />
+	  <None Remove="Resources\Images\wallets.png" />
 	  <None Remove="Resources\Images\home_active.svg" />
 	  <None Remove="Resources\Images\home_inactive.svg" />
 	  <None Remove="Resources\Images\list_active.svg" />
@@ -77,6 +79,8 @@
 	  <MauiImage Include="Resources\Images\account_inactive.svg" />
 	  <MauiImage Include="Resources\Images\categories_inactive.svg" />
 	  <MauiImage Include="Resources\Images\google.png" />
+	  <MauiImage Include="Resources\Images\congratulations_purple.png" />
+	  <MauiImage Include="Resources\Images\wallet.png" />
 	  <MauiImage Include="Resources\Images\home_active.svg" />
 	  <MauiImage Include="Resources\Images\home_inactive.svg" />
 	  <MauiImage Include="Resources\Images\list_active.svg" />

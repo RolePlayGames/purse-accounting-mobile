@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <Style x:Key="DistributionButtonStyle" TargetType="Button">
                 <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="30" />
                 <Setter Property="WidthRequest" Value="272" />
                 <Setter Property="BackgroundColor" Value="{StaticResource Purple}" />
                 <Setter Property="TextColor" Value="{StaticResource WorkBackground}" />
@@ -58,7 +59,7 @@
             <!-- Надпись "Получится 2 021,99 ₽" (FontSize 16) -->
             <RowDefinition Height="Auto" />
             <!-- 12. Отступ до нижнего конца 60 -->
-            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- 2. Надпись "Поздравляем!" -->
@@ -86,6 +87,8 @@
             Grid.Row="5"
             Source="congratulations_purple.png"
             Aspect="AspectFit"
+            WidthRequest="187"
+            HeightRequest="187"
             HorizontalOptions="Center"
             VerticalOptions="Center" />
         
@@ -95,7 +98,7 @@
             Text="Осталось решить,&#10;что делать с&#10;остатком?"
             FontFamily="OpenSansSemibold"
             TextColor="{StaticResource DarkPurple}"
-            FontSize="26"
+            FontSize="16"
             HorizontalOptions="Center"
             HorizontalTextAlignment="Center"
             LineBreakMode="WordWrap" />
