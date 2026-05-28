@@ -17,6 +17,8 @@ public class DistributionTabViewModel : ReactiveObject
     private long _betweenDaysDistributedDayAmount;
     private string _restDayAmount;
 
+    public event EventHandler? DistributionSucceeded;
+
     public long AllToTodayDistributedDayAmount
     {
         get => _allToTodayDistributedDayAmount;
@@ -71,7 +73,10 @@ public class DistributionTabViewModel : ReactiveObject
         var result = await _distributionService.DistributeAllToToday(CancellationToken.None);
 
         if (result == DistributionResult.Success)
+        {
             _notificationService.ShowSuccess("Распределение выполнено успешно");
+            DistributionSucceeded?.Invoke(this, EventArgs.Empty);
+        }
         else if (result == DistributionResult.Failed)
             _notificationService.ShowError("Распределение не удалось. Повторите попытку позже");
     }
@@ -81,7 +86,10 @@ public class DistributionTabViewModel : ReactiveObject
         var result = await _distributionService.DistributeBetweenDays(CancellationToken.None);
 
         if (result == DistributionResult.Success)
+        {
             _notificationService.ShowSuccess("Распределение выполнено успешно");
+            DistributionSucceeded?.Invoke(this, EventArgs.Empty);
+        }
         else if (result == DistributionResult.Failed)
             _notificationService.ShowError("Распределение не удалось. Повторите попытку позже");
     }

@@ -9,6 +9,17 @@ public partial class DistributionTab : ContentView
         InitializeComponent();
 
         var distributionTabViewModel = ActivatorUtilities.CreateInstance<DistributionTabViewModel>(serviceProvider, availableUserChoiceDistributionStrategy);
+        
+        if (distributionTabViewModel is not null)
+            distributionTabViewModel.DistributionSucceeded += OnDistributionSucceeded;
+        
         BindingContext = distributionTabViewModel;
+    }
+
+    public event EventHandler? DistributionSucceeded;
+
+    private void OnDistributionSucceeded(object? sender, EventArgs e)
+    {
+        DistributionSucceeded?.Invoke(this, e);
     }
 }

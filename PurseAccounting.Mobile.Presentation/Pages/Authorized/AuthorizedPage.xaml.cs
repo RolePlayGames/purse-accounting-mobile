@@ -81,12 +81,22 @@ public partial class AuthorizedPage : ContentPage
                 Header = "Распределение остатка", 
                 Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy) 
             };
+
+            if (_distributionTab.Tab is DistributionTab distributionTab)
+                distributionTab.DistributionSucceeded += OnDistributionSucceeded;
+
             SetActiveTab(_distributionTab);
         }
         else
         {
             SetActiveTab(_accountingTab);
         }
+    }
+
+    private void OnDistributionSucceeded(object? sender, EventArgs e)
+    {
+        SetActiveTab(_accountingTab);
+        LastActiveTabButton = BtnHome;
     }
 
     private async Task LoadTabsContentAsync(IServiceProvider serviceProvider)
