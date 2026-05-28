@@ -42,7 +42,8 @@ public class DistributionTabViewModel : ReactiveObject
     public DistributionTabViewModel(
         INotificationService notificationService,
         IDistributionService distributionService,
-        IApplicationContext applicationContext)
+        IApplicationContext applicationContext,
+        AvailableUserChoiceDistributionStrategyInfo? availableUserChoiceDistributionStrategy = null)
     {
         _notificationService = notificationService;
         _distributionService = distributionService;
@@ -52,7 +53,17 @@ public class DistributionTabViewModel : ReactiveObject
         DistributeBetweenDaysCommand = new Command(OnDistributeBetweenDays);
 
         _applicationContext.AccountChanged += OnAccountChanged;
-        OnAccountChanged(null, applicationContext.Account);
+
+        if (availableUserChoiceDistributionStrategy is not null)
+        {
+            AllToTodayDistributedDayAmount = availableUserChoiceDistributionStrategy.AllToTodayDistributedDayAmount;
+            BetweenDaysDistributedDayAmount = availableUserChoiceDistributionStrategy.BetweenDaysDistributedDayAmount;
+            RestDayAmount = AmountFormatter.FormatAmount(availableUserChoiceDistributionStrategy.BetweenDaysDistributedDayAmount);
+        }
+        else
+        {
+            OnAccountChanged(null, applicationContext.Account);
+        }
     }
 
     private async void OnDistributeAllToToday()

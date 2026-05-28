@@ -64,7 +64,6 @@ public partial class AuthorizedPage : ContentPage
 
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
-        _distributionTab = new() { Header = "Распределение остатка", Tab = new DistributionTab(serviceProvider) };
         _ = InitializeActiveTabAsync(serviceProvider);
         //SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
@@ -76,9 +75,18 @@ public partial class AuthorizedPage : ContentPage
         var availableUserChoiceDistributionStrategy = await distributionService.GetAvailableUserChoiceDistributionStrategy(CancellationToken.None);
 
         if (availableUserChoiceDistributionStrategy is not null)
+        {
+            _distributionTab = new() 
+            { 
+                Header = "Распределение остатка", 
+                Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy) 
+            };
             SetActiveTab(_distributionTab);
+        }
         else
+        {
             SetActiveTab(_accountingTab);
+        }
     }
 
     private async Task LoadTabsContentAsync(IServiceProvider serviceProvider)
