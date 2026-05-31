@@ -1,8 +1,8 @@
-﻿using PurseAccountinng.Mobile.Presentation.Components;
+﻿using PurseAccounting.Mobile.Application.Distribution;
+using PurseAccountinng.Mobile.Presentation.Components;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
-using PurseAccounting.Mobile.Application.Distribution;
 using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
@@ -65,7 +65,7 @@ public partial class AuthorizedPage : ContentPage
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
         _ = InitializeActiveTabAsync(serviceProvider);
-        //SetActiveTab(_accountingTab);
+
         LastActiveTabButton = BtnHome;
     }
 
@@ -76,10 +76,10 @@ public partial class AuthorizedPage : ContentPage
 
         if (availableUserChoiceDistributionStrategy is not null)
         {
-            _distributionTab = new() 
-            { 
-                Header = "Распределение остатка", 
-                Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy) 
+            _distributionTab = new()
+            {
+                Header = "Распределение остатка",
+                Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy),
             };
 
             if (_distributionTab.Tab is DistributionTab distributionTab)

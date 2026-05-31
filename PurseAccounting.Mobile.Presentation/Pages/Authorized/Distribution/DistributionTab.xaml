@@ -24,7 +24,7 @@
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid>
+    <Grid BackgroundColor="{StaticResource WorkBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
             <RowDefinition Height="Auto" />
