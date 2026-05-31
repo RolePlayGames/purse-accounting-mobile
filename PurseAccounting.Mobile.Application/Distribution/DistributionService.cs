@@ -25,7 +25,7 @@ internal class DistributionService : IDistributionService
 
         var strategyInfo = apiResult.Match(result => result, exception => throw new InvalidOperationException("Failed to get distribution strategy"));
 
-        if (strategyInfo.Type == "Automatic")
+        if (strategyInfo.Type == DistributionStrategyType.Automatic)
         {
             await DistributeAccount(_distributionClient.DistributeAutomatically, cancellationToken);
         }

@@ -1,4 +1,5 @@
-﻿using PurseAccountinng.Mobile.Presentation.Components;
+﻿using PurseAccounting.Mobile.Application.Distribution;
+using PurseAccountinng.Mobile.Presentation.Components;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
@@ -63,9 +64,38 @@ public partial class AuthorizedPage : ContentPage
 
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
-        _distributionTab = new() { Header = "Распределение остатка", Tab = new DistributionTab(serviceProvider) };
-        SetActiveTab(_distributionTab);
-        //SetActiveTab(_accountingTab);
+        _ = InitializeActiveTabAsync(serviceProvider);
+
+        LastActiveTabButton = BtnHome;
+    }
+
+    private async Task InitializeActiveTabAsync(IServiceProvider serviceProvider)
+    {
+        var distributionService = serviceProvider.GetRequiredService<IDistributionService>();
+        var availableUserChoiceDistributionStrategy = await distributionService.GetAvailableUserChoiceDistributionStrategy(CancellationToken.None);
+
+        if (availableUserChoiceDistributionStrategy is not null)
+        {
+            _distributionTab = new()
+            {
+                Header = "Распределение остатка",
+                Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy),
+            };
+
+            if (_distributionTab.Tab is DistributionTab distributionTab)
+                distributionTab.DistributionSucceeded += OnDistributionSucceeded;
+
+            SetActiveTab(_distributionTab);
+        }
+        else
+        {
+            SetActiveTab(_accountingTab);
+        }
+    }
+
+    private void OnDistributionSucceeded(object? sender, EventArgs e)
+    {
+        SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
     }
 
