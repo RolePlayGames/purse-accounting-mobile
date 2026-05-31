@@ -85,6 +85,8 @@ public partial class AuthorizedPage : ContentPage
             if (_distributionTab.Tab is DistributionTab distributionTab)
                 distributionTab.DistributionSucceeded += OnDistributionSucceeded;
 
+            TabbarGrid.IsVisible = false;
+            TabbarDevider.IsVisible = false;
             SetActiveTab(_distributionTab);
         }
         else
@@ -96,6 +98,8 @@ public partial class AuthorizedPage : ContentPage
     private void OnDistributionSucceeded(object? sender, EventArgs e)
     {
         SetActiveTab(_accountingTab);
+        TabbarGrid.IsVisible = true;
+        TabbarDevider.IsVisible = true;
         LastActiveTabButton = BtnHome;
     }
 
