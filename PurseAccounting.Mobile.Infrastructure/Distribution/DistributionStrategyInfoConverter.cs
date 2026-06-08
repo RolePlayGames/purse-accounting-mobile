@@ -34,8 +34,8 @@ public class DistributionStrategyInfoConverter : JsonConverter<DistributionStrat
 
         return strategyType switch
         {
-            DistributionStrategyType.Automatic => root.Deserialize<DistributionStrategyInfo>(_readOptions),
-            DistributionStrategyType.DoNotNeed => root.Deserialize<DistributionStrategyInfo>(_readOptions),
+            DistributionStrategyType.Automatic => new DistributionStrategyInfo() { Type = DistributionStrategyType.Automatic },
+            DistributionStrategyType.DoNotNeed => new DistributionStrategyInfo() { Type = DistributionStrategyType.DoNotNeed },
             DistributionStrategyType.UserChoice => root.Deserialize<UserChoiceDistributionStrategyInfo>(_readOptions),
             _ => throw new JsonException($"Unsupported strategy type: {strategyType}"),
         };
@@ -43,7 +43,6 @@ public class DistributionStrategyInfoConverter : JsonConverter<DistributionStrat
 
     public override void Write(Utf8JsonWriter writer, DistributionStrategyInfo value, JsonSerializerOptions options)
     {
-        // При сериализации можно делегировать стандартному механизму или атрибутам
         JsonSerializer.Serialize(writer, value, options);
     }
 }

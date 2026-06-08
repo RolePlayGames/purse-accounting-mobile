@@ -1,5 +1,4 @@
 ﻿using PurseAccounting.Mobile.Application.Authorization;
-using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;
 using System.Reactive;
@@ -59,7 +58,7 @@ public class LoginViewModel : ReactiveObject
         if (loginResult != PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization.MailboxAuthorizationEnum.Success)
             return;
 
-        await _navigator.ChangePageTo<AuthorizedPage>(CancellationToken.None);
+        await _navigator.ActivateAuthorizedPage(CancellationToken.None);
     }
 
     public Task GoogleLoginAsync()

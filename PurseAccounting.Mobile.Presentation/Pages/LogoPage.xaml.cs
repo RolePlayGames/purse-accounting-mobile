@@ -1,6 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.Accounts;
 using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
-using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Unauthorized.Login;
 using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 
@@ -11,15 +10,15 @@ public partial class LogoPage : ContentPage
     private const int _maxAttempts = 20;
     private static readonly TimeSpan _requestTimeout = TimeSpan.FromSeconds(2);
 
+    private readonly IHttpClientInitializer _httpClientInitializer;
     private readonly IAccountService _accountingService;
     private readonly INavigator _navigator;
-    private readonly IHttpClientInitializer _httpClientInitializer;
 
-    public LogoPage(IAccountService accountingService, INavigator navigator, IHttpClientInitializer httpClientInitializer)
+    public LogoPage(IHttpClientInitializer httpClientInitializer, IAccountService accountingService, INavigator navigator)
     {
+        _httpClientInitializer = httpClientInitializer;
         _accountingService = accountingService;
         _navigator = navigator;
-        _httpClientInitializer = httpClientInitializer;
 
         InitializeComponent();
     }
@@ -44,7 +43,7 @@ public partial class LogoPage : ContentPage
                 using var timeoutTokenSource = new CancellationTokenSource(_requestTimeout);
                 var account = await _accountingService.LoadAccount(timeoutTokenSource.Token);
 
-                await NavigateToMainPageAsync(account is not null).ConfigureAwait(false);
+                await NavigateToMainPage(account is not null);
 
                 return;
             }
@@ -66,7 +65,7 @@ public partial class LogoPage : ContentPage
 
         await DisplayFinalError();
         await Task.Delay(_requestTimeout);
-        await NavigateToMainPageAsync(false);
+        await NavigateToMainPage(false);
     }
 
     private async Task HandleError(string message, int attemptCount)
@@ -91,12 +90,13 @@ public partial class LogoPage : ContentPage
         }).ConfigureAwait(false);
     }
 
-    private Task NavigateToMainPageAsync(bool isAuthorized)
+    private async Task NavigateToMainPage(bool isAuthorized)
     {
         ErrorMessageLabel.IsVisible = false;
 
-        return isAuthorized
-            ? _navigator.ChangePageTo<AuthorizedPage>(CancellationToken.None)
-            : _navigator.ChangePageTo<LoginPage>(CancellationToken.None);
+        if (isAuthorized)
+            await _navigator.ActivateAuthorizedPage(CancellationToken.None);
+        else
+            await _navigator.ChangePageTo<LoginPage>(CancellationToken.None);
     }
 }

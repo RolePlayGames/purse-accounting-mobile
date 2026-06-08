@@ -2,14 +2,13 @@
 
 public partial class AccountingTab : ContentView
 {
-    public AccountingTab(IServiceProvider serviceProvider)
+    public AccountingTab(AccountWidgetViewModel accountWidgetViewModel, TomorrowAmountWidgetViewModel tomorrowAmountWidgetViewModel, TransactionAttributesViewModel transactionAttributesViewModel)
     {
         InitializeComponent();
 
-        AccountWidget.BindingContext = ActivatorUtilities.CreateInstance<AccountWidgetViewModel>(serviceProvider);
-        TomorrowAmountWidget.BindingContext = ActivatorUtilities.CreateInstance<TomorrowAmountWidgetViewModel>(serviceProvider);
+        AccountWidget.BindingContext = accountWidgetViewModel;
+        TomorrowAmountWidget.BindingContext = tomorrowAmountWidgetViewModel;
 
-        var transactionAttributesViewModel = ActivatorUtilities.CreateInstance<TransactionAttributesViewModel>(serviceProvider);
         TransactionAttributesWidget.BindingContext = transactionAttributesViewModel;
         TransactionAmountInput.BindingContext = transactionAttributesViewModel;
     }

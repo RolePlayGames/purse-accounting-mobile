@@ -31,11 +31,11 @@ internal class DistributionService : IDistributionService
         }
 
         return strategyInfo is UserChoiceDistributionStrategyInfo userChoiceStrategy
-            ? new AvailableUserChoiceDistributionStrategyInfo
+            ? (_applicationContext.AvailableUserChoiceDistributionStrategy = new()
             {
                 AllToTodayDistributedDayAmount = userChoiceStrategy.AllToTodayDistributedDayAmount,
                 BetweenDaysDistributedDayAmount = userChoiceStrategy.BetweenDaysDistributedDayAmount,
-            }
+            })
             : null;
     }
 

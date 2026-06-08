@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 
-internal class TomorrowAmountWidgetViewModel : ReactiveObject
+public class TomorrowAmountWidgetViewModel : ReactiveObject
 {
     private readonly ITomorrowAmountCalculator _tomorrowAmountCalculator;
 

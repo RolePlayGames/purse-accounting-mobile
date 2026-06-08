@@ -1,7 +1,5 @@
-﻿using PurseAccounting.Mobile.Application.Distribution;
-using PurseAccountinng.Mobile.Presentation.Components;
+﻿using PurseAccountinng.Mobile.Presentation.Components;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
-using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 using Animation = Microsoft.Maui.Controls.Animation;
 
@@ -12,15 +10,8 @@ public partial class AuthorizedPage : ContentPage
     private const double _sheetHeight = 320;
     private const int _directionStabilityLimit = 3;
 
+    private readonly AuthorizedViewModel _viewModel;
     private readonly Queue<SwipeDirection> _directionHistory = new(_directionStabilityLimit);
-
-    private readonly AuthorizedTabBase _accountingTab;
-
-    private AuthorizedTabBase? _transactionsTab;
-    private AuthorizedTabBase? _accountTab;
-    private AuthorizedTabBase? _userProfileTab;
-    private AuthorizedTabBase? _categoriesTab;
-    private AuthorizedTabBase? _distributionTab;
 
     private TabIconButton? _lastActiveTabButton;
 
@@ -55,98 +46,42 @@ public partial class AuthorizedPage : ContentPage
 
     private double SheetOpenPosition => SheetHiddenPosition - _sheetHeight;
 
-    public AuthorizedPage(IServiceProvider serviceProvider)
+    public AuthorizedPage(AuthorizedViewModel viewModel)
     {
         InitializeComponent();
 
-        _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab(serviceProvider) };
-        _ = LoadTabsContentAsync(serviceProvider);
-
-        BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
-
-        _ = InitializeActiveTabAsync(serviceProvider);
-
+        BindingContext = _viewModel = viewModel;
         LastActiveTabButton = BtnHome;
     }
 
-    private async Task InitializeActiveTabAsync(IServiceProvider serviceProvider)
+    private void ChangeActiveTab()
     {
-        var distributionService = serviceProvider.GetRequiredService<IDistributionService>();
-        var availableUserChoiceDistributionStrategy = await distributionService.GetAvailableUserChoiceDistributionStrategy(CancellationToken.None);
-
-        if (availableUserChoiceDistributionStrategy is not null)
-        {
-            _distributionTab = new()
-            {
-                Header = "Распределение остатка",
-                Tab = new DistributionTab(serviceProvider, availableUserChoiceDistributionStrategy),
-            };
-
-            if (_distributionTab.Tab is DistributionTab distributionTab)
-                distributionTab.DistributionSucceeded += OnDistributionSucceeded;
-
-            TabbarGrid.IsVisible = false;
-            TabbarDevider.IsVisible = false;
-            SetActiveTab(_distributionTab);
-        }
-        else
-        {
-            SetActiveTab(_accountingTab);
-        }
-    }
-
-    private void OnDistributionSucceeded(object? sender, EventArgs e)
-    {
-        SetActiveTab(_accountingTab);
-        TabbarGrid.IsVisible = true;
-        TabbarDevider.IsVisible = true;
-        LastActiveTabButton = BtnHome;
-    }
-
-    private async Task LoadTabsContentAsync(IServiceProvider serviceProvider)
-    {
-        var tasks = new[]
-        {
-            Task.Run(() => _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab(serviceProvider) }),
-            Task.Run(() => _accountTab = new() { Header = "Настройка счета", Tab = new Account.AccountTab(serviceProvider) }),
-            Task.Run(() => _userProfileTab = new() { Header = "Профиль", Tab = new UserProfileTab() }),
-            Task.Run(() => _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() }),
-        };
-
-        await Task.WhenAll(tasks);
-    }
-
-    private void SetActiveTab(AuthorizedTabBase authorizedTab)
-    {
-        TabHeader.Text = authorizedTab.Header;
-        MainContent.Content = authorizedTab.Tab;
-
         if (_isSheetOpen)
             CloseSheetAnimated();
     }
 
     private void OnAccountingTabClicked(object sender, EventArgs e)
     {
-        SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
+
+        _viewModel.ChangeTabTo<AccountingTab>();
+        ChangeActiveTab();
     }
 
     private void OnTransactionsTabClicked(object sender, EventArgs e)
     {
-        if (_transactionsTab is null)
-            return;
-
-        SetActiveTab(_transactionsTab);
         LastActiveTabButton = BtnList;
+
+        _viewModel.ChangeTabTo<TransactionsTab>();
+        ChangeActiveTab();
     }
 
     private void OnAccountTabClicked(object sender, EventArgs e)
     {
-        if (_accountTab is null)
-            return;
-
-        SetActiveTab(_accountTab);
         LastActiveTabButton = BtnAccount;
+
+        _viewModel.ChangeTabTo<AccountingTab>();
+        ChangeActiveTab();
     }
 
     private void OnSettingsTabClicked(object sender, EventArgs e)
@@ -167,6 +102,28 @@ public partial class AuthorizedPage : ContentPage
             AbsoluteLayout.SetLayoutBounds(BottomSheet, new Rect(0, SheetHiddenPosition, 1, _sheetHeight)); // to prevent blinking
             OpenSheetAnimated();
         }
+    }
+
+    private void OnProfileClicked(object sender, EventArgs e)
+    {
+        LastActiveTabButton = null;
+
+        _viewModel.ChangeTabTo<UserProfileTab>();
+        ChangeActiveTab();
+    }
+
+    private void OnCategoriesClicked(object sender, EventArgs e)
+    {
+        LastActiveTabButton = null;
+
+        _viewModel.ChangeTabTo<CategoriesTab>();
+        ChangeActiveTab();
+    }
+
+    private void LastActiveTabButtonActive(bool isActive)
+    {
+        if (LastActiveTabButton is not null)
+            LastActiveTabButton.IsActive = isActive;
     }
 
     private void OnOverlayTapped(object sender, EventArgs e)
@@ -271,31 +228,5 @@ public partial class AuthorizedPage : ContentPage
         await Overlay.FadeTo(100, 1);
 
         BtnSettings.IsActive = false;
-    }
-
-    private void OnProfileClicked(object sender, EventArgs e)
-    {
-        if (_userProfileTab is null)
-            return;
-
-        CloseSheetAnimated();
-        SetActiveTab(_userProfileTab);
-        LastActiveTabButton = null;
-    }
-
-    private void OnCategoriesClicked(object sender, EventArgs e)
-    {
-        if (_categoriesTab is null)
-            return;
-
-        CloseSheetAnimated();
-        SetActiveTab(_categoriesTab);
-        LastActiveTabButton = null;
-    }
-
-    private void LastActiveTabButtonActive(bool isActive)
-    {
-        if (LastActiveTabButton is not null)
-            LastActiveTabButton.IsActive = isActive;
     }
 }

@@ -1,4 +1,5 @@
-﻿using PurseAccounting.Mobile.Application.Models;
+﻿using PurseAccounting.Mobile.Application.Distribution;
+using PurseAccounting.Mobile.Application.Models;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 
 namespace PurseAccounting.Mobile.Application.Context;
@@ -7,6 +8,7 @@ internal class ApplicationContext : IApplicationContext
 {
     private Account? _account;
     private IReadOnlyCollection<TransactionCategoryDto> _transactionCategories = [];
+    private AvailableUserChoiceDistributionStrategyInfo? _availableUserChoiceDistributionStrategy;
 
     public Account? Account
     {
@@ -46,7 +48,28 @@ internal class ApplicationContext : IApplicationContext
         }
     }
 
+    public AvailableUserChoiceDistributionStrategyInfo? AvailableUserChoiceDistributionStrategy
+    {
+        get
+        {
+            return _availableUserChoiceDistributionStrategy;
+        }
+
+        set
+        {
+            var oldValue = _availableUserChoiceDistributionStrategy;
+
+            if (oldValue == value)
+                return;
+
+            _availableUserChoiceDistributionStrategy = value;
+            AvailableUserChoiceDistributionStrategyChanged?.Invoke(oldValue, value);
+        }
+    }
+
     public event ValueChangedEventHandler<Account>? AccountChanged;
 
     public event ValueChangedEventHandler<IReadOnlyCollection<TransactionCategoryDto>>? TransactionCategoriesChanged;
+
+    public event ValueChangedEventHandler<AvailableUserChoiceDistributionStrategyInfo>? AvailableUserChoiceDistributionStrategyChanged;
 }

@@ -28,10 +28,11 @@ public static class MauiProgram
             .AddStaticClassesProxies()
             .AddApplication()
             .AddPages()
+            .AddTabs()
+            .AddViewModels()
             .AddPresentationServices()
             ;
 
-        // Убираем подчёркивание у Entry
         Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, entry) =>
         {
 #if ANDROID
