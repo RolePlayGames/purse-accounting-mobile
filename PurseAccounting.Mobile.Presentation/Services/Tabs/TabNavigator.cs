@@ -51,23 +51,17 @@ internal class TabNavigator : ITabNavigator
         ActiveTab = tab ?? _defaultTab;
     }
 
-    public async Task InitializeTabs()
+    public void InitializeTabs()
     {
         if (!_tabsCollection.IsEmpty)
             return;
 
         ActiveTab = _defaultTab = AddTab<AccountingTab>(_serviceProvider, "Добавить транзакцию");
         AddTab<DistributionTab>(_serviceProvider, "Распределение остатка", false);
-
-        var tasks = new[]
-        {
-            Task.Run(() => AddTab<TransactionsTab>(_serviceProvider, "История транзакций")),
-            Task.Run(() => AddTab<AccountTab>(_serviceProvider, "Настройка счета")),
-            Task.Run(() => AddTab<UserProfileTab>(_serviceProvider, "Профиль")),
-            Task.Run(() => AddTab<CategoriesTab>(_serviceProvider, "Категории транзакций")),
-        };
-
-        await Task.WhenAll(tasks);
+        AddTab<TransactionsTab>(_serviceProvider, "История транзакций");
+        AddTab<AccountTab>(_serviceProvider, "Настройка счета");
+        AddTab<UserProfileTab>(_serviceProvider, "Профиль");
+        AddTab<CategoriesTab>(_serviceProvider, "Категории транзакций");
     }
 
     private AuthorizedTabBase AddTab<TTab>(IServiceProvider serviceProvider, string header, bool isTabbarVisible = true) where TTab : ContentView

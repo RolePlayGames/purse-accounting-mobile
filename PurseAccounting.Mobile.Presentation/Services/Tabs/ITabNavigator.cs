@@ -14,7 +14,7 @@ public interface ITabNavigator
     /// <summary>
     /// Inizialize tabs collection
     /// </summary>
-    Task InitializeTabs();
+    void InitializeTabs();
 
     /// <summary>
     /// Active tab

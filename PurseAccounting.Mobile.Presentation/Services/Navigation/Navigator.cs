@@ -63,7 +63,7 @@ internal class Navigator : INavigator
 
     public async Task ActivateAuthorizedPage(CancellationToken ct)
     {
-        await _tabNavigator.InitializeTabs();
+        _tabNavigator.InitializeTabs();
 
         var distributionStrategy = await _distributionService.GetAvailableUserChoiceDistributionStrategy(ct);
 
