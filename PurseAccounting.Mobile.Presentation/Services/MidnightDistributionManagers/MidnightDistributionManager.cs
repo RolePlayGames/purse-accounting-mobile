@@ -14,8 +14,7 @@ internal class MidnightDistributionManager : IMidnightDistributionManager
             MaxRetryAttempts = 3,
             Delay = TimeSpan.FromSeconds(2),
             BackoffType = DelayBackoffType.Exponential,
-            UseJitter = true, // Добавляет случайность (±20%), чтобы не синхронизировать запросы всех клиентов
-            ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(), // Повторяем только при сетевых ошибках
+            UseJitter = true, // добавляет случайность (±20%), чтобы не синхронизировать запросы всех клиентов
         })
         .Build();
 
