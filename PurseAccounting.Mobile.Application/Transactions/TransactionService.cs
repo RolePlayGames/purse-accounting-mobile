@@ -13,13 +13,15 @@ internal class TransactionService : ITransactionService
     private readonly ITotalTransactionClient _totalTransactionClient;
     private readonly IApplicationContext _applicationContext;
     private readonly IAccountFactory _accountFactory;
+    private readonly ITransactionsClient _transactionsClient;
 
-    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory)
+    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory, ITransactionsClient transactionsClient)
     {
         _dailyTransactionClient = dailyTransactionClient;
         _totalTransactionClient = totalTransactionClient;
         _applicationContext = applicationContext;
         _accountFactory = accountFactory;
+        _transactionsClient = transactionsClient;
     }
 
     public async Task<MakeTransactionResult> MakeTransaction(Transaction transaction, CancellationToken cancellationToken)
@@ -62,6 +64,48 @@ internal class TransactionService : ITransactionService
                     ServerException<AddTotalTransactoinsExceptionCode> ex when ex.NoticeType == AddTotalTransactoinsExceptionCode.NegativeRestAmount => MakeTransactionResult.NegativeRestAmount,
                     _ => MakeTransactionResult.Unknown,
                 };
+            });
+    }
+
+    public async Task<IReadOnlyCollection<TransactionGroup>> GetTransactionsByDate(IReadOnlyCollection<long> categoryIds, short timeZone, CancellationToken cancellationToken)
+    {
+        var transactions = await _transactionsClient.GetTransactions(categoryIds, cancellationToken);
+
+        var groupedByDate = transactions
+            .GroupBy(x => x.Date.Date)
+            .OrderByDescending(x => x.Key)
+            .Select(x => new TransactionGroup
+            {
+                GroupDate = x.Key,
+                Transactions = x.OrderByDescending(x => x.ID).ToList(),
+            })
+            .ToList();
+
+        return groupedByDate;
+    }
+
+    public async Task<bool> CancelTransaction(long transactionId, TransactionChangeAmountType changeAmountType, CancellationToken cancellationToken)
+    {
+        var cancelTrasactionTask = changeAmountType switch
+        {
+            TransactionChangeAmountType.Daily => _dailyTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            TransactionChangeAmountType.Total => _totalTransactionClient.CancelTransaction(transactionId, cancellationToken),
+            _ => throw new NotImplementedException(),
+        };
+
+        var apiResult = await cancelTrasactionTask;
+
+        return apiResult.Match(
+            result =>
+            {
+                if (_applicationContext.Account is not null)
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+
+                return true;
+            },
+            exception =>
+            {
+                return false;
             });
     }
 }

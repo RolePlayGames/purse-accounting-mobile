@@ -23,7 +23,11 @@
 
     <Grid Grid.Row="0" RowDefinitions="*,1,60">
         <AbsoluteLayout>
-            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" RowDefinitions="82,1,*">
+            <Grid
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                RowDefinitions="82,1,*">
+                
                 <Grid Grid.Row="0" BackgroundColor="{StaticResource WorkBackground}">
                     <Label
                         x:Name="TabHeader"
@@ -39,6 +43,7 @@
                 <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
 
                 <ContentView Grid.Row="2" x:Name="MainContent" />
+                
             </Grid>
 
             <ContentView
@@ -48,9 +53,11 @@
                 BackgroundColor="#80000000"
                 IsVisible="False"
                 Opacity="0">
+                
                 <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnOverlayTapped" />
                 </ContentView.GestureRecognizers>
+                
             </ContentView>
 
             <Border

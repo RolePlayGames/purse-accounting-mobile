@@ -112,13 +112,9 @@ public class AccountAttributesWidgetViewModel : ReactiveObject
         var result = await _accountService.UpdateAccount(TotalAmount.Value, PlannedDate, TimeZoneOffset, CancellationToken.None);
 
         if (result == UpdateAccountResult.Success)
-        {
             _notificationService.ShowSuccess("Счет сохранен");
-        }
         else
-        {
             _notificationService.ShowError("Сохранение не удалось. Повторите попытку позже");
-        }
     }
 
     private void OnAccountChanged(PurseAccounting.Mobile.Application.Models.Account? oldValue, PurseAccounting.Mobile.Application.Models.Account? newValue)

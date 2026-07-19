@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Presentation", "PurseAccounting.Mobile.Presentation\PurseAccounting.Mobile.Presentation.csproj", "{593606AD-0FA6-515C-DD55-1077250DA766}"
 EndProject
@@ -26,6 +26,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Application.Test", "PurseAccounting.Mobile.Application.Test\PurseAccounting.Mobile.Application.Test.csproj", "{76FD2CB7-0CFF-7603-BDA7-4FA20505562E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurseAccounting.Mobile.Infrastructure", "PurseAccounting.Mobile.Infrastructure\PurseAccounting.Mobile.Infrastructure.csproj", "{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{34AE1171-3E8D-48C3-843C-6E05ABB53A24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{33C51681-51D0-42D3-91AB-89E749997D13}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +66,8 @@ Global
 		{E358658E-69C5-F91E-3D15-64C3DCFAB781} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
 		{76FD2CB7-0CFF-7603-BDA7-4FA20505562E} = {D36F6EAC-AD89-4612-BD31-7BCE1A027BA2}
 		{3620D0DB-D6AF-D2E0-8BD4-4D914B6A24BC} = {D8E0AAC3-37E5-4913-BBB1-1E6072B1811C}
+		{34AE1171-3E8D-48C3-843C-6E05ABB53A24} = {754FC069-D67B-A9D7-50A1-8D1CA196D8F1}
+		{33C51681-51D0-42D3-91AB-89E749997D13} = {34AE1171-3E8D-48C3-843C-6E05ABB53A24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {42B0BCE4-9818-49E6-8240-EA42860C704D}

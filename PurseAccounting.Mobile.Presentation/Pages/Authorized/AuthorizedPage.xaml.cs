@@ -1,5 +1,6 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Components;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 using Animation = Microsoft.Maui.Controls.Animation;
 
 namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized;
@@ -12,12 +13,21 @@ public partial class AuthorizedPage : ContentPage
     private readonly Queue<SwipeDirection> _directionHistory = new(_directionStabilityLimit);
 
     private readonly AuthorizedTabBase _accountingTab;
-    private readonly AuthorizedTabBase _transactionsTab;
-    private readonly AuthorizedTabBase _accountTab;
-    private readonly AuthorizedTabBase _userProfileTabTab;
-    private readonly AuthorizedTabBase _categoriesTab;
+
+    private AuthorizedTabBase? _transactionsTab;
+    private AuthorizedTabBase? _accountTab;
+    private AuthorizedTabBase? _userProfileTab;
+    private AuthorizedTabBase? _categoriesTab;
 
     private TabIconButton? _lastActiveTabButton;
+
+    private bool _isSheetOpen = false;
+    private bool _isDragging = false;
+    private double _currentY = 0;
+    private double _lastTotalY = 0;
+    private SwipeDirection? _lastStableDirection = null;
+
+    private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
 
     private TabIconButton? LastActiveTabButton
     {
@@ -38,14 +48,6 @@ public partial class AuthorizedPage : ContentPage
         }
     }
 
-    private bool _isSheetOpen = false;
-    private bool _isDragging = false;
-    private double _currentY = 0;
-    private double _lastTotalY = 0;
-    private SwipeDirection? _lastStableDirection = null;
-
-    private static double ScreenHeight => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
-
     private double SheetHiddenPosition => ScreenHeight - TabbarGrid.Height;
 
     private double SheetOpenPosition => SheetHiddenPosition - _sheetHeight;
@@ -55,15 +57,25 @@ public partial class AuthorizedPage : ContentPage
         InitializeComponent();
 
         _accountingTab = new() { Header = "Добавить транзакцию", Tab = new AccountingTab(serviceProvider) };
-        _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab() };
-        _accountTab = new() { Header = "Настройка счета", Tab = new Account.AccountTab(serviceProvider) };
-        _userProfileTabTab = new() { Header = "Профиль", Tab = new UserProfileTab() };
-        _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() };
+        _ = LoadTabsContentAsync(serviceProvider);
 
         BindingContext = ActivatorUtilities.CreateInstance<AuthorizedViewModel>(serviceProvider);
 
         SetActiveTab(_accountingTab);
         LastActiveTabButton = BtnHome;
+    }
+
+    private async Task LoadTabsContentAsync(IServiceProvider serviceProvider)
+    {
+        var tasks = new[]
+        {
+            Task.Run(() => _transactionsTab = new() { Header = "История транзакций", Tab = new TransactionsTab(serviceProvider) }),
+            Task.Run(() => _accountTab = new() { Header = "Настройка счета", Tab = new Account.AccountTab(serviceProvider) }),
+            Task.Run(() => _userProfileTab = new() { Header = "Профиль", Tab = new UserProfileTab() }),
+            Task.Run(() => _categoriesTab = new() { Header = "Категории транзакций", Tab = new CategoriesTab() }),
+        };
+
+        await Task.WhenAll(tasks);
     }
 
     private void SetActiveTab(AuthorizedTabBase authorizedTab)
@@ -72,9 +84,7 @@ public partial class AuthorizedPage : ContentPage
         MainContent.Content = authorizedTab.Tab;
 
         if (_isSheetOpen)
-        {
             CloseSheetAnimated();
-        }
     }
 
     private void OnAccountingTabClicked(object sender, EventArgs e)
@@ -85,12 +95,18 @@ public partial class AuthorizedPage : ContentPage
 
     private void OnTransactionsTabClicked(object sender, EventArgs e)
     {
+        if (_transactionsTab is null)
+            return;
+
         SetActiveTab(_transactionsTab);
         LastActiveTabButton = BtnList;
     }
 
     private void OnAccountTabClicked(object sender, EventArgs e)
     {
+        if (_accountTab is null)
+            return;
+
         SetActiveTab(_accountTab);
         LastActiveTabButton = BtnAccount;
     }
@@ -221,13 +237,19 @@ public partial class AuthorizedPage : ContentPage
 
     private void OnProfileClicked(object sender, EventArgs e)
     {
+        if (_userProfileTab is null)
+            return;
+
         CloseSheetAnimated();
-        SetActiveTab(_userProfileTabTab);
+        SetActiveTab(_userProfileTab);
         LastActiveTabButton = null;
     }
 
     private void OnCategoriesClicked(object sender, EventArgs e)
     {
+        if (_categoriesTab is null)
+            return;
+
         CloseSheetAnimated();
         SetActiveTab(_categoriesTab);
         LastActiveTabButton = null;

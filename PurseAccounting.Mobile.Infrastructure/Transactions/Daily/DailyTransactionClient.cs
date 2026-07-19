@@ -22,4 +22,9 @@ internal class DailyTransactionClient : ClientBase, IDailyTransactionClient
     {
         return SafeCall<AddTransactionResponse>(_httpClient.PutAsJsonAsync, "api/accounting/transactions/daily-transactions/withdrawal-transactions", request, cancellationToken);
     }
+
+    public Task<ApiResult<CancelTransactionResponse>> CancelTransaction(long transactionId, CancellationToken cancellationToken)
+    {
+        return SafeCall<CancelTransactionResponse>(_httpClient.DeleteAsync, $"api/accounting/transactions/daily-transactions/{transactionId}", cancellationToken);
+    }
 }
