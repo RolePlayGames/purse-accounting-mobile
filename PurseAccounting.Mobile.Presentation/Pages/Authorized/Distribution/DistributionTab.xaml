@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Distribution.DistributionTab">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DistributionButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="30" />
+                <Setter Property="WidthRequest" Value="272" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Purple}" />
+                <Setter Property="TextColor" Value="{StaticResource WorkBackground}" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+            
+            <Style x:Key="DistributionAmountLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Gray3}" />
+                <Setter Property="FontFamily" Value="OpenSans" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid BackgroundColor="{StaticResource WorkBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="6.2*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="21" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="21" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label 
+            Grid.Row="1"
+            Text="Поздравляем!"
+            FontFamily="OpenSansSemibold"
+            TextColor="{StaticResource DarkPurple}"
+            FontSize="{StaticResource FontSizeXLarge}"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+        
+        <Label 
+            Grid.Row="3"
+            Text="{Binding RestDayAmount, StringFormat='Вы сэкономили {0} ₽'}"
+            TextColor="{StaticResource DarkPurple}"
+            FontFamily="OpenSansSemibold"
+            FontSize="{StaticResource FontSizeMedium}"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center" />
+        
+        <Image 
+            Grid.Row="5"
+            Source="congratulations_purple.png"
+            Aspect="AspectFit"
+            WidthRequest="187"
+            HeightRequest="187"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+        
+        <Label 
+            Grid.Row="7"
+            Text="Осталось решить,&#10;что делать с&#10;остатком?"
+            FontFamily="OpenSansSemibold"
+            TextColor="{StaticResource DarkPurple}"
+            FontSize="{StaticResource FontSizeRegular}"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            LineBreakMode="WordWrap" />
+        
+        <Button 
+            Grid.Row="9"
+            Style="{StaticResource DistributionButtonStyle}"
+            Text="Распределить между днями"
+            Command="{Binding DistributeBetweenDaysCommand}" />
+        
+        <Label 
+            Grid.Row="11"
+            Style="{StaticResource DistributionAmountLabelStyle}"
+            Text="{Binding BetweenDaysDistributedDayAmount, StringFormat='Получится {0} ₽'}" />
+        
+        <Button 
+            Grid.Row="13"
+            Style="{StaticResource DistributionButtonStyle}"
+            Text="Перенести всё на сегодня"
+            Command="{Binding DistributeAllToTodayCommand}" />
+        
+        <Label 
+            Grid.Row="15"
+            Style="{StaticResource DistributionAmountLabelStyle}"
+            Text="{Binding AllToTodayDistributedDayAmount, StringFormat='Получится {0} ₽'}" />
+    </Grid>
+</ContentView>

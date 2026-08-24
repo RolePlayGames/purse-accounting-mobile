@@ -31,7 +31,7 @@
                 <Grid Grid.Row="0" BackgroundColor="{StaticResource WorkBackground}">
                     <Label
                         x:Name="TabHeader"
-                        Text="Добавить транзакцию"
+                        Text="{Binding ActiveTab.Header}"
                         FontFamily="OpenSans"
                         FontAttributes="Bold"
                         FontSize="24"
@@ -42,7 +42,7 @@
 
                 <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
 
-                <ContentView Grid.Row="2" x:Name="MainContent" />
+                <ContentView Grid.Row="2" x:Name="MainContent" Content="{Binding ActiveTab.Tab}" />
                 
             </Grid>
 
@@ -93,13 +93,16 @@
             </Border>
         </AbsoluteLayout>
 
-        <BoxView Grid.Row="1" Style="{StaticResource Divider}" />
-        
-        <Grid x:Name="TabbarGrid" Grid.Row="2" BackgroundColor="{StaticResource WorkBackground}" ColumnDefinitions="*,*,*,*">
+        <Grid x:Name="TabbarDeviderBackground" Grid.Row="1" BackgroundColor="{StaticResource WorkBackground}"/>
+        <BoxView x:Name="TabbarDevider" Grid.Row="1" Style="{StaticResource Divider}" IsVisible="{Binding ActiveTab.IsTabbarVisible}" />
+
+        <Grid x:Name="TabbarGridBackground" Grid.Row="2" BackgroundColor="{StaticResource WorkBackground}"/>
+        <Grid x:Name="TabbarGrid" Grid.Row="2" BackgroundColor="Transparent" ColumnDefinitions="*,*,*,*" IsVisible="{Binding ActiveTab.IsTabbarVisible}">
             <components:TabIconButton x:Name="BtnHome" Grid.Column="0" InactiveSource="home_inactive.png" ActiveSource="home_active.png" Clicked="OnAccountingTabClicked" />
             <components:TabIconButton x:Name="BtnList" Grid.Column="1" InactiveSource="list_inactive.png" ActiveSource="list_active.png" Clicked="OnTransactionsTabClicked" />
             <components:TabIconButton x:Name="BtnAccount" Grid.Column="2" InactiveSource="account_inactive.png" ActiveSource="account_active.png" Clicked="OnAccountTabClicked" />
             <components:TabIconButton x:Name="BtnSettings" Grid.Column="3" InactiveSource="settings_inactive.png" ActiveSource="settings_active.png" Clicked="OnSettingsTabClicked" />
         </Grid>
+
     </Grid>
 </ContentPage>

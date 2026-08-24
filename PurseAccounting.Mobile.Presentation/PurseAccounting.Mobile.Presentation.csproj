@@ -59,6 +59,8 @@
 	  <None Remove="Resources\Images\account_inactive.svg" />
 	  <None Remove="Resources\Images\categories_inactive.svg" />
 	  <None Remove="Resources\Images\google.png" />
+	  <None Remove="Resources\Images\congratulations_purple.png" />
+	  <None Remove="Resources\Images\wallets.png" />
 	  <None Remove="Resources\Images\home_active.svg" />
 	  <None Remove="Resources\Images\home_inactive.svg" />
 	  <None Remove="Resources\Images\list_active.svg" />
@@ -77,6 +79,8 @@
 	  <MauiImage Include="Resources\Images\account_inactive.svg" />
 	  <MauiImage Include="Resources\Images\categories_inactive.svg" />
 	  <MauiImage Include="Resources\Images\google.png" />
+	  <MauiImage Include="Resources\Images\congratulations_purple.png" />
+	  <MauiImage Include="Resources\Images\wallet.png" />
 	  <MauiImage Include="Resources\Images\home_active.svg" />
 	  <MauiImage Include="Resources\Images\home_inactive.svg" />
 	  <MauiImage Include="Resources\Images\list_active.svg" />
@@ -94,6 +98,7 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
 		<PackageReference Include="Material.Components.Maui" Version="0.2.2-preview" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.10.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 		<PackageReference Include="ReactiveUI.Maui" Version="22.1.1" />
@@ -133,6 +138,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Account\AccountAttributesWidget.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authorized\Distribution\DistributionTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authorized\Transactions\TransactionsTab.xaml">

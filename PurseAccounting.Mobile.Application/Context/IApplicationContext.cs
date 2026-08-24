@@ -1,4 +1,5 @@
-﻿using PurseAccounting.Mobile.Application.Models;
+﻿using PurseAccounting.Mobile.Application.Distribution;
+using PurseAccounting.Mobile.Application.Models;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 
 namespace PurseAccounting.Mobile.Application.Context;
@@ -18,9 +19,22 @@ public interface IApplicationContext
     IReadOnlyCollection<TransactionCategoryDto> TransactionCategories { get; set; }
 
     /// <summary>
+    /// Avaliable distribution strategy
+    /// </summary>
+    AvailableUserChoiceDistributionStrategyInfo? AvailableUserChoiceDistributionStrategy { get; set; }
+
+    /// <summary>
     /// On account changed
     /// </summary>
     event ValueChangedEventHandler<Account> AccountChanged;
 
+    /// <summary>
+    /// On transactions changed
+    /// </summary>
     event ValueChangedEventHandler<IReadOnlyCollection<TransactionCategoryDto>> TransactionCategoriesChanged;
+
+    /// <summary>
+    /// On distribution strategy changed
+    /// </summary>
+    event ValueChangedEventHandler<AvailableUserChoiceDistributionStrategyInfo> AvailableUserChoiceDistributionStrategyChanged;
 }
