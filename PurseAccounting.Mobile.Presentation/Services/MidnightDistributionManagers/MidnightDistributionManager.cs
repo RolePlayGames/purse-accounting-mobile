@@ -14,7 +14,7 @@ internal class MidnightDistributionManager : IMidnightDistributionManager
             MaxRetryAttempts = 3,
             Delay = TimeSpan.FromSeconds(2),
             BackoffType = DelayBackoffType.Exponential,
-            UseJitter = true, // добавляет случайность (±20%), чтобы не синхронизировать запросы всех клиентов
+            UseJitter = true, // to add random (±20%) to avoid synchronizing requests from all clients.
         })
         .Build();
 
@@ -64,6 +64,7 @@ internal class MidnightDistributionManager : IMidnightDistributionManager
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
         }, _cancellationTokenSource.Token);
@@ -88,7 +89,7 @@ internal class MidnightDistributionManager : IMidnightDistributionManager
             }
             catch (TaskCanceledException)
             {
-                // Игнорируем
+                // ignore
             }
 
             _backgroundTask = null;
