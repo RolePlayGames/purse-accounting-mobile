@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.90" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PlannedTransactions\Settings\" />
+  </ItemGroup>
+
 </Project>
