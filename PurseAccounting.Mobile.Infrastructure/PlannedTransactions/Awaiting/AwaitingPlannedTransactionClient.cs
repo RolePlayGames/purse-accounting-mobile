@@ -1,8 +1,9 @@
 using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.Base;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 using System.Net.Http.Json;
 
-namespace PurseAccounting.Mobile.Infrastructure.Transactions.AwaitingPlannedTransactions;
+namespace PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Awaiting;
 
 internal class AwaitingPlannedTransactionClient : ClientBase, IAwaitingPlannedTransactionClient
 {
@@ -20,16 +21,16 @@ internal class AwaitingPlannedTransactionClient : ClientBase, IAwaitingPlannedTr
 
     public Task<ApiResult<AccountAmounts>> ChangeAmount(ChangeAwaitingPlannedTransactionAmountRequest request, CancellationToken cancellationToken)
     {
-        return SafeCall<AccountAmounts>(_httpClient.PatchAsJsonAsync, "api/accounting/awaiting-planned-transactions", request, cancellationToken);
+        return SafeCall<AccountAmounts, ChangeAmountExceptionCode>(_httpClient.PatchAsJsonAsync, "api/accounting/awaiting-planned-transactions", request, cancellationToken);
     }
 
     public Task<ApiResult<AccountAmounts>> ApplyTransaction(long awaitingPlannedTransactionId, CancellationToken cancellationToken)
     {
-        return SafeCall<AccountAmounts>(_httpClient.PostAsync, $"api/accounting/awaiting-planned-transactions/{awaitingPlannedTransactionId}/apply", cancellationToken);
+        return SafeCall<AccountAmounts, MakeAwaitingPlannedTransactionExceptionCode>((url, token) => _httpClient.PostAsync(url, null, token), $"api/accounting/awaiting-planned-transactions/{awaitingPlannedTransactionId}/apply", cancellationToken);
     }
 
     public Task<ApiResult<AccountAmounts>> DeclineTransaction(long awaitingPlannedTransactionId, CancellationToken cancellationToken)
     {
-        return SafeCall<AccountAmounts>(_httpClient.PostAsync, $"api/accounting/awaiting-planned-transactions/{awaitingPlannedTransactionId}/decline", cancellationToken);
+        return SafeCall<AccountAmounts, MakeAwaitingPlannedTransactionExceptionCode>((url, token) => _httpClient.PostAsync(url, null, token), $"api/accounting/awaiting-planned-transactions/{awaitingPlannedTransactionId}/decline", cancellationToken);
     }
 }

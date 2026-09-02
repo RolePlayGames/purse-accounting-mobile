@@ -1,6 +1,7 @@
 using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 
-namespace PurseAccounting.Mobile.Infrastructure.Transactions.AwaitingPlannedTransactions;
+namespace PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Awaiting;
 
 public interface IAwaitingPlannedTransactionClient
 {
