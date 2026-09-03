@@ -16,12 +16,12 @@ internal class PlannedTransactionSettingsClient : ClientBase, IPlannedTransactio
 
     public Task<ApiResult<CreatePlannedTransactionSettingResponse>> Create(CreatePlannedTransactionSettingRequest request, CancellationToken cancellationToken)
     {
-        return SafeCall<CreatePlannedTransactionSettingResponse>(_httpClient.PutAsJsonAsync, "api/accounting/planned-transaction-settings", request, cancellationToken);
+        return SafeCall<CreatePlannedTransactionSettingResponse, CreatePlannedTransactionSettingExceptionCode>(_httpClient.PutAsJsonAsync, "api/accounting/planned-transaction-settings", request, cancellationToken);
     }
 
     public Task<ApiResult<AccountAmounts>> Deactivate(long settingID, CancellationToken cancellationToken)
     {
-        return SafeCall<AccountAmounts>((url, token) => _httpClient.DeleteAsync(url, token), $"api/accounting/planned-transaction-settings/{settingID}", cancellationToken);
+        return SafeCall<AccountAmounts, DeactivatePlannedTransactionSettingExceptionCode>(_httpClient.DeleteAsync, $"api/accounting/planned-transaction-settings/{settingID}", cancellationToken);
     }
 
     public Task<ApiResult<IReadOnlyCollection<PlannedTransactionSettingInfo>>> GetInfo(CancellationToken cancellationToken)
@@ -31,6 +31,6 @@ internal class PlannedTransactionSettingsClient : ClientBase, IPlannedTransactio
 
     public Task<ApiResult<AccountAmounts>> Update(long settingID, PlannedTransactionSettingInfo info, CancellationToken cancellationToken)
     {
-        return SafeCall<AccountAmounts>(_httpClient.PostAsJsonAsync, $"api/accounting/planned-transaction-settings/{settingID}", info, cancellationToken);
+        return SafeCall<AccountAmounts, UpdatePlannedTransactionSettingExceptionCode>(_httpClient.PostAsJsonAsync, $"api/accounting/planned-transaction-settings/{settingID}", info, cancellationToken);
     }
 }
