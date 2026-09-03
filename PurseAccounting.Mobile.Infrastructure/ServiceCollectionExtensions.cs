@@ -6,6 +6,7 @@ using PurseAccounting.Mobile.Infrastructure.Authorization.MailboxAuthorization;
 using PurseAccounting.Mobile.Infrastructure.Distribution;
 using PurseAccounting.Mobile.Infrastructure.HttpClientInitializers;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Awaiting;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccounting.Mobile.Infrastructure.Transactions.Daily;
@@ -24,6 +25,7 @@ namespace PurseAccounting.Mobile.Infrastructure
                 .AddScoped<IAccountClient, AccountClient>()
                 .AddScoped<IAuthorizationClient, AuthorizationClient>()
                 .AddScoped<IAwaitingPlannedTransactionClient, AwaitingPlannedTransactionClient>()
+                .AddScoped<IPlannedTransactionSettingsClient, PlannedTransactionSettingsClient>()
                 .AddScoped<IDailyTransactionClient, DailyTransactionClient>()
                 .AddScoped<IDistributionClient, DistributionClient>()
                 .AddScoped<IMailboxAuthorizationClient, MailboxAuthorizationClient>()
