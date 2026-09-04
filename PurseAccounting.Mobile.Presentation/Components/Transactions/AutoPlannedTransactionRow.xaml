@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow"
+             x:Name="RootView">
+
+    <Border
+        StrokeShape="RoundRectangle 20"
+        StrokeThickness="0"
+        HeightRequest="76"
+        Padding="15,0">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- First row: Circle, Amount, Title -->
+            <Grid Grid.Row="0" ColumnDefinitions="30,12,*,*" Margin="0,8,0,0">
+                
+                <Ellipse
+                    Grid.Column="0"
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
+                
+                <Label 
+                    Grid.Column="2"
+                    Text="{Binding AmountText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="20"
+                    TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
+                    VerticalOptions="Center" />
+                
+                <Label 
+                    Grid.Column="3"
+                    Text="{Binding TitleText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="18"
+                    TextColor="{StaticResource Gray3}"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Margin="0,0,15,0" />
+                
+            </Grid>
+            
+            <!-- Second row: Icon and Description -->
+            <Grid Grid.Row="1" ColumnDefinitions="30,12,*" Margin="0,6,0,0">
+                
+                <ContentView
+                    Grid.Column="0"
+                    WidthRequest="24"
+                    HeightRequest="24"
+                    IsVisible="{Binding IsIconVisible, Source={x:Reference RootView}}">
+                    
+                    <icons:AutoPlannedSettingIcon
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center" />
+                    
+                </ContentView>
+                
+                <Label 
+                    Grid.Column="2"
+                    Text="{Binding DescriptionText, Source={x:Reference RootView}}"
+                    FontFamily="OpenSansRegular"
+                    FontSize="14"
+                    TextColor="{StaticResource Gray1}"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Margin="0,0,15,0" />
+                
+            </Grid>
+            
+        </Grid>
+        
+    </Border>
+</ContentView>
