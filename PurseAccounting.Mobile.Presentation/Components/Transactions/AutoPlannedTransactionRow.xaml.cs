@@ -1,4 +1,5 @@
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Periods;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Colors;
@@ -140,6 +141,7 @@ public partial class AutoPlannedTransactionRow : ContentView
         Amount = info.Amount;
         TransactionCategoryID = info.TransactionCategoryID;
         IsIconVisible = info.IsAutomatic;
+        DescriptionText = PeriodDescriptionFormatter.GetDescription(info.Period);
         
         UpdateAmountProperties(info.ChangeType);
         UpdateCircleColor();
