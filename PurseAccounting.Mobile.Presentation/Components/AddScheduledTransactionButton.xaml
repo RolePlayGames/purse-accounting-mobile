@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.AddScheduledTransactionButton"
+             x:Name="Root">
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=Command}" />
+    </ContentView.GestureRecognizers>
+    <Border 
+        HeightRequest="70"
+        StrokeShape="RoundRectangle 20"
+        StrokeThickness="1"
+        StrokeDashArray="10,10"
+        BackgroundColor="{StaticResource LightBlue}"
+        Margin="15,0">
+        <Border.Stroke>
+            <SolidColorBrush Color="{StaticResource Gray4}" />
+        </Border.Stroke>
+        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <Label 
+                Text="Нажмите, чтобы добавить"
+                FontSize="14"
+                FontFamily="OpenSans"
+                TextColor="{StaticResource InactiveElementText}"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center" />
+            <Label 
+                Text="запланированную транзакцию"
+                FontSize="14"
+                FontFamily="OpenSans"
+                TextColor="{StaticResource InactiveElementText}"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
