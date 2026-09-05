@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
             
             <!-- First row: Circle, Amount, Title -->
-            <Grid Grid.Row="0" ColumnDefinitions="30,12,*,*" Margin="0,8,0,0">
+            <Grid Grid.Row="0" ColumnDefinitions="30,12,Auto,*" Margin="0,8,0,0">
                 
                 <Ellipse
                     Grid.Column="0"
@@ -32,7 +32,8 @@
                     FontFamily="OpenSansRegular"
                     FontSize="20"
                     TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    LineBreakMode="NoWrap" />
                 
                 <Label 
                     Grid.Column="3"
@@ -42,7 +43,9 @@
                     TextColor="{StaticResource Gray3}"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
-                    Margin="0,0,15,0" />
+                    Margin="0,0,15,0"
+                    LineBreakMode="TailTruncation"
+                    MaxWidthRequest="160" />
                 
             </Grid>
             
