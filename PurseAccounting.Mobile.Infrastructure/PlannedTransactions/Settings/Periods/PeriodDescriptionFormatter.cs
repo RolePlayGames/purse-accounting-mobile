@@ -5,7 +5,7 @@ namespace PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Per
 /// </summary>
 public static class PeriodDescriptionFormatter
 {
-    private static readonly Dictionary<DayOfWeek, string> WEEKDAY_SHORT_NAMES = new()
+    private static readonly Dictionary<DayOfWeek, string> _weekdayShortNames = new()
     {
         { DayOfWeek.Sunday, "Вс" },
         { DayOfWeek.Monday, "Пн" },
@@ -16,7 +16,7 @@ public static class PeriodDescriptionFormatter
         { DayOfWeek.Saturday, "Сб" },
     };
 
-    private static readonly string[] MONTH_NAMES_GENITIVE =
+    private static readonly string[] _monthNamesGenitive =
     [
         "января",
         "февраля",
@@ -31,6 +31,24 @@ public static class PeriodDescriptionFormatter
         "ноября",
         "декабря",
     ];
+
+    /// <summary>
+    /// Gets period description based on the specific period type
+    /// </summary>
+    /// <param name="period">Period to get description</param>
+    /// <returns>Period description</returns>
+    public static string GetDescription(PeriodInfo period)
+    {
+        return period switch
+        {
+            DailyPeriodInfo => "Ежедневно",
+            WeeklyPeriodInfo weekly => $"Еженедельно - {FormatDaysOfWeek(weekly.DaysOfWeek)}",
+            OncePeriodInfo once => once.Date.ToString("dd.MM.yyyy"),
+            MonthlyPeriodInfo monthly => $"Ежемесячно - {monthly.Day} число",
+            AnnuallyPeriodInfo annually => $"Ежегодно - {annually.Day} {_monthNamesGenitive[annually.Month - 1]}",
+            _ => string.Empty,
+        };
+    }
 
     /// <summary>
     /// Normalizes day of week number to start from Monday
@@ -54,13 +72,15 @@ public static class PeriodDescriptionFormatter
         var ranges = new List<(DayOfWeek Start, DayOfWeek End)>();
         var currentRange = (Start: sortedDays[0], End: sortedDays[0]);
 
-        for (int i = 1; i < sortedDays.Length; i++)
+        for (var i = 1; i < sortedDays.Length; i++)
         {
             var currentDay = sortedDays[i];
             var previousDay = sortedDays[i - 1];
 
             if (NormalizeDayOfWeek(currentDay) == NormalizeDayOfWeek(previousDay) + 1)
+            {
                 currentRange.End = currentDay;
+            }
             else
             {
                 ranges.Add(currentRange);
@@ -75,29 +95,11 @@ public static class PeriodDescriptionFormatter
             var length = NormalizeDayOfWeek(range.End) - NormalizeDayOfWeek(range.Start) + 1;
 
             if (length == 1)
-                return WEEKDAY_SHORT_NAMES[range.Start];
+                return _weekdayShortNames[range.Start];
             else if (length == 2)
-                return $"{WEEKDAY_SHORT_NAMES[range.Start]}, {WEEKDAY_SHORT_NAMES[range.End]}";
+                return $"{_weekdayShortNames[range.Start]}, {_weekdayShortNames[range.End]}";
             else
-                return $"{WEEKDAY_SHORT_NAMES[range.Start]}-{WEEKDAY_SHORT_NAMES[range.End]}";
+                return $"{_weekdayShortNames[range.Start]}-{_weekdayShortNames[range.End]}";
         }));
-    }
-
-    /// <summary>
-    /// Gets period description based on the specific period type
-    /// </summary>
-    /// <param name="period">Period to get description</param>
-    /// <returns>Period description</returns>
-    public static string GetDescription(PeriodInfo period)
-    {
-        return period switch
-        {
-            DailyPeriodInfo => "Ежедневно",
-            WeeklyPeriodInfo weekly => $"Еженедельно - {FormatDaysOfWeek(weekly.DaysOfWeek)}",
-            OncePeriodInfo once => once.Date.ToString("dd.MM.yyyy"),
-            MonthlyPeriodInfo monthly => $"Ежемесячно - {monthly.Day} число",
-            AnnuallyPeriodInfo annually => $"Ежегодно - {annually.Day} {MONTH_NAMES_GENITIVE[annually.Month - 1]}",
-            _ => string.Empty
-        };
     }
 }
