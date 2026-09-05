@@ -1,4 +1,6 @@
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Colors;
 using PurseAccountinng.Mobile.Presentation.Extensions;
 using PurseAccountinng.Mobile.Presentation.Services.Utils;
@@ -7,6 +9,9 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
 public partial class AutoPlannedTransactionRow : ContentView
 {
+    public static readonly BindableProperty PlannedTransactionSettingInfoProperty =
+        BindableProperty.Create(nameof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingInfo), typeof(AutoPlannedTransactionRow), default(PlannedTransactionSettingInfo), propertyChanged: OnPlannedTransactionSettingInfoChanged);
+
     public static readonly BindableProperty TransactionCategoryIDProperty =
         BindableProperty.Create(nameof(TransactionCategoryID), typeof(long?), typeof(AutoPlannedTransactionRow), default(long?), propertyChanged: OnTransactionCategoryIDOrCategoriesChanged);
 
@@ -33,6 +38,12 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     public static readonly BindableProperty DescriptionTextProperty =
         BindableProperty.Create(nameof(DescriptionText), typeof(string), typeof(AutoPlannedTransactionRow), string.Empty);
+
+    public PlannedTransactionSettingInfo? PlannedTransactionSettingInfo
+    {
+        get => (PlannedTransactionSettingInfo?)GetValue(PlannedTransactionSettingInfoProperty);
+        set => SetValue(PlannedTransactionSettingInfoProperty, value);
+    }
 
     public long? TransactionCategoryID
     {
@@ -88,6 +99,14 @@ public partial class AutoPlannedTransactionRow : ContentView
         set => SetValue(DescriptionTextProperty, value);
     }
 
+    private static void OnPlannedTransactionSettingInfoChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is AutoPlannedTransactionRow row)
+        {
+            row.UpdateFromPlannedTransactionSettingInfo();
+        }
+    }
+
     private static void OnTransactionCategoryIDOrCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is AutoPlannedTransactionRow row)
@@ -111,6 +130,21 @@ public partial class AutoPlannedTransactionRow : ContentView
         UpdateCircleColor();
     }
 
+    private void UpdateFromPlannedTransactionSettingInfo()
+    {
+        var info = PlannedTransactionSettingInfo;
+        if (info is null)
+            return;
+
+        TitleText = info.Name;
+        Amount = info.Amount;
+        TransactionCategoryID = info.TransactionCategoryID;
+        IsIconVisible = info.IsAutomatic;
+        
+        UpdateAmountProperties(info.ChangeType);
+        UpdateCircleColor();
+    }
+
     private void UpdateCircleColor()
     {
         if (!TransactionCategoryID.HasValue || Categories is null || Categories.Count == 0)
@@ -125,13 +159,15 @@ public partial class AutoPlannedTransactionRow : ContentView
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
     }
 
-    private void UpdateAmountProperties()
+    private void UpdateAmountProperties(TransactionChangeType? changeType = null)
     {
         var amount = Amount;
         var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
-        var amountSign = amount >= 0 ? '+' : '-';
+        
+        var actualChangeType = changeType ?? (amount >= 0 ? Transactions.TransactionChangeType.Income : Transactions.TransactionChangeType.Withdrawal);
+        var amountSign = actualChangeType == Transactions.TransactionChangeType.Income ? '+' : '-';
 
         AmountText = $"{amountSign} {formattedAmount} ₽";
-        AmountTextColor = (amount >= 0 ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
+        AmountTextColor = (actualChangeType == Transactions.TransactionChangeType.Income ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
     }
 }
