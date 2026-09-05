@@ -1,4 +1,5 @@
 using PurseAccountinng.Mobile.Presentation.Extensions;
+using PurseAccountinng.Mobile.Presentation.Services.Utils;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
@@ -84,12 +85,10 @@ public partial class AutoPlannedTransactionRow : ContentView
     private void UpdateAmountProperties()
     {
         var amount = Amount;
-        var formattedAmount = Math.Abs(amount).ToString("0.##");
-        var sign = amount >= 0 ? "+" : "-";
+        var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
+        var amountSign = amount >= 0 ? '+' : '-';
 
-        AmountText = $"{sign} {formattedAmount} ₽";
-        AmountTextColor = (amount >= 0 
-            ? App.Current?.Resources.GetColor("TransactionPositive") 
-            : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
+        AmountText = $"{amountSign} {formattedAmount} ₽";
+        AmountTextColor = (amount >= 0 ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
     }
 }
