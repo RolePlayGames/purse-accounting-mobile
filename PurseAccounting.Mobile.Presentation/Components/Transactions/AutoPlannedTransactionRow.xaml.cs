@@ -22,7 +22,7 @@ public partial class AutoPlannedTransactionRow : ContentView
         BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(AutoPlannedTransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
 
     public static readonly BindableProperty AmountProperty =
-        BindableProperty.Create(nameof(Amount), typeof(decimal), typeof(AutoPlannedTransactionRow), default(decimal), propertyChanged: OnAmountChanged);
+        BindableProperty.Create(nameof(Amount), typeof(int), typeof(AutoPlannedTransactionRow), default(int), propertyChanged: OnAmountChanged);
 
     public static readonly BindableProperty AmountTextProperty =
         BindableProperty.Create(nameof(AmountText), typeof(string), typeof(AutoPlannedTransactionRow), string.Empty);
@@ -63,9 +63,9 @@ public partial class AutoPlannedTransactionRow : ContentView
         set => SetValue(CircleColorProperty, value);
     }
 
-    public decimal Amount
+    public int Amount
     {
-        get => (decimal)GetValue(AmountProperty);
+        get => (int)GetValue(AmountProperty);
         set => SetValue(AmountProperty, value);
     }
 
@@ -163,11 +163,11 @@ public partial class AutoPlannedTransactionRow : ContentView
     {
         var amount = Amount;
         var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
-        
-        var actualChangeType = changeType ?? (amount >= 0 ? Transactions.TransactionChangeType.Income : Transactions.TransactionChangeType.Withdrawal);
-        var amountSign = actualChangeType == Transactions.TransactionChangeType.Income ? '+' : '-';
+
+        var actualChangeType = changeType ?? (amount >= 0 ? TransactionChangeType.Income : TransactionChangeType.Withdrawal);
+        var amountSign = actualChangeType == TransactionChangeType.Income ? '+' : '-';
 
         AmountText = $"{amountSign} {formattedAmount} ₽";
-        AmountTextColor = (actualChangeType == Transactions.TransactionChangeType.Income ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
+        AmountTextColor = (actualChangeType == TransactionChangeType.Income ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
     }
 }

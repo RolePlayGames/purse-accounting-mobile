@@ -44,8 +44,7 @@
                     HorizontalOptions="End"
                     VerticalOptions="Center"
                     Margin="0,0,15,0"
-                    LineBreakMode="TailTruncation"
-                    MaxWidthRequest="160" />
+                    LineBreakMode="TailTruncation" />
                 
             </Grid>
             
