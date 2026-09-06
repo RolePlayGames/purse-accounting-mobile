@@ -16,6 +16,8 @@ public partial class AutoPlannedTransactionRow : ContentView
     public static readonly BindableProperty CategoriesProperty =
         BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(AutoPlannedTransactionRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
 
+    private static readonly SolidColorBrush _defaultBrush = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
+
     public PlannedTransactionSettingInfo? PlannedTransactionSettingInfo
     {
         get => (PlannedTransactionSettingInfo?)GetValue(PlannedTransactionSettingInfoProperty);
@@ -59,7 +61,7 @@ public partial class AutoPlannedTransactionRow : ContentView
         TitleLabel.Text = info.Name;
         IconContainer.IsVisible = info.IsAutomatic;
         DescriptionLabel.Text = PeriodDescriptionFormatter.GetDescription(info.Period);
-        
+
         UpdateAmountProperties(info.ChangeType);
         UpdateCircleColor();
     }
@@ -67,21 +69,23 @@ public partial class AutoPlannedTransactionRow : ContentView
     private void UpdateCircleColor()
     {
         var info = PlannedTransactionSettingInfo;
+
         if (info is null || Categories is null || Categories.Count == 0)
         {
-            CircleElement.Fill = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
+            CircleElement.Fill = _defaultBrush;
             return;
         }
 
         if (Categories.TryGetValue(info.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleElement.Fill = new SolidColorBrush(color);
         else
-            CircleElement.Fill = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
+            CircleElement.Fill = _defaultBrush;
     }
 
     private void UpdateAmountProperties(TransactionChangeType? changeType = null)
     {
         var info = PlannedTransactionSettingInfo;
+
         if (info is null)
         {
             AmountLabel.Text = string.Empty;
@@ -96,7 +100,10 @@ public partial class AutoPlannedTransactionRow : ContentView
         var amountSign = actualChangeType == TransactionChangeType.Income ? '+' : '-';
 
         AmountLabel.Text = $"{amountSign} {formattedAmount} ₽";
-        AmountLabel.TextColor = (actualChangeType == TransactionChangeType.Income ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? Microsoft.Maui.Graphics.Colors.Black;
+        AmountLabel.TextColor = (actualChangeType == TransactionChangeType.Income
+                ? App.Current?.Resources.GetColor("TransactionPositive")
+                : App.Current?.Resources.GetColor("Gray1"))
+            ?? Microsoft.Maui.Graphics.Colors.Black;
     }
 
     private void UpdateState()
