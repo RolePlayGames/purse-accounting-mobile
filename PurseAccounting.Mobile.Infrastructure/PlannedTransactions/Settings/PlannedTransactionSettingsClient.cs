@@ -1,5 +1,6 @@
 using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.Base;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.ExceptionCodes;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
 using System.Net.Http.Json;
 

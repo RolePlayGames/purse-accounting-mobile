@@ -20,6 +20,7 @@ internal class AmountsDistributionCalculator : IAmountsDistributionCalculator
         {
             DayAmount = account.DayAmount,
             RestAmount = dailyDistributedAmount.RestAmount + dailyDistributedAmount.DayAmount,
+            ReservedAmount = 0,
         };
     }
 

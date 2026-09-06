@@ -32,7 +32,7 @@ public class AmountsCalculatorTest
         var result = _amountsCalculator.CalculateAmounts(totalAmount, daysCount);
 
         // Assert
-        Assert.That(result).IsEqualTo(new() { DayAmount = totalAmount, RestAmount = 0 });
+        Assert.That(result).IsEqualTo(new() { DayAmount = totalAmount, RestAmount = 0, ReservedAmount = 0 });
     }
 
     [Theory]

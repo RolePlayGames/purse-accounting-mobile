@@ -68,6 +68,7 @@ internal class DistributionService : IDistributionService
                     {
                         DayAmount = result.DayAmount,
                         RestAmount = result.RestAmount,
+                        ReservedAmount = 0,
                     });
 
                 return DistributionResult.Success;

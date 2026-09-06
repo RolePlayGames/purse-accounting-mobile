@@ -10,11 +10,11 @@ internal class AmountsCalculator : IAmountsCalculator
             throw new ArgumentOutOfRangeException(nameof(totalAmount), "Total amount should be greater than or equals to 0");
 
         if (daysCount <= 0)
-            return new() { DayAmount = totalAmount, RestAmount = 0 };
+            return new() { DayAmount = totalAmount, RestAmount = 0, ReservedAmount = 0 };
 
         var dayAmount = totalAmount / daysCount;
         var restAmount = totalAmount - dayAmount;
 
-        return new() { DayAmount = dayAmount, RestAmount = restAmount };
+        return new() { DayAmount = dayAmount, RestAmount = restAmount, ReservedAmount = 0 };
     }
 }

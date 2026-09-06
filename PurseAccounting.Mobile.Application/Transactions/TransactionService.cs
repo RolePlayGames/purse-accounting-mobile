@@ -15,7 +15,12 @@ internal class TransactionService : ITransactionService
     private readonly IAccountFactory _accountFactory;
     private readonly ITransactionsClient _transactionsClient;
 
-    public TransactionService(IDailyTransactionClient dailyTransactionClient, ITotalTransactionClient totalTransactionClient, IApplicationContext applicationContext, IAccountFactory accountFactory, ITransactionsClient transactionsClient)
+    public TransactionService(
+        IDailyTransactionClient dailyTransactionClient,
+        ITotalTransactionClient totalTransactionClient,
+        IApplicationContext applicationContext,
+        IAccountFactory accountFactory,
+        ITransactionsClient transactionsClient)
     {
         _dailyTransactionClient = dailyTransactionClient;
         _totalTransactionClient = totalTransactionClient;
@@ -52,7 +57,7 @@ internal class TransactionService : ITransactionService
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount, ReservedAmount = 0 });
 
                 return MakeTransactionResult.Success;
             },
@@ -99,7 +104,7 @@ internal class TransactionService : ITransactionService
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount, ReservedAmount = 0 });
 
                 return true;
             },

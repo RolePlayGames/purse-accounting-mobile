@@ -1,4 +1,4 @@
-﻿namespace PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
+﻿namespace PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.ExceptionCodes;
 
 public enum UpdatePlannedTransactionSettingExceptionCode
 {

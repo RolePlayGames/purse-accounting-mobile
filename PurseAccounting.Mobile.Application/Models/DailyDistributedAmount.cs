@@ -2,7 +2,9 @@
 
 public record DailyDistributedAmount
 {
-    public long DayAmount { get; set; }
+    public required long DayAmount { get; init; }
 
-    public long RestAmount { get; set; }
+    public required long RestAmount { get; init; }
+
+    public required long ReservedAmount { get; init; }
 }
