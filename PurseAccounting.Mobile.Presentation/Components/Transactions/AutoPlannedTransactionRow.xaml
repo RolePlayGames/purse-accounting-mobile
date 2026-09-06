@@ -2,8 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
-             x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow"
-             x:Name="RootView">
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow">
 
     <Border
         StrokeShape="RoundRectangle 20"
@@ -21,23 +20,22 @@
             <Grid Grid.Row="0" ColumnDefinitions="30,12,Auto,*" Margin="0,8,0,0">
                 
                 <Ellipse
+                    x:Name="CircleElement"
                     Grid.Column="0"
                     WidthRequest="30"
-                    HeightRequest="30"
-                    Fill="{Binding CircleColor, Source={x:Reference RootView}}" />
+                    HeightRequest="30" />
                 
                 <Label 
+                    x:Name="AmountLabel"
                     Grid.Column="2"
-                    Text="{Binding AmountText, Source={x:Reference RootView}}"
                     FontFamily="OpenSansRegular"
                     FontSize="20"
-                    TextColor="{Binding AmountTextColor, Source={x:Reference RootView}}"
                     VerticalOptions="Center"
                     LineBreakMode="NoWrap" />
                 
                 <Label 
+                    x:Name="TitleLabel"
                     Grid.Column="3"
-                    Text="{Binding TitleText, Source={x:Reference RootView}}"
                     FontFamily="OpenSansRegular"
                     FontSize="18"
                     TextColor="{StaticResource Gray3}"
@@ -52,10 +50,10 @@
             <Grid Grid.Row="1" ColumnDefinitions="30,12,*" Margin="0,6,0,0">
                 
                 <ContentView
+                    x:Name="IconContainer"
                     Grid.Column="0"
                     WidthRequest="24"
-                    HeightRequest="24"
-                    IsVisible="{Binding IsIconVisible, Source={x:Reference RootView}}">
+                    HeightRequest="24">
                     
                     <icons:AutoPlannedSettingIcon
                         WidthRequest="24"
@@ -66,8 +64,8 @@
                 </ContentView>
                 
                 <Label 
+                    x:Name="DescriptionLabel"
                     Grid.Column="2"
-                    Text="{Binding DescriptionText, Source={x:Reference RootView}}"
                     FontFamily="OpenSansRegular"
                     FontSize="14"
                     TextColor="{StaticResource Gray1}"
