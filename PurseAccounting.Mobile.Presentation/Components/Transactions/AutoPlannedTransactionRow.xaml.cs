@@ -16,7 +16,7 @@ public partial class AutoPlannedTransactionRow : ContentView
     public static readonly BindableProperty CategoriesProperty =
         BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(AutoPlannedTransactionRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
 
-    private static readonly SolidColorBrush _defaultBrush = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
+    private static readonly SolidColorBrush _defaultBrush = new(Microsoft.Maui.Graphics.Colors.Gray);
 
     public PlannedTransactionSettingInfo? PlannedTransactionSettingInfo
     {
