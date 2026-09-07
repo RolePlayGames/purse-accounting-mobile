@@ -38,7 +38,9 @@
         
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <transactions:AutoPlannedTransactionRow />
+                            <transactions:AutoPlannedTransactionRow 
+                                PlannedTransactionSettingInfo="{Binding .}"
+                                Categories="{Binding Source={RelativeSource AncestorType={x:Type local:AccountTab}}, Path=BindingContext.Categories}" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     
