@@ -31,7 +31,7 @@ internal class PlannedTransactionSettingsService : IPlannedTransactionSettingsSe
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.AccountAmounts.DayAmount, RestAmount = result.AccountAmounts.RestAmount, ReservedAmount = result.AccountAmounts.ReservedAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, ToDailyDistributedAmount(result.AccountAmounts));
 
                 return CreatePlannedTransactionSettingResult.Success;
             },
@@ -54,7 +54,7 @@ internal class PlannedTransactionSettingsService : IPlannedTransactionSettingsSe
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount, ReservedAmount = result.ReservedAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, ToDailyDistributedAmount(result));
 
                 return true;
             },
@@ -81,7 +81,7 @@ internal class PlannedTransactionSettingsService : IPlannedTransactionSettingsSe
             result =>
             {
                 if (_applicationContext.Account is not null)
-                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount, ReservedAmount = result.ReservedAmount });
+                    _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, ToDailyDistributedAmount(result));
 
                 return true;
             },
@@ -90,4 +90,7 @@ internal class PlannedTransactionSettingsService : IPlannedTransactionSettingsSe
                 return false;
             });
     }
+
+    private static DailyDistributedAmount ToDailyDistributedAmount(AccountAmounts accountAmounts) =>
+        new() { DayAmount = accountAmounts.DayAmount, RestAmount = accountAmounts.RestAmount, ReservedAmount = accountAmounts.ReservedAmount };
 }
