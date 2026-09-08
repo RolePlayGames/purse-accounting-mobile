@@ -1,81 +1,101 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
-             x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow">
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
+    x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow"
+    x:Name="RootView">
 
-    <Border
-        StrokeShape="RoundRectangle 20"
-        StrokeThickness="0"
-        HeightRequest="76"
-        Padding="15,0">
-        
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            
-            <!-- First row: Circle, Amount, Title -->
-            <Grid Grid.Row="0" ColumnDefinitions="30,12,Auto,*" Margin="0,8,0,0">
-                
-                <Ellipse
-                    x:Name="CircleElement"
-                    Grid.Column="0"
-                    WidthRequest="30"
-                    HeightRequest="30" />
-                
-                <Label 
-                    x:Name="AmountLabel"
-                    Grid.Column="2"
-                    FontFamily="OpenSansRegular"
-                    FontSize="20"
-                    VerticalOptions="Center"
-                    LineBreakMode="NoWrap" />
-                
-                <Label 
-                    x:Name="TitleLabel"
-                    Grid.Column="3"
-                    FontFamily="OpenSansRegular"
-                    FontSize="18"
-                    TextColor="{StaticResource Gray3}"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Margin="0,0,15,0"
-                    LineBreakMode="TailTruncation" />
-                
-            </Grid>
-            
-            <!-- Second row: Icon and Description -->
-            <Grid Grid.Row="1" ColumnDefinitions="30,12,*" Margin="0,6,0,0">
-                
-                <ContentView
-                    x:Name="IconContainer"
-                    Grid.Column="0"
-                    WidthRequest="24"
-                    HeightRequest="24">
+    <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}">
+        <SwipeView.RightItems>
+            <SwipeItems Mode="Reveal">
+                <SwipeItemView
+                    x:Name="DeleteSwipeItem" 
+                    BackgroundColor="{StaticResource Purple}"
+                    WidthRequest="{Binding Source={x:Reference RootView}, Path=Width}">
                     
-                    <icons:AutoPlannedSettingIcon
+                    <icons:ReverseIcon
+                        Margin="0,0,16,0"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"/>
+                    
+                </SwipeItemView>
+            </SwipeItems>
+        </SwipeView.RightItems>
+
+        <Border
+            x:Name="SwipeableContentBorder" 
+            StrokeShape="RoundRectangle 0" 
+            StrokeThickness="0"
+            HeightRequest="76"
+            Padding="15,0">
+            
+            <Grid
+                x:Name="ContentContainer"
+                ColumnDefinitions="30,12,Auto,*"
+                RowDefinitions="Auto,Auto">
+                
+                <!-- First row: Circle, Amount, Title -->
+                <Grid Grid.Row="0" ColumnDefinitions="30,12,Auto,*" Margin="0,8,0,0">
+                    
+                    <Ellipse
+                        x:Name="CircleElement"
+                        Grid.Column="0"
+                        WidthRequest="30"
+                        HeightRequest="30" />
+                    
+                    <Label 
+                        x:Name="AmountLabel"
+                        Grid.Column="2"
+                        FontFamily="OpenSansRegular"
+                        FontSize="20"
+                        VerticalOptions="Center"
+                        LineBreakMode="NoWrap" />
+                    
+                    <Label 
+                        x:Name="TitleLabel"
+                        Grid.Column="3"
+                        FontFamily="OpenSansRegular"
+                        FontSize="18"
+                        TextColor="{StaticResource Gray3}"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Margin="0,0,15,0"
+                        LineBreakMode="TailTruncation" />
+                    
+                </Grid>
+                
+                <!-- Second row: Icon and Description -->
+                <Grid Grid.Row="1" ColumnDefinitions="30,12,*" Margin="0,6,0,0">
+                    
+                    <ContentView
+                        x:Name="IconContainer"
+                        Grid.Column="0"
                         WidthRequest="24"
-                        HeightRequest="24"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Center" />
+                        HeightRequest="24">
+                        
+                        <icons:AutoPlannedSettingIcon
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center" />
+                        
+                    </ContentView>
                     
-                </ContentView>
-                
-                <Label 
-                    x:Name="DescriptionLabel"
-                    Grid.Column="2"
-                    FontFamily="OpenSansRegular"
-                    FontSize="14"
-                    TextColor="{StaticResource Gray1}"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Margin="0,0,15,0" />
+                    <Label 
+                        x:Name="DescriptionLabel"
+                        Grid.Column="2"
+                        FontFamily="OpenSansRegular"
+                        FontSize="14"
+                        TextColor="{StaticResource Gray1}"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Margin="0,0,15,0" />
+                    
+                </Grid>
                 
             </Grid>
             
-        </Grid>
-        
-    </Border>
+        </Border>
+    </SwipeView>
 </ContentView>
