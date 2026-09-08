@@ -20,8 +20,6 @@ public partial class AutoPlannedTransactionRow : ContentView
     public static readonly BindableProperty CircleColorProperty =
         BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(AutoPlannedTransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
 
-    public event EventHandler<AutoPlannedTransactionSwipedEventArgs>? TransactionSwiped;
-
     public event EventHandler<AutoPlannedTransactionSwipedEventArgs>? SwipeCompleted;
 
     private const int _maxDirectionHistory = 3;
@@ -127,7 +125,6 @@ public partial class AutoPlannedTransactionRow : ContentView
         if (allLeft && PlannedTransactionSettingInfo is not null)
         {
             SwipeContainer.Open(OpenSwipeItem.RightItems, false);
-            TransactionSwiped?.Invoke(this, new AutoPlannedTransactionSwipedEventArgs(PlannedTransactionSettingInfo));
             SwipeCompleted?.Invoke(this, new AutoPlannedTransactionSwipedEventArgs(PlannedTransactionSettingInfo));
         }
         else
