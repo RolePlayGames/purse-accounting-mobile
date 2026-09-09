@@ -25,13 +25,13 @@ public partial class AutoPlannedTransactionRow : ContentView
     private const int _maxDirectionHistory = 3;
     private const double _cornerRadius = 10; // pixels
 
+    private static readonly SolidColorBrush _defaultBrush = new(Microsoft.Maui.Graphics.Colors.Gray);
+
     private static RoundRectangleGeometry? _contentContainerNormalRectangle;
     private static RoundRectangleGeometry? _contentContainerRoundedRectangle;
 
     private readonly Queue<bool> _swipeDirections = new();
     private double? _lastOffset = null;
-
-    private static readonly SolidColorBrush _defaultBrush = new(Microsoft.Maui.Graphics.Colors.Gray);
 
     public PlannedTransactionSettingInfo? PlannedTransactionSettingInfo
     {
