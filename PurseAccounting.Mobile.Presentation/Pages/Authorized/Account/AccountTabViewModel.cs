@@ -1,4 +1,5 @@
 using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Application.PlannedTransactions;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using ReactiveUI;
@@ -10,6 +11,7 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
 public class AccountTabViewModel : ReactiveObject
 {
     private readonly IApplicationContext _applicationContext;
+    private readonly IPlannedTransactionSettingsService _plannedTransactionSettingsService;
     
     private ObservableCollection<PlannedTransactionSettingInfo> _autoPlannedTransactions = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
@@ -28,11 +30,22 @@ public class AccountTabViewModel : ReactiveObject
 
     public ICommand AddScheduledTransactionCommand { get; }
 
-    public AccountTabViewModel(IApplicationContext applicationContext)
+    public AccountTabViewModel(
+        IApplicationContext applicationContext,
+        IPlannedTransactionSettingsService plannedTransactionSettingsService)
     {
         _applicationContext = applicationContext;
+        _plannedTransactionSettingsService = plannedTransactionSettingsService;
         
         AddScheduledTransactionCommand = new Command(OnAddScheduledTransaction);
+        
+        _ = LoadAutoPlannedTransactions();
+    }
+
+    private async Task LoadAutoPlannedTransactions()
+    {
+        var settings = await _plannedTransactionSettingsService.GetInfo(CancellationToken.None);
+        AutoPlannedTransactions = new ObservableCollection<PlannedTransactionSettingInfo>(settings);
     }
 
     private void OnAddScheduledTransaction()
