@@ -63,6 +63,15 @@ public class AccountTabViewModel : ReactiveObject
         AutoPlannedTransactions = new ObservableCollection<PlannedTransactionSettingInfo>(settings);
     }
 
+    public async Task DeleteAutoPlannedTransactionAsync(PlannedTransactionSettingInfo transaction)
+    {
+        var result = await _plannedTransactionSettingsService.Deactivate(transaction.ID, CancellationToken.None);
+        if (result)
+        {
+            AutoPlannedTransactions.Remove(transaction);
+        }
+    }
+
     private void OnAddScheduledTransaction()
     {
         // TODO: Implement command logic later
