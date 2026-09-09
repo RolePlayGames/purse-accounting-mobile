@@ -39,7 +39,22 @@ public class AccountTabViewModel : ReactiveObject
         
         AddScheduledTransactionCommand = new Command(OnAddScheduledTransaction);
         
+        _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
+        
+        OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
+        
         _ = LoadAutoPlannedTransactions();
+    }
+
+    private void OnTransactionCategoriesChanged(IReadOnlyCollection<TransactionCategoryDto>? oldValue, IReadOnlyCollection<TransactionCategoryDto>? newValue)
+    {
+        if (newValue is null || newValue.Count == 0)
+        {
+            Categories = new Dictionary<long, TransactionCategoryDto>();
+            return;
+        }
+
+        Categories = newValue.ToDictionary(c => c.ID);
     }
 
     private async Task LoadAutoPlannedTransactions()
