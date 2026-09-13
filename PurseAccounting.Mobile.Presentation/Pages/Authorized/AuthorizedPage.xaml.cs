@@ -1,4 +1,5 @@
 ﻿using PurseAccountinng.Mobile.Presentation.Components;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Transactions;
 using Animation = Microsoft.Maui.Controls.Animation;
@@ -80,7 +81,7 @@ public partial class AuthorizedPage : ContentPage
     {
         LastActiveTabButton = BtnAccount;
 
-        _viewModel.ChangeTabTo<AccountingTab>();
+        _viewModel.ChangeTabTo<AccountTab>();
         ChangeActiveTab();
     }
 

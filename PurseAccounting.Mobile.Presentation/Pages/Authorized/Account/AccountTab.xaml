@@ -40,7 +40,8 @@
                         <DataTemplate>
                             <transactions:AutoPlannedTransactionRow 
                                 PlannedTransactionSettingInfo="{Binding .}"
-                                Categories="{Binding Source={RelativeSource AncestorType={x:Type local:AccountTab}}, Path=BindingContext.Categories}" />
+                                Categories="{Binding Source={RelativeSource AncestorType={x:Type local:AccountTab}}, Path=BindingContext.Categories}"
+                                SwipeCompleted="OnAutoPlannedTransactionSwiped" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     
