@@ -1,7 +1,9 @@
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.PlannedTransactions;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Periods;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -12,7 +14,7 @@ public class AccountTabViewModel : ReactiveObject
 {
     private readonly IApplicationContext _applicationContext;
     private readonly IPlannedTransactionSettingsService _plannedTransactionSettingsService;
-    
+
     private ObservableCollection<PlannedTransactionSettingInfo> _autoPlannedTransactions = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
 
@@ -78,7 +80,7 @@ public class AccountTabViewModel : ReactiveObject
             return;
 
         var firstCategory = Categories.Values.First();
-        
+
         var testTransaction = new PlannedTransactionSettingInfo
         {
             ID = -1,
@@ -86,8 +88,8 @@ public class AccountTabViewModel : ReactiveObject
             Amount = 100,
             TransactionCategoryID = firstCategory.ID,
             Period = new DailyPeriodInfo(),
-            ChangeType = Transactions.TransactionChangeType.Withdrawal,
-            IsAutomatic = false
+            ChangeType = TransactionChangeType.Withdrawal,
+            IsAutomatic = true,
         };
 
         AutoPlannedTransactions.Add(testTransaction);

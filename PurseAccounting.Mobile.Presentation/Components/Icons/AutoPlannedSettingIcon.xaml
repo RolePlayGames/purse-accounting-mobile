@@ -4,7 +4,7 @@
              x:Class="PurseAccountinng.Mobile.Presentation.Components.Icons.AutoPlannedSettingIcon">
     <Border
         Stroke="{StaticResource Purple}"
-        StrokeThickness="2"
+        StrokeThickness="0"
         StrokeShape="RoundRectangle 15,15,15,15"
         WidthRequest="30"
         HeightRequest="30"

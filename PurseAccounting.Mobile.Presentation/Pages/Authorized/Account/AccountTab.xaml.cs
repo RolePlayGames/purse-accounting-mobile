@@ -2,13 +2,13 @@ namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
 
 public partial class AccountTab : ContentView
 {
-    public AccountTab(AccountTabViewModel viewModel)
+    public AccountTab(AccountTabViewModel viewModel, AccountAttributesWidgetViewModel widgetViewModel)
     {
         InitializeComponent();
 
         BindingContext = viewModel;
-        AccountWidget.BindingContext = viewModel;
-        AccountAttributesWidget.BindingContext = viewModel;
+        AccountWidget.BindingContext = widgetViewModel;
+        AccountAttributesWidget.BindingContext = widgetViewModel;
     }
 
     private void OnAutoPlannedTransactionSwiped(object? sender, Components.Transactions.AutoPlannedTransactionSwipedEventArgs e)

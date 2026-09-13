@@ -25,14 +25,14 @@
 
         <Border
             x:Name="SwipeableContentBorder" 
-            StrokeShape="RoundRectangle 0" 
+            StrokeShape="RoundRectangle 20" 
             StrokeThickness="0"
             HeightRequest="76"
-            Padding="15,0">
+            Padding="15,0"
+            Background="{StaticResource WorkBackground}">
             
             <Grid
                 x:Name="ContentContainer"
-                ColumnDefinitions="30,12,Auto,*"
                 RowDefinitions="Auto,Auto">
                 
                 <!-- First row: Circle, Amount, Title -->
@@ -84,6 +84,7 @@
                     
                     <Label 
                         x:Name="DescriptionLabel"
+                        x:FieldModifier="public"
                         Grid.Column="2"
                         FontFamily="OpenSansRegular"
                         FontSize="14"
