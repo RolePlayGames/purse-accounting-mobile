@@ -53,12 +53,12 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private RoundRectangleGeometry ContentContainerNormalRectangle => _contentContainerNormalRectangle ??= new()
     {
-        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+        Rect = new(0d, 0d, SwipeableContentBorder.Width, SwipeableContentBorder.Height),
     };
 
     private RoundRectangleGeometry ContentContainerRoundedRectangle => _contentContainerRoundedRectangle ??= new()
     {
-        Rect = new(0d, 0d, ContentContainer.Width, ContentContainer.Height),
+        Rect = new(0d, 0d, SwipeableContentBorder.Width, SwipeableContentBorder.Height),
         CornerRadius = new(0, _cornerRadius, 0, _cornerRadius),
     };
 
@@ -94,7 +94,7 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private void OnSwipeStarted(object? sender, SwipeStartedEventArgs e)
     {
-        ContentContainer.Background = App.Current?.Resources.GetColor("LightBlue");
+        SwipeableContentBorder.Background = App.Current?.Resources.GetColor("LightBlue");
         RoundContentContainerClip(true);
         _swipeDirections.Clear();
     }
@@ -130,7 +130,7 @@ public partial class AutoPlannedTransactionRow : ContentView
         else
         {
             SwipeContainer.Close(true);
-            ContentContainer.Background = App.Current?.Resources.GetColor("WorkBackground");
+            SwipeableContentBorder.Background = App.Current?.Resources.GetColor("WorkBackground");
             RoundContentContainerClip(false);
         }
 
@@ -140,10 +140,10 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private void RoundContentContainerClip(bool isSwiping)
     {
-        if (ContentContainer.Width <= 0)
+        if (SwipeableContentBorder.Width <= 0)
             return;
 
-        ContentContainer.Clip = isSwiping ? ContentContainerRoundedRectangle : ContentContainerNormalRectangle;
+        SwipeableContentBorder.Clip = isSwiping ? ContentContainerRoundedRectangle : ContentContainerNormalRectangle;
     }
 
     private void UpdateFromPlannedTransactionSettingInfo()
