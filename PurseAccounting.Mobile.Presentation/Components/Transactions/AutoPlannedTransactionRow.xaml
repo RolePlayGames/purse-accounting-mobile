@@ -11,24 +11,33 @@
             <SwipeItems Mode="Reveal">
                 <SwipeItemView
                     x:Name="DeleteSwipeItem" 
-                    BackgroundColor="{StaticResource Purple}"
-                    WidthRequest="{Binding Source={x:Reference RootView}, Path=Width}">
-                    
-                    <icons:ReverseIcon
-                        Margin="0,0,16,0"
-                        HorizontalOptions="End"
-                        VerticalOptions="Center"/>
-                    
+                    BackgroundColor="{StaticResource Purple}">
+
+                    <Grid HorizontalOptions="Fill" VerticalOptions="Fill" ColumnDefinitions="*,Auto">
+                        <!-- Фиктивный элемент для заполнения всей ширины -->
+                        <BoxView Grid.Column="0" BackgroundColor="{StaticResource Purple}"/>
+
+                        <!-- Контейнер с иконкой справа -->
+                        <Grid Grid.Column="1" WidthRequest="80">
+                            <icons:ReverseIcon
+                                Margin="0,0,16,0"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"/>
+                        </Grid>
+                        </Grid>
+
                 </SwipeItemView>
             </SwipeItems>
         </SwipeView.RightItems>
 
-        <Border
+        <Grid Background="Transparent">
+            <Border
             x:Name="SwipeableContentBorder" 
             StrokeShape="RoundRectangle 20" 
             StrokeThickness="0"
             HeightRequest="76"
             Padding="15,0"
+            Margin="15,0"
             Background="{StaticResource WorkBackground}">
             
             <Grid
@@ -96,7 +105,8 @@
                 </Grid>
                 
             </Grid>
-            
-        </Border>
+
+            </Border>
+        </Grid>
     </SwipeView>
 </ContentView>

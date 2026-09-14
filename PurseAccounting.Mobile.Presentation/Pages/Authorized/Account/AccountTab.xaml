@@ -6,14 +6,15 @@
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab"
-             Margin="15,18,15,0">
+             Margin="0,18,0,0">
     <Grid RowDefinitions="Auto,*">
         <widgets:AccountWidget
             x:Name="AccountWidget"
             Grid.Row="0"
             DayAmount="{Binding DayAmount}"
             AvailableAmount="{Binding AvaliableAmount}"
-            DaysCount="{Binding DaysCount}"/>
+            DaysCount="{Binding DaysCount}"
+            Margin="15,0"/>
         
         <ScrollView Grid.Row="1">
             <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="0,12,0,0">
@@ -24,7 +25,8 @@
                     PlannedDate="{Binding PlannedDate}"
                     TimeZoneOffset="{Binding TimeZoneOffset}"
                     SaveCommand="{Binding SaveCommand}"
-                    IsSaveEnabled="{Binding IsSaveEnabled}"/>
+                    IsSaveEnabled="{Binding IsSaveEnabled}"
+                    Margin="15,0"/>
                 
                 <CollectionView 
                     x:Name="AutoPlannedTransactionsList"
