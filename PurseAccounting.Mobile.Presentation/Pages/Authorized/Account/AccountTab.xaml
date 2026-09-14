@@ -5,9 +5,8 @@
              xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account"
              xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
-             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab"
-             Margin="15,18,15,0">
-    <Grid RowDefinitions="Auto,*">
+             x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab">
+    <Grid RowDefinitions="Auto,*" Padding="15,18,15,0">
         <widgets:AccountWidget
             x:Name="AccountWidget"
             Grid.Row="0"

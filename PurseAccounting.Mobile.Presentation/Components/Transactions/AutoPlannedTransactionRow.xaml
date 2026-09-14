@@ -6,18 +6,19 @@
     x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.AutoPlannedTransactionRow"
     x:Name="RootView">
 
-    <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}">
+    <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}" HorizontalOptions="Fill">
         <SwipeView.RightItems>
             <SwipeItems Mode="Reveal">
                 <SwipeItemView
                     x:Name="DeleteSwipeItem" 
-                    BackgroundColor="{StaticResource Purple}"
-                    WidthRequest="{Binding Source={x:Reference RootView}, Path=Width}">
+                    BackgroundColor="{StaticResource Purple}">
                     
-                    <icons:ReverseIcon
-                        Margin="0,0,16,0"
-                        HorizontalOptions="End"
-                        VerticalOptions="Center"/>
+                    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                        <icons:ReverseIcon
+                            Margin="0,0,16,0"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"/>
+                    </Grid>
                     
                 </SwipeItemView>
             </SwipeItems>
@@ -29,7 +30,8 @@
             StrokeThickness="0"
             HeightRequest="76"
             Padding="15,0"
-            Background="{StaticResource WorkBackground}">
+            Background="{StaticResource WorkBackground}"
+            HorizontalOptions="Fill">
             
             <Grid
                 x:Name="ContentContainer"
