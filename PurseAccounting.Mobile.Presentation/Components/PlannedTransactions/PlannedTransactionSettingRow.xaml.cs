@@ -173,7 +173,7 @@ public partial class PlannedTransactionSettingRow : ContentView
             CircleElement.Fill = _defaultBrush;
     }
 
-    private void UpdateAmountProperties(TransactionChangeType? changeType, decimal amount)
+    private void UpdateAmountProperties(TransactionChangeType changeType, int amount)
     {
         var (text, textColor) = AmountFormatter.FormatTransactionAmount(amount, changeType);
 

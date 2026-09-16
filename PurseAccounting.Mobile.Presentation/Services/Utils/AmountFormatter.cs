@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
+using PurseAccountinng.Mobile.Presentation.Extensions;
 
 namespace PurseAccountinng.Mobile.Presentation.Services.Utils;
 
@@ -32,7 +33,7 @@ internal static class AmountFormatter
     /// <param name="amount">Transaction amount</param>
     /// <param name="changeType">Optional change type, if null determined by amount sign</param>
     /// <returns>Tuple of formatted text and text color</returns>
-    public static (string Text, Color TextColor) FormatTransactionAmount(decimal amount, TransactionChangeType? changeType = null)
+    public static (string Text, Color TextColor) FormatTransactionAmount(int amount, TransactionChangeType? changeType = null)
     {
         var formattedAmount = FormatAmount(Math.Abs(amount));
         var actualChangeType = changeType ?? (amount >= 0 ? TransactionChangeType.Income : TransactionChangeType.Withdrawal);
