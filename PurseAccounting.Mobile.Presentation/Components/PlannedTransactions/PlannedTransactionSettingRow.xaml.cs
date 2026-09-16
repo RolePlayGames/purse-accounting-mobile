@@ -7,18 +7,18 @@ using PurseAccountinng.Mobile.Presentation.Colors;
 using PurseAccountinng.Mobile.Presentation.Extensions;
 using PurseAccountinng.Mobile.Presentation.Services.Utils;
 
-namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
+namespace PurseAccountinng.Mobile.Presentation.Components.PlannedTransactions;
 
-public partial class AutoPlannedTransactionRow : ContentView
+public partial class PlannedTransactionSettingRow : ContentView
 {
     public static readonly BindableProperty PlannedTransactionSettingInfoProperty =
-        BindableProperty.Create(nameof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingInfo), typeof(AutoPlannedTransactionRow), default(PlannedTransactionSettingInfo), propertyChanged: OnPlannedTransactionSettingInfoChanged);
+        BindableProperty.Create(nameof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingRow), default(PlannedTransactionSettingInfo), propertyChanged: OnPlannedTransactionSettingInfoChanged);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(AutoPlannedTransactionRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(PlannedTransactionSettingRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
 
     public static readonly BindableProperty CircleColorProperty =
-        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(AutoPlannedTransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
+        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(PlannedTransactionSettingRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
 
     public event EventHandler<AutoPlannedTransactionSwipedEventArgs>? SwipeCompleted;
 
@@ -64,21 +64,21 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private static void OnPlannedTransactionSettingInfoChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row)
+        if (bindable is PlannedTransactionSettingRow row && newValue is PlannedTransactionSettingInfo newInfo)
         {
-            row.UpdateFromPlannedTransactionSettingInfo();
+            row.UpdateFromPlannedTransactionSettingInfo(newInfo);
         }
     }
 
     private static void OnCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row)
+        if (bindable is PlannedTransactionSettingRow row && newValue is IReadOnlyDictionary<long, TransactionCategoryDto> newCategories)
         {
-            row.UpdateCircleColor();
+            row.UpdateCircleColor(row.PlannedTransactionSettingInfo, newCategories);
         }
     }
 
-    public AutoPlannedTransactionRow()
+    public PlannedTransactionSettingRow()
     {
         InitializeComponent();
         SetupSwipeGesture();
@@ -146,9 +146,8 @@ public partial class AutoPlannedTransactionRow : ContentView
         SwipeableContentBorder.Clip = isSwiping ? ContentContainerRoundedRectangle : ContentContainerNormalRectangle;
     }
 
-    private void UpdateFromPlannedTransactionSettingInfo()
+    private void UpdateFromPlannedTransactionSettingInfo(PlannedTransactionSettingInfo? info)
     {
-        var info = PlannedTransactionSettingInfo;
         if (info is null)
             return;
 
@@ -156,48 +155,30 @@ public partial class AutoPlannedTransactionRow : ContentView
         IconContainer.IsVisible = info.IsAutomatic;
         DescriptionLabel.Text = PeriodDescriptionFormatter.GetDescription(info.Period);
 
-        UpdateAmountProperties(info.ChangeType);
-        UpdateCircleColor();
+        UpdateAmountProperties(info.ChangeType, info.Amount);
+        UpdateCircleColor(info, Categories);
     }
 
-    private void UpdateCircleColor()
+    private void UpdateCircleColor(PlannedTransactionSettingInfo? info, IReadOnlyDictionary<long, TransactionCategoryDto>? categories)
     {
-        var info = PlannedTransactionSettingInfo;
-
-        if (info is null || Categories is null || Categories.Count == 0)
+        if (info is null || categories is null || categories.Count == 0)
         {
             CircleElement.Fill = _defaultBrush;
             return;
         }
 
-        if (Categories.TryGetValue(info.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
+        if (categories.TryGetValue(info.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleElement.Fill = new SolidColorBrush(color);
         else
             CircleElement.Fill = _defaultBrush;
     }
 
-    private void UpdateAmountProperties(TransactionChangeType? changeType = null)
+    private void UpdateAmountProperties(TransactionChangeType changeType, int amount)
     {
-        var info = PlannedTransactionSettingInfo;
+        var (text, textColor) = AmountFormatter.FormatTransactionAmount(amount, changeType);
 
-        if (info is null)
-        {
-            AmountLabel.Text = string.Empty;
-            AmountLabel.TextColor = Microsoft.Maui.Graphics.Colors.Black;
-            return;
-        }
-
-        var amount = info.Amount;
-        var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
-
-        var actualChangeType = changeType ?? (amount >= 0 ? TransactionChangeType.Income : TransactionChangeType.Withdrawal);
-        var amountSign = actualChangeType == TransactionChangeType.Income ? '+' : '-';
-
-        AmountLabel.Text = $"{amountSign} {formattedAmount} ₽";
-        AmountLabel.TextColor = (actualChangeType == TransactionChangeType.Income
-                ? App.Current?.Resources.GetColor("TransactionPositive")
-                : App.Current?.Resources.GetColor("Gray1"))
-            ?? Microsoft.Maui.Graphics.Colors.Black;
+        AmountLabel.Text = text;
+        AmountLabel.TextColor = textColor;
     }
 
     private void UpdateState()

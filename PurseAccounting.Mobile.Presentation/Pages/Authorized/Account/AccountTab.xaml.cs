@@ -11,7 +11,7 @@ public partial class AccountTab : ContentView
         AccountAttributesWidget.BindingContext = widgetViewModel;
     }
 
-    private void OnAutoPlannedTransactionSwiped(object? sender, Components.Transactions.AutoPlannedTransactionSwipedEventArgs e)
+    private void OnAutoPlannedTransactionSwiped(object? sender, Components.PlannedTransactions.AutoPlannedTransactionSwipedEventArgs e)
     {
         if (BindingContext is AccountTabViewModel viewModel)
         {
