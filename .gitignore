@@ -1,14 +1,11 @@
 ```
-# Build artifacts
+# Build outputs
 bin/
 obj/
 *.dll
 *.exe
 *.pdb
-*.so
-*.dylib
-*.nupkg
-*.snupkg
+*.mdb
 
 # Dependencies
 packages/
@@ -17,7 +14,6 @@ node_modules/
 
 # Logs
 *.log
-*.tmp
 
 # Environment
 .env
@@ -26,30 +22,17 @@ node_modules/
 
 # Editors
 .vs/
-.vshost/
-.userprefs
-*.user
-*.userosscache
-*.suo
-*.userprefs
 .vscode/
 .idea/
+*.userprefs
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
 # OS generated files
 .DS_Store
 Thumbs.db
 ehthumbs.db
 Icon?
-._*
-
-# Testing
-TestResults/
-
-# Local configuration
-appsettings.Local.json
-local.settings.json
-
-# NuGet
-*.nupkg
-*.snupkg
 ```

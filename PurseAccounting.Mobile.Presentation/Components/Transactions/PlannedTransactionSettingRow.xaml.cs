@@ -9,16 +9,16 @@ using PurseAccountinng.Mobile.Presentation.Services.Utils;
 
 namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
 
-public partial class AutoPlannedTransactionRow : ContentView
+public partial class PlannedTransactionSettingRow : ContentView
 {
     public static readonly BindableProperty PlannedTransactionSettingInfoProperty =
-        BindableProperty.Create(nameof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingInfo), typeof(AutoPlannedTransactionRow), default(PlannedTransactionSettingInfo), propertyChanged: OnPlannedTransactionSettingInfoChanged);
+        BindableProperty.Create(nameof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingInfo), typeof(PlannedTransactionSettingRow), default(PlannedTransactionSettingInfo), propertyChanged: OnPlannedTransactionSettingInfoChanged);
 
     public static readonly BindableProperty CategoriesProperty =
-        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(AutoPlannedTransactionRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
+        BindableProperty.Create(nameof(Categories), typeof(IReadOnlyDictionary<long, TransactionCategoryDto>), typeof(PlannedTransactionSettingRow), default(IReadOnlyDictionary<long, TransactionCategoryDto>), propertyChanged: OnCategoriesChanged);
 
     public static readonly BindableProperty CircleColorProperty =
-        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(AutoPlannedTransactionRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
+        BindableProperty.Create(nameof(CircleColor), typeof(Brush), typeof(PlannedTransactionSettingRow), new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray));
 
     public event EventHandler<AutoPlannedTransactionSwipedEventArgs>? SwipeCompleted;
 
@@ -64,7 +64,7 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private static void OnPlannedTransactionSettingInfoChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row && newValue is PlannedTransactionSettingInfo newInfo)
+        if (bindable is PlannedTransactionSettingRow row && newValue is PlannedTransactionSettingInfo newInfo)
         {
             row.UpdateFromPlannedTransactionSettingInfo(newInfo);
         }
@@ -72,13 +72,13 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private static void OnCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row && newValue is IReadOnlyDictionary<long, TransactionCategoryDto> newCategories)
+        if (bindable is PlannedTransactionSettingRow row && newValue is IReadOnlyDictionary<long, TransactionCategoryDto> newCategories)
         {
             row.UpdateCircleColor(row.PlannedTransactionSettingInfo, newCategories);
         }
     }
 
-    public AutoPlannedTransactionRow()
+    public PlannedTransactionSettingRow()
     {
         InitializeComponent();
         SetupSwipeGesture();
