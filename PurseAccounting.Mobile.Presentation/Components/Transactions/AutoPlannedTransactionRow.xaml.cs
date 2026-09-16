@@ -64,17 +64,17 @@ public partial class AutoPlannedTransactionRow : ContentView
 
     private static void OnPlannedTransactionSettingInfoChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row)
+        if (bindable is AutoPlannedTransactionRow row && newValue is PlannedTransactionSettingInfo newInfo)
         {
-            row.UpdateFromPlannedTransactionSettingInfo();
+            row.UpdateFromPlannedTransactionSettingInfo(newInfo);
         }
     }
 
     private static void OnCategoriesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is AutoPlannedTransactionRow row)
+        if (bindable is AutoPlannedTransactionRow row && newValue is IReadOnlyDictionary<long, TransactionCategoryDto> newCategories)
         {
-            row.UpdateCircleColor();
+            row.UpdateCircleColor(row.PlannedTransactionSettingInfo, newCategories);
         }
     }
 
@@ -146,9 +146,8 @@ public partial class AutoPlannedTransactionRow : ContentView
         SwipeableContentBorder.Clip = isSwiping ? ContentContainerRoundedRectangle : ContentContainerNormalRectangle;
     }
 
-    private void UpdateFromPlannedTransactionSettingInfo()
+    private void UpdateFromPlannedTransactionSettingInfo(PlannedTransactionSettingInfo? info)
     {
-        var info = PlannedTransactionSettingInfo;
         if (info is null)
             return;
 
@@ -156,48 +155,30 @@ public partial class AutoPlannedTransactionRow : ContentView
         IconContainer.IsVisible = info.IsAutomatic;
         DescriptionLabel.Text = PeriodDescriptionFormatter.GetDescription(info.Period);
 
-        UpdateAmountProperties(info.ChangeType);
-        UpdateCircleColor();
+        UpdateAmountProperties(info.ChangeType, info.Amount);
+        UpdateCircleColor(info, Categories);
     }
 
-    private void UpdateCircleColor()
+    private void UpdateCircleColor(PlannedTransactionSettingInfo? info, IReadOnlyDictionary<long, TransactionCategoryDto>? categories)
     {
-        var info = PlannedTransactionSettingInfo;
-
-        if (info is null || Categories is null || Categories.Count == 0)
+        if (info is null || categories is null || categories.Count == 0)
         {
             CircleElement.Fill = _defaultBrush;
             return;
         }
 
-        if (Categories.TryGetValue(info.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
+        if (categories.TryGetValue(info.TransactionCategoryID, out var category) && ColorsMap.Map.TryGetValue(category.ColorID, out var color))
             CircleElement.Fill = new SolidColorBrush(color);
         else
             CircleElement.Fill = _defaultBrush;
     }
 
-    private void UpdateAmountProperties(TransactionChangeType? changeType = null)
+    private void UpdateAmountProperties(TransactionChangeType? changeType, decimal amount)
     {
-        var info = PlannedTransactionSettingInfo;
+        var (text, textColor) = AmountFormatter.FormatTransactionAmount(amount, changeType);
 
-        if (info is null)
-        {
-            AmountLabel.Text = string.Empty;
-            AmountLabel.TextColor = Microsoft.Maui.Graphics.Colors.Black;
-            return;
-        }
-
-        var amount = info.Amount;
-        var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
-
-        var actualChangeType = changeType ?? (amount >= 0 ? TransactionChangeType.Income : TransactionChangeType.Withdrawal);
-        var amountSign = actualChangeType == TransactionChangeType.Income ? '+' : '-';
-
-        AmountLabel.Text = $"{amountSign} {formattedAmount} ₽";
-        AmountLabel.TextColor = (actualChangeType == TransactionChangeType.Income
-                ? App.Current?.Resources.GetColor("TransactionPositive")
-                : App.Current?.Resources.GetColor("Gray1"))
-            ?? Microsoft.Maui.Graphics.Colors.Black;
+        AmountLabel.Text = text;
+        AmountLabel.TextColor = textColor;
     }
 
     private void UpdateState()
