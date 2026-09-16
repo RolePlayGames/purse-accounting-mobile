@@ -7,7 +7,7 @@ using PurseAccountinng.Mobile.Presentation.Colors;
 using PurseAccountinng.Mobile.Presentation.Extensions;
 using PurseAccountinng.Mobile.Presentation.Services.Utils;
 
-namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
+namespace PurseAccountinng.Mobile.Presentation.Components.PlannedTransactions;
 
 public partial class PlannedTransactionSettingRow : ContentView
 {

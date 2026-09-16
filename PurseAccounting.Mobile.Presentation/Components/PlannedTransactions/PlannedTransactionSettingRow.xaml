@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
-    x:Class="PurseAccountinng.Mobile.Presentation.Components.Transactions.PlannedTransactionSettingRow"
+    x:Class="PurseAccountinng.Mobile.Presentation.Components.PlannedTransactions.PlannedTransactionSettingRow"
     x:Name="RootView">
 
     <SwipeView x:Name="SwipeContainer" Threshold="{Binding Source={x:Reference RootView}, Path=Width}">

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Widgets"
              xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account"
-             xmlns:transactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Transactions"
+             xmlns:plannedTransactions="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.PlannedTransactions"
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account.AccountTab"
              Margin="0,18,0,0">
@@ -40,7 +40,7 @@
         
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <transactions:PlannedTransactionSettingRow 
+                            <plannedTransactions:PlannedTransactionSettingRow 
                                 PlannedTransactionSettingInfo="{Binding .}"
                                 Categories="{Binding Source={RelativeSource AncestorType={x:Type local:AccountTab}}, Path=BindingContext.Categories}"
                                 SwipeCompleted="OnAutoPlannedTransactionSwiped" />

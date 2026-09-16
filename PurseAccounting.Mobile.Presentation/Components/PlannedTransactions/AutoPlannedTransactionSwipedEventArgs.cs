@@ -1,6 +1,6 @@
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 
-namespace PurseAccountinng.Mobile.Presentation.Components.Transactions;
+namespace PurseAccountinng.Mobile.Presentation.Components.PlannedTransactions;
 
 public class AutoPlannedTransactionSwipedEventArgs : EventArgs
 {
