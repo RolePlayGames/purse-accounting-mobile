@@ -33,14 +33,16 @@ internal class AccountService : IAccountService
             TimeZone = timeZone,
         }, cancellationToken);
 
-        return await response.Await(async () =>
+        return response.Match(result =>
         {
-            var account = await LoadAccount(cancellationToken);
-            return account is null ? UpdateAccountResult.Failure : UpdateAccountResult.Success;
+            if (_applicationContext.Account is not null)
+                _applicationContext.Account = _accountFactory.CreateAccount(_applicationContext.Account, new() { DayAmount = result.DayAmount, RestAmount = result.RestAmount, ReservedAmount = result.ReservedAmount });
+
+            return UpdateAccountResult.Success;
         },
         exception =>
         {
-            return Task.FromResult(UpdateAccountResult.Failure);
+            return UpdateAccountResult.Failure;
         });
     }
 }

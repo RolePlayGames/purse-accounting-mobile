@@ -1,7 +1,6 @@
 using PurseAccounting.Mobile.Application.AccountFactories;
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.Models;
-using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.ExceptionCodes;
 using PurseAccounting.Mobile.Infrastructure.ServerResults;

@@ -8,4 +8,6 @@ public record CancelTransactionResponse
     public required long RestAmount { get; init; }
 
     public required long DayAmount { get; init; }
+
+    public required long ReservedAmount { get; init; }
 }
