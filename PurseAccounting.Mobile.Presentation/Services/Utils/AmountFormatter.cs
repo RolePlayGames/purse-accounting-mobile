@@ -1,6 +1,6 @@
-﻿using System.Globalization;
-using PurseAccounting.Mobile.Infrastructure.Transactions;
+﻿using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Extensions;
+using System.Globalization;
 
 namespace PurseAccountinng.Mobile.Presentation.Services.Utils;
 

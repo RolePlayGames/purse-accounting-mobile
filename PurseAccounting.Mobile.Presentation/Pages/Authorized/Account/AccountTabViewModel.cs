@@ -38,14 +38,22 @@ public class AccountTabViewModel : ReactiveObject
     {
         _applicationContext = applicationContext;
         _plannedTransactionSettingsService = plannedTransactionSettingsService;
-        
+
         AddScheduledTransactionCommand = new Command(OnAddScheduledTransaction);
-        
+
         _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
-        
+
         OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
-        
+
         _ = LoadAutoPlannedTransactions();
+    }
+
+    public async Task DeleteAutoPlannedTransactionAsync(PlannedTransactionSettingInfo transaction)
+    {
+        var result = await _plannedTransactionSettingsService.Deactivate(transaction.ID, CancellationToken.None);
+
+        if (result)
+            AutoPlannedTransactions.Remove(transaction);
     }
 
     private void OnTransactionCategoriesChanged(IReadOnlyCollection<TransactionCategoryDto>? oldValue, IReadOnlyCollection<TransactionCategoryDto>? newValue)
@@ -63,15 +71,6 @@ public class AccountTabViewModel : ReactiveObject
     {
         var settings = await _plannedTransactionSettingsService.GetInfo(CancellationToken.None);
         AutoPlannedTransactions = new ObservableCollection<PlannedTransactionSettingInfo>(settings);
-    }
-
-    public async Task DeleteAutoPlannedTransactionAsync(PlannedTransactionSettingInfo transaction)
-    {
-        var result = await _plannedTransactionSettingsService.Deactivate(transaction.ID, CancellationToken.None);
-        if (result)
-        {
-            AutoPlannedTransactions.Remove(transaction);
-        }
     }
 
     private void OnAddScheduledTransaction()
