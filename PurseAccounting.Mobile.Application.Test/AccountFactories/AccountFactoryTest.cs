@@ -25,7 +25,7 @@ public class AccountFactoryTest
     [InlineData("2025-11-27T10:00:00Z", "2025-11-26", 50L, -20L, 20L, 0, 30L, 50L, 0)]
     [InlineData("2025-11-27T00:00:00Z", "2025-12-01", 0L, 100L, 20L, 0, 100L, 120L, 5)]
     [InlineData("2025-11-27T12:00:00Z", "2025-11-20", 10L, -15L, 20L, 0, -5L, 15L, 0)]
-    [InlineData("2025-11-30T23:59:59Z", "2025-11-25", 0L, -100L, 20L, 0, -100L, 120L, 0)]
+    [InlineData("2025-11-30T23:59:59Z", "2025-11-25", 0L, -100L, 20L, 0, -100L, -80L, 0)]
     public void GetAccount_ValidAccount_ReturnsCorrectAccount(
         string nowString,
         string plannedDateString,
