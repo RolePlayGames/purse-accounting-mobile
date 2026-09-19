@@ -12,7 +12,9 @@ public record Account
 
     public long DayAmount => DailyDistributedAmount.DayAmount;
 
-    public long AvaliableAmount => DailyDistributedAmount.RestAmount + DailyDistributedAmount.DayAmount;
+    public long AvaliableAmount => DailyDistributedAmount.RestAmount + DayAmount;
+
+    public long TotalAmount => DailyDistributedAmount.ReservedAmount + AvaliableAmount;
 
     public int DaysCount => Math.Max((PlannedDate - _dateTimeService.UtcNow.AddHours(TimeZone).Date).Days + 1, 0);
 

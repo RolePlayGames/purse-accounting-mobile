@@ -6,6 +6,8 @@ public record AccountDto
 
     public required long DayAmount { get; init; }
 
+    public required long ReservedAmount { get; init; }
+
     public required DateTime PlannedDate { get; init; }
 
     public required short TimeZone { get; init; }

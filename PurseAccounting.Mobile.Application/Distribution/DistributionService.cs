@@ -61,6 +61,7 @@ internal class DistributionService : IDistributionService
                     {
                         DayAmount = result.DayAmount,
                         RestAmount = result.RestAmount,
+                        ReservedAmount = result.ReservedAmount,
                         TimeZone = result.TimeZone,
                         PlannedDate = result.PlannedDate,
                     })
@@ -68,6 +69,7 @@ internal class DistributionService : IDistributionService
                     {
                         DayAmount = result.DayAmount,
                         RestAmount = result.RestAmount,
+                        ReservedAmount = result.ReservedAmount,
                     });
 
                 return DistributionResult.Success;

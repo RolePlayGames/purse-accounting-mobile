@@ -1,4 +1,6 @@
 ﻿using PurseAccounting.Mobile.Infrastructure.ApiResults;
+using PurseAccounting.Mobile.Infrastructure.ApiResults.Generics;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
 
 namespace PurseAccounting.Mobile.Infrastructure.Accounts;
 
@@ -16,6 +18,6 @@ public interface IAccountClient
     /// </summary>
     /// <param name="request">New account data</param>
     /// <param name="ct">Cancellation token</param>
-    /// <returns>Functional result</returns>
-    Task<ApiResult> UpdateAccount(UpdateAccountRequest request, CancellationToken ct);
+    /// <returns>Updated account amounts</returns>
+    Task<ApiResult<AccountAmounts>> UpdateAccount(UpdateAccountRequest request, CancellationToken ct);
 }

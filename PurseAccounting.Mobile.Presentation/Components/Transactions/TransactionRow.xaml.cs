@@ -175,12 +175,9 @@ public partial class TransactionRow : ContentView
         else
             CircleColor = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
 
-        var amount = transaction.Amount;
-        var formattedAmount = AmountFormatter.FormatAmount(Math.Abs(amount));
-        var amountSign = amount >= 0 ? '+' : '-';
-
-        AmountText = $"{amountSign} {formattedAmount} ₽";
-        AmountTextColor = (amount >= 0 ? App.Current?.Resources.GetColor("TransactionPositive") : App.Current?.Resources.GetColor("Gray1")) ?? AmountTextColor;
+        var (amountText, amountTextColor) = AmountFormatter.FormatTransactionAmount(transaction.Amount);
+        AmountText = amountText;
+        AmountTextColor = amountTextColor;
 
         TransactionTypeText = transaction.ChangeAmountType == "Daily" ? "Ежедневная" : "Общая";
     }

@@ -3,11 +3,25 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+# Node artifact files
+node_modules/
+dist/
+
+# Compiled Java class files
+*.class
+
+# Compiled Python bytecode
+*.py[cod]
+
 # Log files
 *.log
 
 # Package files
 *.jar
+
+# Maven
+target/
+dist/
 
 # JetBrains IDE
 .idea/
@@ -36,16 +50,21 @@ bin/
 
 # vs solution
 .vs/
-*.csproj.user
-*.suo
-*.user
-*.userosscache
 
 # vs code
 /.vscode
 
+# react UI
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
 # testing
 /coverage
+
+# production
+/build
 
 # misc
 .DS_Store
@@ -54,47 +73,16 @@ bin/
 .env.test.local
 .env.production.local
 
+# node logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 #notepad++
 *.bak
 
-# Android
-# Android build outputs
-*.apk
-*.aab
-*.ap_
-*.dex
-*.so
-*.jar
-
-# Android signing keys (NEVER commit these!)
-*.keystore
-*.jks
-*.p12
-*.pfx
-
-# Android local config
-local.properties
-gradle.properties
-
-# iOS
-# iOS build artifacts
-*.ipa
-*.app/
-*.xcarchive
-*.dsym/
-
-# iOS signing (NEVER commit)
-*.p12
-*.mobileprovision
-*.cer
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
+/WebAPI/PurseAccounting.Interfaces.API/wwwroot/UI
+/.vscode
+*.user
+/cert.pfx
+/secrets.json

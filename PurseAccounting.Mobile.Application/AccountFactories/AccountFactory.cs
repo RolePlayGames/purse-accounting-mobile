@@ -16,7 +16,7 @@ internal class AccountFactory : IAccountFactory
     {
         return new(_dateTimeService)
         {
-            DailyDistributedAmount = new() { DayAmount = account.DayAmount, RestAmount = account.RestAmount },
+            DailyDistributedAmount = new() { DayAmount = account.DayAmount, RestAmount = account.RestAmount, ReservedAmount = account.ReservedAmount },
             PlannedDate = new() { Value = account.PlannedDate },
             TimeZone = account.TimeZone,
         };

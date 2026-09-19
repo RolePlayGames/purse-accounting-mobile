@@ -1,0 +1,96 @@
+using PurseAccounting.Mobile.Application.Context;
+using PurseAccounting.Mobile.Application.PlannedTransactions;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
+using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Periods;
+using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
+using PurseAccounting.Mobile.Infrastructure.Transactions;
+using ReactiveUI;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+namespace PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
+
+public class AccountTabViewModel : ReactiveObject
+{
+    private readonly IApplicationContext _applicationContext;
+    private readonly IPlannedTransactionSettingsService _plannedTransactionSettingsService;
+
+    private ObservableCollection<PlannedTransactionSettingInfo> _autoPlannedTransactions = [];
+    private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
+
+    public ObservableCollection<PlannedTransactionSettingInfo> AutoPlannedTransactions
+    {
+        get => _autoPlannedTransactions;
+        set => this.RaiseAndSetIfChanged(ref _autoPlannedTransactions, value, nameof(AutoPlannedTransactions));
+    }
+
+    public IReadOnlyDictionary<long, TransactionCategoryDto> Categories
+    {
+        get => _categories;
+        set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
+    }
+
+    public ICommand AddScheduledTransactionCommand { get; }
+
+    public AccountTabViewModel(
+        IApplicationContext applicationContext,
+        IPlannedTransactionSettingsService plannedTransactionSettingsService)
+    {
+        _applicationContext = applicationContext;
+        _plannedTransactionSettingsService = plannedTransactionSettingsService;
+
+        AddScheduledTransactionCommand = new Command(OnAddScheduledTransaction);
+
+        _applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
+
+        OnTransactionCategoriesChanged(null, applicationContext.TransactionCategories);
+
+        _ = LoadAutoPlannedTransactions();
+    }
+
+    public async Task DeleteAutoPlannedTransactionAsync(PlannedTransactionSettingInfo transaction)
+    {
+        var result = await _plannedTransactionSettingsService.Deactivate(transaction.ID, CancellationToken.None);
+
+        if (result)
+            AutoPlannedTransactions.Remove(transaction);
+    }
+
+    private void OnTransactionCategoriesChanged(IReadOnlyCollection<TransactionCategoryDto>? oldValue, IReadOnlyCollection<TransactionCategoryDto>? newValue)
+    {
+        if (newValue is null || newValue.Count == 0)
+        {
+            Categories = new Dictionary<long, TransactionCategoryDto>();
+            return;
+        }
+
+        Categories = newValue.ToDictionary(c => c.ID);
+    }
+
+    private async Task LoadAutoPlannedTransactions()
+    {
+        var settings = await _plannedTransactionSettingsService.GetInfo(CancellationToken.None);
+        AutoPlannedTransactions = new ObservableCollection<PlannedTransactionSettingInfo>(settings);
+    }
+
+    private void OnAddScheduledTransaction()
+    {
+        if (Categories.Count == 0)
+            return;
+
+        var firstCategory = Categories.Values.First();
+
+        var testTransaction = new PlannedTransactionSettingInfo
+        {
+            ID = -1,
+            Name = "Тестовая транзакция",
+            Amount = 100,
+            TransactionCategoryID = firstCategory.ID,
+            Period = new DailyPeriodInfo(),
+            ChangeType = TransactionChangeType.Withdrawal,
+            IsAutomatic = true,
+        };
+
+        AutoPlannedTransactions.Add(testTransaction);
+    }
+}

@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
         return services
+            .AddSingleton<AccountTabViewModel>()
             .AddSingleton<AccountAttributesWidgetViewModel>()
             .AddSingleton<AccountWidgetViewModel>()
             .AddSingleton<TransactionAttributesViewModel>()
