@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PurseAccounting.Mobile.Application;
+using PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings;
 using PurseAccountinng.Mobile.Presentation.Pages;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
@@ -34,6 +35,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<AccountTab>()
             .AddSingleton<UserProfileTab>()
             .AddSingleton<CategoriesTab>()
+            .AddSingleton<PlannedTransactionSettingsTab>()
             ;
     }
 
@@ -42,12 +44,14 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton<AccountTabViewModel>()
             .AddSingleton<AccountAttributesWidgetViewModel>()
+            .AddSingleton<PlannedTransactionAttributesWidgetViewModel>()
             .AddSingleton<AccountWidgetViewModel>()
             .AddSingleton<TransactionAttributesViewModel>()
             .AddSingleton<TomorrowAmountWidgetViewModel>()
             .AddSingleton<TransactionsTabViewModel>()
             .AddSingleton<AuthorizedViewModel>()
             .AddSingleton<DistributionTabViewModel>()
+            .AddSingleton<PlannedTransactionSettingsTabViewModel>()
             ;
     }
 
