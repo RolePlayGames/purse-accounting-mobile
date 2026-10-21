@@ -1,4 +1,5 @@
 ﻿using PurseAccounting.Mobile.Application.Context;
+using PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
 using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Accounting;
@@ -60,6 +61,7 @@ internal class TabNavigator : ITabNavigator
         AddTab<DistributionTab>(_serviceProvider, "Распределение остатка", false);
         AddTab<TransactionsTab>(_serviceProvider, "История транзакций");
         AddTab<AccountTab>(_serviceProvider, "Настройка счета");
+        AddTab<PlannedTransactionSettingsTab>(_serviceProvider, "Настройки плановых транзакций");
         AddTab<UserProfileTab>(_serviceProvider, "Профиль");
         AddTab<CategoriesTab>(_serviceProvider, "Категории транзакций");
     }
