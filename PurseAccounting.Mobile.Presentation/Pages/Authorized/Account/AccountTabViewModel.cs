@@ -1,9 +1,10 @@
 using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.PlannedTransactions;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
-using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Periods;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
+using PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings;
+using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ public class AccountTabViewModel : ReactiveObject
 {
     private readonly IApplicationContext _applicationContext;
     private readonly IPlannedTransactionSettingsService _plannedTransactionSettingsService;
+    private readonly INavigator _navigator;
 
     private ObservableCollection<PlannedTransactionSettingInfo> _autoPlannedTransactions = [];
     private IReadOnlyDictionary<long, TransactionCategoryDto> _categories = new Dictionary<long, TransactionCategoryDto>();
@@ -34,10 +36,12 @@ public class AccountTabViewModel : ReactiveObject
 
     public AccountTabViewModel(
         IApplicationContext applicationContext,
-        IPlannedTransactionSettingsService plannedTransactionSettingsService)
+        IPlannedTransactionSettingsService plannedTransactionSettingsService,
+        INavigator navigator)
     {
         _applicationContext = applicationContext;
         _plannedTransactionSettingsService = plannedTransactionSettingsService;
+        _navigator = navigator;
 
         AddScheduledTransactionCommand = new Command(OnAddScheduledTransaction);
 
@@ -75,22 +79,6 @@ public class AccountTabViewModel : ReactiveObject
 
     private void OnAddScheduledTransaction()
     {
-        if (Categories.Count == 0)
-            return;
-
-        var firstCategory = Categories.Values.First();
-
-        var testTransaction = new PlannedTransactionSettingInfo
-        {
-            ID = -1,
-            Name = "Тестовая транзакция",
-            Amount = 100,
-            TransactionCategoryID = firstCategory.ID,
-            Period = new DailyPeriodInfo(),
-            ChangeType = TransactionChangeType.Withdrawal,
-            IsAutomatic = true,
-        };
-
-        AutoPlannedTransactions.Add(testTransaction);
+        _ = _navigator.ChangeTabTo<PlannedTransactionSettingsTab>(CancellationToken.None);
     }
 }
