@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings"
+             xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
+             xmlns:fields="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Fields"
+             xmlns:chips="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
+             xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
+             xmlns:transactions="clr-namespace:PurseAccounting.Mobile.Infrastructure.Transactions;assembly=PurseAccounting.Mobile.Infrastructure"
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings.PlannedTransactionAttributesWidget">
+
+    <Border Stroke="Transparent"
+            StrokeThickness="0"
+            Background="{StaticResource WorkBackground}"
+            StrokeShape="RoundRectangle 20"
+            Padding="15,20,15,25">
+
+        <Border.Shadow>
+            <Shadow Brush="#40000000" Offset="0,2" Radius="30" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="16">
+            <Label Text="Запланированная транзакция"
+                   TextColor="{StaticResource DarkPurple}"
+                   FontFamily="OpenSansRegular"
+                   FontSize="{StaticResource FontSizeLarge}"
+                   HorizontalOptions="Center" />
+
+            <fields:TextField x:Name="NameTextField"
+                              Placeholder="Название транзакции"
+                              Text="{Binding TransactionName, Mode=TwoWay}" />
+
+            <fields:NumericField x:Name="AmountTextField"
+                                 Placeholder="Сумма" />
+
+            <chips:DualChipsSelector
+                x:Name="ChangeTypeSelector"
+                Title="Тип изменения"
+                LeftText="Списание"
+                LeftValue="{x:Static transactions:TransactionChangeType.Withdrawal}"
+                RightText="Начисление"
+                RightValue="{x:Static transactions:TransactionChangeType.Income}"
+                SelectedValue="{Binding TransactionChangeType, Mode=TwoWay}" />
+
+            <categories:CategorySelector
+                x:Name="CategorySelector"
+                HeaderText="Категория"
+                ItemsSource="{Binding Categories}"
+                SelectedItemId="{Binding SelectedCategoryId}" />
+
+            <Grid>
+                <Grid HeightRequest="60">
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Picker x:Name="PeriodPicker"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Fill"
+                                HorizontalOptions="Fill"
+                                Grid.ColumnSpan="2"
+                                SelectedIndexChanged="OnPeriodSelectedIndexChanged" />
+
+                        <Label x:Name="PeriodLabel"
+                               Text="Никогда"
+                               FontFamily="OpenSansRegular"
+                               FontSize="{StaticResource FontSizeRegular}"
+                               TextColor="{StaticResource Gray2}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation"
+                               Margin="20,0,0,0"
+                               Grid.Column="0" />
+
+                        <Path Data="M7 10l5 5 5-5z"
+                              Fill="{StaticResource Gray2}"
+                              StrokeThickness="0"
+                              Aspect="Uniform"
+                              HeightRequest="16"
+                              WidthRequest="16"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End"
+                              Margin="0,0,20,0"
+                              Grid.Column="1" />
+                    </Grid>
+                </Grid>
+
+                <Label Text="Периодичность"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start" />
+            </Grid>
+
+            <components:PrimaryButton x:Name="SaveButton"
+                                      Text="Сохранить"
+                                      Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=SaveCommand}"
+                                      IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=IsSaveEnabled}"
+                                      Margin="0,2,0,0" />
+        </VerticalStackLayout>
+
+    </Border>
+</ContentView>
