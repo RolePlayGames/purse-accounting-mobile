@@ -13,6 +13,7 @@
             Categories="{Binding Categories}"
             SelectedCategoryId="{Binding SelectedCategoryId, Mode=TwoWay}"
             Period="{Binding Period, Mode=TwoWay}"
+            PlannedDate="{Binding PlannedDate, Mode=TwoWay}"
             SaveCommand="{Binding SaveCommand}"
             IsSaveEnabled="{Binding IsSaveEnabled}"
             Margin="15,12,15,12"/>

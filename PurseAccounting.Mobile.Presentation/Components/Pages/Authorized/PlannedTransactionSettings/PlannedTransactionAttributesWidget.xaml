@@ -98,6 +98,202 @@
                        HorizontalOptions="Start" />
             </Grid>
 
+            <!-- Дата для OncePeriodInfo ("Никогда"), как NativeDatePicker в AccountAttributesWidget -->
+            <Grid x:Name="OnceDateSection" IsVisible="False">
+
+                <Grid HeightRequest="60" VerticalOptions="Start">
+
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Label x:Name="DateLabel"
+                           Text="28.01.2026"
+                           FontFamily="OpenSansRegular"
+                           FontSize="{StaticResource FontSizeRegular}"
+                           TextColor="{StaticResource Gray2}"
+                           VerticalOptions="Center"
+                           Margin="20,0,0,0" />
+
+                    <DatePicker x:Name="NativeDatePicker"
+                                Format="dd.MM.yyyy"
+                                DateSelected="OnOnceDateSelected"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                Margin="0,0,10,0" />
+
+                    <Path Data="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zm0-12H5V6h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z"
+                          Fill="{StaticResource Gray2}"
+                          StrokeThickness="0"
+                          Aspect="Uniform"
+                          HeightRequest="30"
+                          WidthRequest="30"
+                          VerticalOptions="Center"
+                          HorizontalOptions="End"
+                          Margin="0,0,20,0" />
+                </Grid>
+
+                <Label Text="Дата"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start"
+                       ZIndex="1" />
+            </Grid>
+
+            <!-- Дни недели для WeeklyPeriodInfo: тот же стиль, что и PeriodPicker, но с мультиселектом -->
+            <Grid x:Name="WeeklyDaysSection" IsVisible="False">
+                <Grid HeightRequest="60">
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label x:Name="WeeklyDaysLabel"
+                               Text="Пн"
+                               FontFamily="OpenSansRegular"
+                               FontSize="{StaticResource FontSizeRegular}"
+                               TextColor="{StaticResource Gray2}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation"
+                               Margin="20,0,0,0"
+                               Grid.Column="0" />
+
+                        <Path Data="M7 10l5 5 5-5z"
+                              Fill="{StaticResource Gray2}"
+                              StrokeThickness="0"
+                              Aspect="Uniform"
+                              HeightRequest="16"
+                              WidthRequest="16"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End"
+                              Margin="0,0,20,0"
+                              Grid.Column="1" />
+                    </Grid>
+                </Grid>
+
+                <Label Text="Дни недели"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start" />
+            </Grid>
+
+            <!-- Число месяца для MonthlyPeriodInfo (и для AnnuallyPeriodInfo), как PeriodPicker -->
+            <Grid x:Name="MonthDaySection" IsVisible="False">
+                <Grid HeightRequest="60">
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Picker x:Name="MonthDayPicker"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Fill"
+                                HorizontalOptions="Fill"
+                                Grid.ColumnSpan="2"
+                                SelectedIndexChanged="OnMonthDaySelectedIndexChanged" />
+
+                        <Label x:Name="MonthDayLabel"
+                               Text="1 число"
+                               FontFamily="OpenSansRegular"
+                               FontSize="{StaticResource FontSizeRegular}"
+                               TextColor="{StaticResource Gray2}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation"
+                               Margin="20,0,0,0"
+                               Grid.Column="0" />
+
+                        <Path Data="M7 10l5 5 5-5z"
+                              Fill="{StaticResource Gray2}"
+                              StrokeThickness="0"
+                              Aspect="Uniform"
+                              HeightRequest="16"
+                              WidthRequest="16"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End"
+                              Margin="0,0,20,0"
+                              Grid.Column="1" />
+                    </Grid>
+                </Grid>
+
+                <Label Text="Число"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start" />
+            </Grid>
+
+            <!-- Месяц для AnnuallyPeriodInfo, как PeriodPicker -->
+            <Grid x:Name="YearMonthSection" IsVisible="False">
+                <Grid HeightRequest="60">
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Picker x:Name="YearMonthPicker"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Fill"
+                                HorizontalOptions="Fill"
+                                Grid.ColumnSpan="2"
+                                SelectedIndexChanged="OnYearMonthSelectedIndexChanged" />
+
+                        <Label x:Name="YearMonthLabel"
+                               Text="Январь"
+                               FontFamily="OpenSansRegular"
+                               FontSize="{StaticResource FontSizeRegular}"
+                               TextColor="{StaticResource Gray2}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation"
+                               Margin="20,0,0,0"
+                               Grid.Column="0" />
+
+                        <Path Data="M7 10l5 5 5-5z"
+                              Fill="{StaticResource Gray2}"
+                              StrokeThickness="0"
+                              Aspect="Uniform"
+                              HeightRequest="16"
+                              WidthRequest="16"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End"
+                              Margin="0,0,20,0"
+                              Grid.Column="1" />
+                    </Grid>
+                </Grid>
+
+                <Label Text="Месяц"
+                       FontSize="{StaticResource FontSizeXSmall}"
+                       TextColor="{StaticResource Gray3}"
+                       BackgroundColor="{StaticResource WorkBackground}"
+                       VerticalOptions="Start"
+                       Margin="20,-10,0,0"
+                       Padding="4,0"
+                       HorizontalOptions="Start" />
+            </Grid>
+
             <components:PrimaryButton x:Name="SaveButton"
                                       Text="Сохранить"
                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=SaveCommand}"

@@ -18,6 +18,7 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     private long? _selectedCategoryId = null;
     private bool _isSaveEnabled = false;
     private PeriodInfo _period = new OncePeriodInfo { Date = DateTime.Today };
+    private DateTime? _plannedDate = DateTime.Today;
 
     public string TransactionName
     {
@@ -62,6 +63,15 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     {
         get => _period;
         set => this.RaiseAndSetIfChanged(ref _period, value, nameof(Period));
+    }
+
+    /// <summary>
+    /// Планируемая дата транзакции. Используется при периоде OncePeriodInfo ("Никогда").
+    /// </summary>
+    public DateTime? PlannedDate
+    {
+        get => _plannedDate;
+        set => this.RaiseAndSetIfChanged(ref _plannedDate, value, nameof(PlannedDate));
     }
 
     public ICommand SaveCommand { get; }
