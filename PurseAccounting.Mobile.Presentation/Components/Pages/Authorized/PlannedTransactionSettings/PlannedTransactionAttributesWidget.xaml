@@ -152,13 +152,13 @@
 
             <!-- Дни недели для WeeklyPeriodInfo: тот же стиль, что и PeriodPicker, но с мультиселектом -->
             <Grid x:Name="WeeklyDaysSection" IsVisible="False">
-                <Grid x:Name="WeeklyDaysField" HeightRequest="60">
+                <Grid HeightRequest="60">
                     <Border Stroke="{StaticResource InactiveElementFill}"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 30"
                             BackgroundColor="White" />
 
-                    <Grid ColumnDefinitions="*, Auto">
+                    <Grid x:Name="WeeklyDaysContent" ColumnDefinitions="*, Auto">
                         <Label x:Name="WeeklyDaysLabel"
                                Text="Пн"
                                FontFamily="OpenSansRegular"

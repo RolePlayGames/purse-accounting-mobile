@@ -437,7 +437,9 @@ public partial class PlannedTransactionAttributesWidget : ContentView
 
         // Picker перекрывает всё поле — нажатие открывает список дней
         Grid.SetColumnSpan(picker, 2);
-        WeeklyDaysField.Children[0].Children.Add(picker);
+        // WeeklyDaysContent — именованный Grid (Microsoft.Maui.Controls.Grid), его Children типизирован,
+        // в отличие от IView у элементов, полученных через индексатор Children
+        WeeklyDaysContent.Children.Add(picker);
 
         UpdateWeeklyDaysLabel();
     }
