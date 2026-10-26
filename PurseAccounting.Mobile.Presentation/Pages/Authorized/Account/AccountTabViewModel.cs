@@ -77,8 +77,8 @@ public class AccountTabViewModel : ReactiveObject
         AutoPlannedTransactions = new ObservableCollection<PlannedTransactionSettingInfo>(settings);
     }
 
-    private void OnAddScheduledTransaction()
+    private async void OnAddScheduledTransaction()
     {
-        _ = _navigator.ChangeTabTo<PlannedTransactionSettingsTab>(CancellationToken.None);
+        await _navigator.ChangeTabTo<PlannedTransactionSettingsTab>(CancellationToken.None).ConfigureAwait(false);
     }
 }

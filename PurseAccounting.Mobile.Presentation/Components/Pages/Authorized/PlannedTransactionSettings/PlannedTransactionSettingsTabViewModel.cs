@@ -16,8 +16,7 @@ public class PlannedTransactionSettingsTabViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _categories, value, nameof(Categories));
     }
 
-    public PlannedTransactionSettingsTabViewModel(
-        IApplicationContext applicationContext)
+    public PlannedTransactionSettingsTabViewModel(IApplicationContext applicationContext)
     {
         _applicationContext = applicationContext;
 

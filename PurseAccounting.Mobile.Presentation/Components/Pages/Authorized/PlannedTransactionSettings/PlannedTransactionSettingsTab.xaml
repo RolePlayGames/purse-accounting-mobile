@@ -16,6 +16,6 @@
             PlannedDate="{Binding PlannedDate, Mode=TwoWay}"
             SaveCommand="{Binding SaveCommand}"
             IsSaveEnabled="{Binding IsSaveEnabled}"
-            Margin="15,12,15,12"/>
+            Margin="15,12,15,0"/>
     </ScrollView>
 </ContentView>

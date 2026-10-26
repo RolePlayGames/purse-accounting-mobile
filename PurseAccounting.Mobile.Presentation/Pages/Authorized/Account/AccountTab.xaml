@@ -53,7 +53,7 @@
                     x:Name="AddScheduledTransactionButton"
                     Grid.Row="2"
                     Margin="0,12,0,0"
-                    Command="{Binding AddScheduledTransactionCommand}"/>
+                    Command="{Binding Source={x:Reference AddScheduledTransactionButton}, Path=BindingContext.AddScheduledTransactionCommand}"/>
             </Grid>
         </ScrollView>
     </Grid>
