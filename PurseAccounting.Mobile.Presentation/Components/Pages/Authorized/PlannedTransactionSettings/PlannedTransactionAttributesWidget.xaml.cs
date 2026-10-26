@@ -57,6 +57,13 @@ public partial class PlannedTransactionAttributesWidget : ContentView
             typeof(PlannedTransactionAttributesWidget),
             null);
 
+    public static readonly BindableProperty CancelCommandProperty =
+        BindableProperty.Create(
+            nameof(CancelCommand),
+            typeof(ICommand),
+            typeof(PlannedTransactionAttributesWidget),
+            null);
+
     public static readonly BindableProperty IsSaveEnabledProperty =
         BindableProperty.Create(
             nameof(IsSaveEnabled),
@@ -116,6 +123,12 @@ public partial class PlannedTransactionAttributesWidget : ContentView
     {
         get => (ICommand?)GetValue(SaveCommandProperty);
         set => SetValue(SaveCommandProperty, value);
+    }
+
+    public ICommand? CancelCommand
+    {
+        get => (ICommand?)GetValue(CancelCommandProperty);
+        set => SetValue(CancelCommandProperty, value);
     }
 
     public bool IsSaveEnabled
