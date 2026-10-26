@@ -411,8 +411,8 @@ public partial class PlannedTransactionAttributesWidget : ContentView
     {
         var picker = new Picker
         {
-            BackgroundColor = Colors.Transparent,
-            TextColor = Colors.Transparent,
+            BackgroundColor = Microsoft.Maui.Graphics.Colors.Transparent,
+            TextColor = Microsoft.Maui.Graphics.Colors.Transparent,
             Opacity = 0.01,
             VerticalOptions = LayoutOptions.Fill,
             HorizontalOptions = LayoutOptions.Fill,
