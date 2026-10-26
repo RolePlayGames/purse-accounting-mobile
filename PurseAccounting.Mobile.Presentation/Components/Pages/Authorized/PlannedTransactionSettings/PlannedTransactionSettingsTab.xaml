@@ -12,6 +12,7 @@
             TransactionChangeType="{Binding TransactionChangeType, Mode=TwoWay}"
             Categories="{Binding Categories}"
             SelectedCategoryId="{Binding SelectedCategoryId, Mode=TwoWay}"
+            IsAutoConduct="{Binding IsAutoConduct, Mode=TwoWay}"
             Period="{Binding Period, Mode=TwoWay}"
             PlannedDate="{Binding PlannedDate, Mode=TwoWay}"
             SaveCommand="{Binding SaveCommand}"

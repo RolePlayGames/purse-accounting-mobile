@@ -294,6 +294,11 @@
                        HorizontalOptions="Start" />
             </Grid>
 
+            <components:IosStyleSwitch x:Name="AutoConductSwitch"
+                                       Description="Автоматически проводить"
+                                       IsToggled="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=IsAutoConduct, Mode=TwoWay}"
+                                       Margin="0,20,0,0" />
+
             <components:PrimaryButton x:Name="SaveButton"
                                       Text="Сохранить"
                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=SaveCommand}"

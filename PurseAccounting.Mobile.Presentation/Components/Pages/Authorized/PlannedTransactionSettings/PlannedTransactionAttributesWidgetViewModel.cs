@@ -20,6 +20,7 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     private IReadOnlyList<TransactionCategoryDto> _categories = [];
     private long? _selectedCategoryId = null;
     private bool _isSaveEnabled = false;
+    private bool _isAutoConduct = false;
     private PeriodInfo _period = new OncePeriodInfo { Date = DateTime.Today };
     private DateTime? _plannedDate = DateTime.Today;
 
@@ -57,6 +58,15 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     {
         get => _isSaveEnabled;
         set => this.RaiseAndSetIfChanged(ref _isSaveEnabled, value, nameof(IsSaveEnabled));
+    }
+
+    /// <summary>
+    /// Флаг автоматического проведения транзакции (переключатель "Автоматически проводить").
+    /// </summary>
+    public bool IsAutoConduct
+    {
+        get => _isAutoConduct;
+        set => this.RaiseAndSetIfChanged(ref _isAutoConduct, value, nameof(IsAutoConduct));
     }
 
     /// <summary>
