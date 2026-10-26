@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation"
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
              xmlns:chips="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
+             xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
              x:Class="PurseAccountinng.Mobile.Presentation.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -49,6 +50,7 @@
             <categories:BoolToCategoryTextColorConverter x:Key="BoolToCategoryTextColorConverter" />
             <chips:BoolToChipsBackgroundColorConverter x:Key="BoolToChipsBackgroundColorConverter" />
             <chips:BoolToChipsTextColorConverter x:Key="BoolToChipsTextColorConverter" />
+            <components:BoolToSwitchTrackColorConverter x:Key="BoolToSwitchTrackColorConverter" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />

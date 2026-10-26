@@ -71,6 +71,14 @@ public partial class PlannedTransactionAttributesWidget : ContentView
             typeof(PlannedTransactionAttributesWidget),
             true);
 
+    public static readonly BindableProperty IsAutoConductProperty =
+        BindableProperty.Create(
+            nameof(IsAutoConduct),
+            typeof(bool),
+            typeof(PlannedTransactionAttributesWidget),
+            false,
+            BindingMode.TwoWay);
+
     public static readonly BindableProperty PeriodProperty =
         BindableProperty.Create(
             nameof(Period),
@@ -135,6 +143,15 @@ public partial class PlannedTransactionAttributesWidget : ContentView
     {
         get => (bool)GetValue(IsSaveEnabledProperty);
         set => SetValue(IsSaveEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Флаг автоматического проведения транзакции (переключатель "Автоматически проводить").
+    /// </summary>
+    public bool IsAutoConduct
+    {
+        get => (bool)GetValue(IsAutoConductProperty);
+        set => SetValue(IsAutoConductProperty, value);
     }
 
     public PeriodInfo? Period
