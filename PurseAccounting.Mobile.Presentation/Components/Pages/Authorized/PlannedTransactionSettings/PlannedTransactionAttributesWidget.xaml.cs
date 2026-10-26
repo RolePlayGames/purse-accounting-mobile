@@ -437,7 +437,7 @@ public partial class PlannedTransactionAttributesWidget : ContentView
 
         // Picker перекрывает всё поле — нажатие открывает список дней
         Grid.SetColumnSpan(picker, 2);
-        WeeklyDaysSection.Children[0].Children[0].Add(picker);
+        WeeklyDaysField.Children[0].Children.Add(picker);
 
         UpdateWeeklyDaysLabel();
     }
