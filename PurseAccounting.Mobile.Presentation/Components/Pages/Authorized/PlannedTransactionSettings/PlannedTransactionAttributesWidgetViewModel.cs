@@ -2,6 +2,8 @@
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings.Periods;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
 using PurseAccounting.Mobile.Infrastructure.Transactions;
+using PurseAccountinng.Mobile.Presentation.Pages.Authorized.Account;
+using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;
 using System.Windows.Input;
 
@@ -10,6 +12,7 @@ namespace PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.Plann
 public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
 {
     private readonly IApplicationContext _applicationContext;
+    private readonly INavigator _navigator;
 
     private string _transactionName = string.Empty;
     private int? _amount = null;
@@ -76,11 +79,17 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
 
     public ICommand SaveCommand { get; }
 
-    public PlannedTransactionAttributesWidgetViewModel(IApplicationContext applicationContext)
+    public ICommand CancelCommand { get; }
+
+    public PlannedTransactionAttributesWidgetViewModel(
+        IApplicationContext applicationContext,
+        INavigator navigator)
     {
         _applicationContext = applicationContext;
+        _navigator = navigator;
 
         SaveCommand = new Command(OnSave, () => IsSaveEnabled);
+        CancelCommand = new Command(OnCancel);
 
         this.WhenAnyValue(x => x.TransactionName, x => x.Amount, x => x.SelectedCategoryId)
             .Subscribe(_ => ValidateForm());
@@ -101,6 +110,11 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     private void OnSave()
     {
         // TODO: сохранение запланированной транзакции через IPlannedTransactionSettingsService
+    }
+
+    private void OnCancel()
+    {
+        _navigator.ChangeTabTo<AccountTab>(CancellationToken.None).ConfigureAwait(false);
     }
 
     private void OnTransactionCategoriesChanged(IReadOnlyCollection<TransactionCategoryDto>? oldValue, IReadOnlyCollection<TransactionCategoryDto>? newValue)

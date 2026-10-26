@@ -299,6 +299,11 @@
                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=SaveCommand}"
                                       IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=IsSaveEnabled}"
                                       Margin="0,2,0,0" />
+
+            <components:SecondaryButton x:Name="CancelButton"
+                                        Text="Отмена"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=CancelCommand}"
+                                        Margin="0,12,0,0" />
         </VerticalStackLayout>
 
     </Border>
