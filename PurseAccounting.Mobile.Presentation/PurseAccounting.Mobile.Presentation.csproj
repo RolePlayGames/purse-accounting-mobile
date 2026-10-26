@@ -173,6 +173,9 @@
 	  <MauiXaml Update="Components\PrimaryButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\SecondaryButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\Icons\RubleIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
