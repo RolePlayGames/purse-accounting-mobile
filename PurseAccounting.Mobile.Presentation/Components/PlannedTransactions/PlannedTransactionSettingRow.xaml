@@ -84,6 +84,7 @@
                         HeightRequest="24">
                         
                         <icons:AutoPlannedSettingIcon
+                            IsActive="{Binding PlannedTransactionSettingInfo.IsAutomatic}"
                             WidthRequest="24"
                             HeightRequest="24"
                             HorizontalOptions="Start"
