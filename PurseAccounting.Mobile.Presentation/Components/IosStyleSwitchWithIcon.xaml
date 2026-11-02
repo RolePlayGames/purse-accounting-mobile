@@ -27,7 +27,7 @@
                     <RoundRectangle CornerRadius="16" />
                 </Border.StrokeShape>
 
-                <icons:AutoPlannedSettingIcon Color="{StaticResource DarkPurple}"
+                <icons:AutoPlannedSettingIcon IsActive="{Binding Source={x:Reference Root}, Path=IsToggled}"
                                               WidthRequest="24"
                                               HeightRequest="24"
                                               HorizontalOptions="Center"

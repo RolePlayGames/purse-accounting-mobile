@@ -298,10 +298,10 @@
                        HorizontalOptions="Start" />
             </Grid>
 
-            <components:IosStyleSwitch x:Name="AutoConductSwitch"
-                                       Description="Автоматически проводить"
-                                       IsToggled="{Binding IsAutoConduct, Mode=TwoWay}"
-                                       Margin="0,20,0,0" />
+            <components:IosStyleSwitchWithIcon x:Name="AutoConductSwitch"
+                                               Description="Автоматически проводить"
+                                               IsToggled="{Binding IsAutoConduct, Mode=TwoWay}"
+                                               Margin="0,20,0,0" />
 
             <components:PrimaryButton x:Name="SaveButton"
                                       Text="Сохранить"
