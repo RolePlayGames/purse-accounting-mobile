@@ -2,21 +2,21 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings"
-             x:Class="PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings.PlannedTransactionSettingsTab"
-             Margin="0,18,0,0">
-    <ScrollView>
-        <local:PlannedTransactionAttributesWidget
-            x:Name="PlannedTransactionAttributesWidget"
-            TransactionName="{Binding TransactionName, Mode=TwoWay}"
-            Amount="{Binding Amount, Mode=TwoWay}"
-            TransactionChangeType="{Binding TransactionChangeType, Mode=TwoWay}"
-            Categories="{Binding Categories}"
-            SelectedCategoryId="{Binding SelectedCategoryId, Mode=TwoWay}"
-            IsAutoConduct="{Binding IsAutoConduct, Mode=TwoWay}"
-            Period="{Binding Period, Mode=TwoWay}"
-            PlannedDate="{Binding PlannedDate, Mode=TwoWay}"
-            SaveCommand="{Binding SaveCommand}"
-            IsSaveEnabled="{Binding IsSaveEnabled}"
-            Margin="15,12,15,0"/>
-    </ScrollView>
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings.PlannedTransactionSettingsTab">
+    <Grid>
+        <ScrollView>
+            <local:PlannedTransactionAttributesWidget
+                x:Name="PlannedTransactionAttributesWidget"
+                TransactionName="{Binding TransactionName, Mode=TwoWay}"
+                Amount="{Binding Amount, Mode=TwoWay}"
+                TransactionChangeType="{Binding TransactionChangeType, Mode=TwoWay}"
+                Categories="{Binding Categories}"
+                SelectedCategoryId="{Binding SelectedCategoryId, Mode=TwoWay}"
+                IsAutoConduct="{Binding IsAutoConduct, Mode=TwoWay}"
+                Period="{Binding Period, Mode=TwoWay}"
+                PlannedDate="{Binding PlannedDate, Mode=TwoWay}"
+                SaveCommand="{Binding SaveCommand}"
+                IsSaveEnabled="{Binding IsSaveEnabled}"/>
+        </ScrollView>
+        </Grid>
 </ContentView>

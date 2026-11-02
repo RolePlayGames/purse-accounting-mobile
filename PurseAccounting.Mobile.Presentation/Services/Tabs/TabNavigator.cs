@@ -61,7 +61,7 @@ internal class TabNavigator : ITabNavigator
         AddTab<DistributionTab>(_serviceProvider, "Распределение остатка", false);
         AddTab<TransactionsTab>(_serviceProvider, "История транзакций");
         AddTab<AccountTab>(_serviceProvider, "Настройка счета");
-        AddTab<PlannedTransactionSettingsTab>(_serviceProvider, "Настройки плановых транзакций");
+        AddTab<PlannedTransactionSettingsTab>(_serviceProvider, "Настройка счета");
         AddTab<UserProfileTab>(_serviceProvider, "Профиль");
         AddTab<CategoriesTab>(_serviceProvider, "Категории транзакций");
     }

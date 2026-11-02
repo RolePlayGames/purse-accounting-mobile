@@ -7,12 +7,15 @@
              xmlns:chips="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
              xmlns:transactions="clr-namespace:PurseAccounting.Mobile.Infrastructure.Transactions;assembly=PurseAccounting.Mobile.Infrastructure"
-             x:Class="PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings.PlannedTransactionAttributesWidget">
+             x:Class="PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings.PlannedTransactionAttributesWidget"
+             x:Name="Root">
 
     <Border Stroke="Transparent"
             StrokeThickness="0"
             Background="{StaticResource WorkBackground}"
             StrokeShape="RoundRectangle 20"
+            HorizontalOptions="Fill"
+            Margin="15,18"
             Padding="15,20,15,25">
 
         <Border.Shadow>
@@ -46,9 +49,10 @@
                 x:Name="CategorySelector"
                 HeaderText="Категория"
                 ItemsSource="{Binding Categories}"
-                SelectedItemId="{Binding SelectedCategoryId}" />
+                SelectedItemId="{Binding SelectedCategoryId}"
+                Margin="0,6,0,0"/>
 
-            <Grid>
+            <Grid Margin="0,9,0,0">
                 <Grid HeightRequest="60">
                     <Border Stroke="{StaticResource InactiveElementFill}"
                             StrokeThickness="1"
@@ -296,18 +300,18 @@
 
             <components:IosStyleSwitch x:Name="AutoConductSwitch"
                                        Description="Автоматически проводить"
-                                       IsToggled="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=IsAutoConduct, Mode=TwoWay}"
+                                       IsToggled="{Binding IsAutoConduct, Mode=TwoWay}"
                                        Margin="0,20,0,0" />
 
             <components:PrimaryButton x:Name="SaveButton"
                                       Text="Сохранить"
-                                      Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=SaveCommand}"
-                                      IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=IsSaveEnabled}"
+                                      Command="{Binding SaveCommand}"
+                                      IsEnabled="{Binding IsSaveEnabled}"
                                       Margin="0,2,0,0" />
 
             <components:SecondaryButton x:Name="CancelButton"
                                         Text="Отмена"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlannedTransactionAttributesWidget}}, Path=CancelCommand}"
+                                        Command="{Binding CancelCommand}"
                                         Margin="0,12,0,0" />
         </VerticalStackLayout>
 

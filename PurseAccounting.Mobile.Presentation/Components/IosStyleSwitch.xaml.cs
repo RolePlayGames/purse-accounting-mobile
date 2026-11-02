@@ -2,14 +2,16 @@ namespace PurseAccountinng.Mobile.Presentation.Components;
 
 public partial class IosStyleSwitch : ContentView
 {
-    private const uint ToggleAnimationDuration = 150;
-
     public static readonly BindableProperty IsToggledProperty = BindableProperty.Create(
         nameof(IsToggled), typeof(bool), typeof(IosStyleSwitch), false, BindingMode.TwoWay,
         propertyChanged: OnIsToggledPropertyChanged);
 
     public static readonly BindableProperty DescriptionProperty = BindableProperty.Create(
         nameof(Description), typeof(string), typeof(IosStyleSwitch), string.Empty);
+
+    private const uint _toggleAnimationDurationMilleseconds = 200;
+    private const double _thumbPadding = 2.0;
+    private const double _targetTranslationX = 66 - 32 - _thumbPadding; // left position = 2, right position = 66 (width) - 32 (circle width) - 2 (padding) = 32
 
     public bool IsToggled
     {
@@ -29,9 +31,11 @@ public partial class IosStyleSwitch : ContentView
     {
         InitializeComponent();
 
+        UpdateThumbPosition(IsToggled, animate: false); // initialize first position
+
         var tapGestureRecognizer = new TapGestureRecognizer
         {
-            Command = new Command(() => IsToggled = !IsToggled)
+            Command = new Command(() => IsToggled = !IsToggled),
         };
 
         SwitchTrack.GestureRecognizers.Add(tapGestureRecognizer);
@@ -42,23 +46,32 @@ public partial class IosStyleSwitch : ContentView
     {
         if (bindable is IosStyleSwitch sw)
         {
-            sw.UpdateThumbPosition((bool)newValue);
+            sw.UpdateThumbPosition((bool)newValue, animate: true);
+            sw.Toggled?.Invoke(sw, (bool)newValue);
         }
     }
 
-    private void UpdateThumbPosition(bool isToggled)
+    private void UpdateThumbPosition(bool isToggled, bool animate)
     {
-        // Proportional position: 0 -> thumb on the left, 1 -> thumb on the right.
-        var targetX = isToggled ? 1d : 0d;
+        var targetX = isToggled ? _targetTranslationX : _thumbPadding;
 
         SwitchThumb.AbortAnimation(nameof(SwitchThumb));
-        SwitchThumb.Animate(
-            nameof(SwitchThumb),
-            () => AbsoluteLayout.GetLayoutBounds(SwitchThumb),
-            current => new Rect(targetX, 0.5, 32, 32),
-            length: ToggleAnimationDuration,
-            easing: Easing.CubicOut);
 
-        Toggled?.Invoke(this, isToggled);
+        if (animate)
+        {
+            SwitchThumb.Animate(
+                nameof(SwitchThumb),
+                progress =>
+                {
+                    var currentX = SwitchThumb.TranslationX + ((targetX - SwitchThumb.TranslationX) * progress);
+                    SwitchThumb.TranslationX = currentX;
+                },
+                length: _toggleAnimationDurationMilleseconds,
+                easing: Easing.CubicInOut);
+        }
+        else
+        {
+            SwitchThumb.TranslationX = targetX;
+        }
     }
 }

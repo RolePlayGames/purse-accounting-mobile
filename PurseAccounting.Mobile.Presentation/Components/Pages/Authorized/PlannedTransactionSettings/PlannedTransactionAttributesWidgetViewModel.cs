@@ -120,6 +120,7 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
     private void OnSave()
     {
         // TODO: сохранение запланированной транзакции через IPlannedTransactionSettingsService
+        _navigator.ChangeTabTo<AccountTab>(CancellationToken.None).ConfigureAwait(false);
     }
 
     private void OnCancel()

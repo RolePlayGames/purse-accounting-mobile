@@ -2,7 +2,6 @@ using PurseAccounting.Mobile.Application.Context;
 using PurseAccounting.Mobile.Application.PlannedTransactions;
 using PurseAccounting.Mobile.Infrastructure.PlannedTransactions.Settings;
 using PurseAccounting.Mobile.Infrastructure.TransactionCategories;
-using PurseAccounting.Mobile.Infrastructure.Transactions;
 using PurseAccountinng.Mobile.Presentation.Components.Pages.Authorized.PlannedTransactionSettings;
 using PurseAccountinng.Mobile.Presentation.Services.Navigation;
 using ReactiveUI;

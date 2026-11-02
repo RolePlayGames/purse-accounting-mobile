@@ -27,40 +27,40 @@
 
                 <Grid HeightRequest="60" VerticalOptions="Start">
                     
-                <Border Stroke="{StaticResource InactiveElementFill}"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 30"
-                        BackgroundColor="White" />
+                    <Border Stroke="{StaticResource InactiveElementFill}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 30"
+                            BackgroundColor="White" />
 
-                <Label x:Name="DateLabel"
-                       Text="28.01.2026"
-                       FontFamily="OpenSansRegular"
-                       FontSize="{StaticResource FontSizeRegular}"
-                       TextColor="{StaticResource Gray2}"
-                       VerticalOptions="Center"
-                       Margin="20,0,0,0" />
+                    <Label x:Name="DateLabel"
+                           Text="28.01.2026"
+                           FontFamily="OpenSansRegular"
+                           FontSize="{StaticResource FontSizeRegular}"
+                           TextColor="{StaticResource Gray2}"
+                           VerticalOptions="Center"
+                           Margin="20,0,0,0" />
 
-                <DatePicker x:Name="NativeDatePicker"
-                            Format="dd.MM.yyyy"
-                            DateSelected="OnDateSelected"
-                            BackgroundColor="Transparent"
-                            TextColor="Transparent"
-                            Opacity="0.01"
-                            VerticalOptions="Center"
-                            HorizontalOptions="End"
-                            WidthRequest="44"
-                            HeightRequest="44"
-                            Margin="0,0,10,0" />
+                    <DatePicker x:Name="NativeDatePicker"
+                                Format="dd.MM.yyyy"
+                                DateSelected="OnDateSelected"
+                                BackgroundColor="Transparent"
+                                TextColor="Transparent"
+                                Opacity="0.01"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                Margin="0,0,10,0" />
 
-                <Path Data="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zm0-12H5V6h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z"
-                      Fill="{StaticResource Gray2}"
-                      StrokeThickness="0"
-                      Aspect="Uniform"
-                      HeightRequest="30"
-                      WidthRequest="30"
-                      VerticalOptions="Center"
-                      HorizontalOptions="End"
-                      Margin="0,0,20,0" />
+                    <Path Data="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zm0-12H5V6h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z"
+                          Fill="{StaticResource Gray2}"
+                          StrokeThickness="0"
+                          Aspect="Uniform"
+                          HeightRequest="30"
+                          WidthRequest="30"
+                          VerticalOptions="Center"
+                          HorizontalOptions="End"
+                          Margin="0,0,20,0" />
                 </Grid>
 
                 <Label Text="Планируемая дата"

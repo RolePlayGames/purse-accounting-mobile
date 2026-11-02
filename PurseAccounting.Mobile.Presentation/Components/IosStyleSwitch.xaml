@@ -4,10 +4,8 @@
              x:Class="PurseAccountinng.Mobile.Presentation.Components.IosStyleSwitch"
              x:Name="Root">
 
-    <HorizontalStackLayout Spacing="20"
-                           VerticalOptions="Center">
+    <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
 
-        <!-- Switch itself: 66x34, fully rounded (semicircle caps on the left and right) -->
         <Border x:Name="SwitchTrack"
                 WidthRequest="66"
                 HeightRequest="34"
@@ -18,16 +16,17 @@
                 <RoundRectangle CornerRadius="17" />
             </Border.StrokeShape>
 
-            <AbsoluteLayout>
-                <!-- Thumb: 32x32 circle, right side when toggled, left side otherwise -->
-                <BoxView x:Name="SwitchThumb"
-                         WidthRequest="32"
-                         HeightRequest="32"
-                         CornerRadius="16"
-                         Color="{StaticResource WorkBackground}"
-                         AbsoluteLayout.LayoutBounds="1, 0.5, 32, 32"
-                         AbsoluteLayout.LayoutFlags="PositionProportional" />
-            </AbsoluteLayout>
+            <Border x:Name="SwitchThumb"
+                    WidthRequest="32"
+                    HeightRequest="32"
+                    BackgroundColor="{StaticResource WorkBackground}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+            </Border>
+
         </Border>
 
         <Label Text="{Binding Source={x:Reference Root}, Path=Description}"
