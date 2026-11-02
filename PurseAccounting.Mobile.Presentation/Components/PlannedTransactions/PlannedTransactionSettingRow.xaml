@@ -14,10 +14,9 @@
                     BackgroundColor="{StaticResource Purple}">
 
                     <Grid HorizontalOptions="Fill" VerticalOptions="Fill" ColumnDefinitions="*,Auto">
-                        <!-- Фиктивный элемент для заполнения всей ширины -->
+                        <!-- Filler -->
                         <BoxView Grid.Column="0" BackgroundColor="{StaticResource Purple}"/>
 
-                        <!-- Контейнер с иконкой справа -->
                         <Grid Grid.Column="1" WidthRequest="80">
                             <icons:ReverseIcon
                                 Margin="0,0,16,0"
