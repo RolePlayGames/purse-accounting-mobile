@@ -5,7 +5,6 @@
              xmlns:categories="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Categories"
              xmlns:chips="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Chips"
              xmlns:components="clr-namespace:PurseAccountinng.Mobile.Presentation.Components"
-             xmlns:icons="clr-namespace:PurseAccountinng.Mobile.Presentation.Components.Icons"
              x:Class="PurseAccountinng.Mobile.Presentation.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -52,7 +51,6 @@
             <chips:BoolToChipsBackgroundColorConverter x:Key="BoolToChipsBackgroundColorConverter" />
             <chips:BoolToChipsTextColorConverter x:Key="BoolToChipsTextColorConverter" />
             <components:BoolToSwitchTrackColorConverter x:Key="BoolToSwitchTrackColorConverter" />
-            <icons:AutoPlannedSettingIconStateToColorConverter x:Key="AutoPlannedSettingIconStateToColorConverter" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
