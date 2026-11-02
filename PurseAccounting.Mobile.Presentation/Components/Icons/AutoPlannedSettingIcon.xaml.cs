@@ -45,10 +45,9 @@ public partial class AutoPlannedSettingIcon : ContentView
     private void UpdateColorFromState()
     {
         var resources = Application.Current?.Resources;
-        if (resources == null)
-        {
+
+        if (resources is null)
             return;
-        }
 
         Color = IsActive
             ? resources.GetColor("DarkPurple")
