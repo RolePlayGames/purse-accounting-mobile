@@ -101,7 +101,7 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
         SaveCommand = new Command(OnSave, () => IsSaveEnabled);
         CancelCommand = new Command(OnCancel);
 
-        this.WhenAnyValue(x => x.TransactionName, x => x.Amount, x => x.SelectedCategoryId)
+        this.WhenAnyValue(x => x.TransactionName, x => x.Amount, x => x.SelectedCategoryId, x => x.Period)
             .Subscribe(_ => ValidateForm());
 
         applicationContext.TransactionCategoriesChanged += OnTransactionCategoriesChanged;
@@ -113,8 +113,22 @@ public class PlannedTransactionAttributesWidgetViewModel : ReactiveObject
         var isNameValid = !string.IsNullOrWhiteSpace(TransactionName);
         var isAmountValid = Amount > 0;
         var isCategoryValid = SelectedCategoryId.HasValue;
+        var isPeriodValid = IsPeriodValid(Period);
 
-        IsSaveEnabled = isNameValid && isAmountValid && isCategoryValid;
+        IsSaveEnabled = isNameValid && isAmountValid && isCategoryValid && isPeriodValid;
+    }
+
+    /// <summary>
+    /// Проверяет корректность выбранного периода.
+    /// Для <see cref="WeeklyPeriodInfo"/> должен быть выбран хотя бы один день недели.
+    /// </summary>
+    private static bool IsPeriodValid(PeriodInfo period)
+    {
+        return period switch
+        {
+            WeeklyPeriodInfo weekly => weekly.DaysOfWeek is { Length: > 0 },
+            _ => true,
+        };
     }
 
     private void OnSave()
